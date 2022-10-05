@@ -29,9 +29,7 @@ R0 = cv2.normalize(V2, None, 0, 255, cv2.NORM_MINMAX)
 G0 = cv2.normalize(V4, None, 0, 255, cv2.NORM_MINMAX)
 B0 = cv2.normalize(V6, None, 0, 255, cv2.NORM_MINMAX)
 NM = cv2.merge((R0, G0, B0))
-NP = PIL.Image.fromarray(NM)
-RN = NP.resize((W0, 512))
-NR = numpy.array(RN)
+NR = cv2.resize(NM, (W0, 512))
 
 class Generator(torch.nn.Module):
 
