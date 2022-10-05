@@ -29,7 +29,7 @@ R0 = cv2.normalize(V2, None, 0, 255, cv2.NORM_MINMAX)
 G0 = cv2.normalize(V4, None, 0, 255, cv2.NORM_MINMAX)
 B0 = cv2.normalize(V6, None, 0, 255, cv2.NORM_MINMAX)
 NM = cv2.merge((R0, G0, B0))
-NR = cv2.resize(NM, (W0, 512))
+NR = cv2.resize(NM, (W0, 512), interpolation=cv2.INTER_CUBIC)
 
 class Generator(torch.nn.Module):
 
