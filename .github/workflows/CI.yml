@@ -10,13 +10,25 @@ jobs:
       - name: Check
         uses: actions/checkout@v3.2.0
 
+      - name: Python
+        uses: actions/setup-python@v4.4.0
+        with:
+          python-version: 3.10.9
+          architecture: x64
+
       - name: Setup
         run: |
-          pip3 install pyinstaller==5.7.0 numpy==1.24.1 opencv-python==4.6.0.66 pillow==9.3.0 torch==1.10.2 torchvision==0.11.3
+          pip3 install pyinstaller==5.7.0 numpy==1.24.1 opencv-python==4.7.0.68 pillow==9.3.0 torch==1.13.1 torchvision==0.14.1
           pyinstaller A.py
+
+      - name: Zip
+        uses: thedoctor0/zip-release@main
+        with:
+          filename: A.zip
+          path: ./dist/A/.
 
       - name: File
         uses: actions/upload-artifact@v3.1.1
         with:
-          name: A
-          path: dist/A/
+          name: File A
+          path: A.zip
