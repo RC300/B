@@ -8,10 +8,10 @@ jobs:
     runs-on: windows-2022
     steps:
       - name: Check
-        uses: actions/checkout@v3.2.0
+        uses: actions/checkout@v3.3.0
 
       - name: Python
-        uses: actions/setup-python@v4.4.0
+        uses: actions/setup-python@v4.5.0
         with:
           python-version: 3.10.9
           architecture: x64
@@ -22,13 +22,13 @@ jobs:
           pyinstaller A.py
 
       - name: Zip
-        uses: thedoctor0/zip-release@main
+        uses: thedoctor0/zip-release@0.7.0
         with:
           filename: A.zip
           path: ./dist/A/.
 
       - name: File
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: File A
           path: A.zip
