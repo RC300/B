@@ -9,8 +9,8 @@ args = parser.parse_args()
 I0 = cv2.cvtColor(cv2.imread(args.input), cv2.COLOR_BGR2RGB)
 W0 = math.ceil(I0.shape[1] / I0.shape[0] * 512)
 RI = cv2.resize(I0, (W0, 512), interpolation=cv2.INTER_CUBIC)
-IV = I0.size // 120
-C0 = numpy.dsplit(I0, 3)
+IV = RI.size // 120
+C0 = numpy.dsplit(RI, 3)
 SR = numpy.sort(C0[0], None)
 SG = numpy.sort(C0[1], None)
 SB = numpy.sort(C0[2], None)
@@ -21,7 +21,6 @@ R0 = cv2.normalize(V1, None, 0, 255, cv2.NORM_MINMAX)
 G0 = cv2.normalize(V2, None, 0, 255, cv2.NORM_MINMAX)
 B0 = cv2.normalize(V3, None, 0, 255, cv2.NORM_MINMAX)
 NM = numpy.dstack((R0, G0, B0))
-NR = cv2.resize(NM, (W0, 512), interpolation=cv2.INTER_CUBIC)
 
 class Generator(torch.nn.Module):
 
@@ -95,7 +94,7 @@ for P in P1, P2, P3, P4:
         if P is P2: cv2.circle(N1, (x, y), math.ceil(r / 4), (255, 255, 255), -1)
         if P is P3: cv2.circle(N1, (x, y), r, (255, 0, 255), -1)
         if P is P4: cv2.circle(N1, (x, y), r, (0, 0, 255), -1)
-N3 = cv2.bitwise_or(NR, NR, mask=cv2.bitwise_not(M1)) + cv2.bitwise_or(N1, N1, mask=M1)
+N3 = cv2.bitwise_or(NM, NM, mask=cv2.bitwise_not(M1)) + cv2.bitwise_or(N1, N1, mask=M1)
 I3 = cv2.resize(N3, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 cv2.imwrite(os.path.join(args.output, 'X3.jpg'), cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
@@ -107,14 +106,12 @@ T4 = T4.squeeze() * 0.5 + 0.5
 ID = torchvision.transforms.ToPILImage()(T4)
 ID = ID.crop((0, 0, W0, 512))
 DN = numpy.array(ID)
-DR = cv2.resize(DN, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-ND = cv2.bitwise_or(NM, NM, mask=cv2.bitwise_not(M2)) + cv2.bitwise_or(DR, DR, mask=M2)
+ND = cv2.bitwise_or(NM, NM, mask=cv2.bitwise_not(M1)) + cv2.bitwise_or(DN, DN, mask=M1)
 C4 = numpy.dsplit(ND, 3)
 R4 = cv2.normalize(C4[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
 G4 = cv2.normalize(C4[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
 B4 = cv2.normalize(C4[2], None, SB[IV], SB[-IV], cv2.NORM_MINMAX)
-I4 = numpy.dstack((R4, G4, B4))
+N4 = numpy.dstack((R4, G4, B4))
+DR = cv2.resize(N4, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
+I4 = cv2.bitwise_or(I0, I0, mask=cv2.bitwise_not(M2)) + cv2.bitwise_or(DR, DR, mask=M2)
 cv2.imwrite(os.path.join(args.output, 'X4.jpg'), cv2.cvtColor(I4, cv2.COLOR_BGR2RGB))
-
-I5 = cv2.bitwise_or(I0, I0, mask=cv2.bitwise_not(M2)) + cv2.bitwise_or(I4, I4, mask=M2)
-cv2.imwrite(os.path.join(args.output, 'X5.jpg'), cv2.cvtColor(I5, cv2.COLOR_BGR2RGB))
