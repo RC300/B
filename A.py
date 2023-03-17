@@ -61,11 +61,18 @@ T1 = T1 * 0.5 + 0.5
 T1 = torchvision.transforms.functional.convert_image_dtype(T1, torch.uint8)
 T1 = torchvision.transforms.functional.crop(T1, 0, 0, 512, W0).numpy()
 NA = numpy.transpose(T1, (1, 2, 0))
+
 M1 = cv2.inRange(NA, (0, 255, 0), (0, 255, 0))
 M2 = cv2.bitwise_not(M1)
 N1 = cv2.bitwise_or(NA, NA, mask=M1) + cv2.bitwise_or(RI, RI, mask=M2)
 I1 = cv2.resize(N1, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
+
+CA = numpy.dsplit(NA, 3)
+RA = cv2.normalize(CA[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
+GA = cv2.normalize(CA[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
+BA = cv2.normalize(CA[2], None, SB[IV], SB[-IV], cv2.NORM_MINMAX)
+NA = numpy.dstack((RA, GA, BA))
 
 T2 = torchvision.transforms.ToTensor()(NA)
 L2 = os.path.join(args.model, '2.lib')
@@ -75,6 +82,7 @@ T2 = T2 * 0.5 + 0.5
 T2 = torchvision.transforms.functional.convert_image_dtype(T2, torch.uint8)
 T2 = torchvision.transforms.functional.crop(T2, 0, 0, 512, W0).numpy()
 NB = numpy.transpose(T2, (1, 2, 0))
+
 N2 = cv2.bitwise_or(NB, NB, mask=M1) + cv2.bitwise_or(RI, RI, mask=M2)
 I2 = cv2.resize(N2, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
@@ -102,11 +110,13 @@ GE.load_state_dict(torch.load(L3))
 with torch.inference_mode(): T4 = GE(T4)
 T4 = torchvision.transforms.functional.crop(T4, 0, 0, 512, W0).numpy()
 ND = numpy.transpose(T4, (1, 2, 0))
+
 C4 = numpy.dsplit(ND, 3)
 R4 = cv2.normalize(C4[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
 G4 = cv2.normalize(C4[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
 B4 = cv2.normalize(C4[2], None, SB[IV], SB[-IV], cv2.NORM_MINMAX)
 N4 = numpy.dstack((R4, G4, B4))
+
 N4 = cv2.resize(N4, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 M3 = cv2.inRange(I1, (0, 255, 0), (0, 255, 0))
 M4 = cv2.bitwise_not(M3)
