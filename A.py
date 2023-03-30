@@ -54,7 +54,7 @@ class ResnetBlock(torch.nn.Module):
 GE = Generator()
 
 T1 = torchvision.transforms.ToTensor()(RI)
-L1 = os.path.join(args.model, '1.lib')
+L1 = args.model + '1.lib'
 GE.load_state_dict(torch.load(L1))
 with torch.inference_mode(): T1 = GE(T1)
 T1 = T1 * 0.5 + 0.5
@@ -68,7 +68,7 @@ I1 = cv2.resize(N1, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
 
 T2 = torchvision.transforms.ToTensor()(NA)
-L2 = os.path.join(args.model, '2.lib')
+L2 = args.model + '2.lib'
 GE.load_state_dict(torch.load(L2))
 with torch.inference_mode(): T2 = GE(T2)
 T2 = T2 * 0.5 + 0.5
@@ -97,7 +97,7 @@ I3 = cv2.resize(N3, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
 T4 = torchvision.transforms.ToTensor()(N3)
-L3 = os.path.join(args.model, '3.lib')
+L3 = args.model + '3.lib'
 GE.load_state_dict(torch.load(L3))
 with torch.inference_mode(): T4 = GE(T4)
 T4 = torchvision.transforms.functional.crop(T4, 0, 0, 512, W0).numpy()
