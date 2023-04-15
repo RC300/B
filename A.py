@@ -55,8 +55,7 @@ GE = Generator()
 
 T1 = torchvision.transforms.ToTensor()(RI)
 GE.load_state_dict(torch.load(args.model + '1.lib'))
-with torch.inference_mode(): T1 = GE(T1)
-T1 = T1 * 0.5 + 0.5
+with torch.inference_mode(): T1 = GE(T1) * 0.5 + 0.5
 T1 = torchvision.transforms.functional.convert_image_dtype(T1, torch.uint8)
 T1 = torchvision.transforms.functional.crop(T1, 0, 0, 512, W0).numpy()
 NA = numpy.transpose(T1, (1, 2, 0))
@@ -68,8 +67,7 @@ cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
 
 T2 = torchvision.transforms.ToTensor()(NA)
 GE.load_state_dict(torch.load(args.model + '2.lib'))
-with torch.inference_mode(): T2 = GE(T2)
-T2 = T2 * 0.5 + 0.5
+with torch.inference_mode(): T2 = GE(T2) * 0.5 + 0.5
 T2 = torchvision.transforms.functional.convert_image_dtype(T2, torch.uint8)
 T2 = torchvision.transforms.functional.crop(T2, 0, 0, 512, W0).numpy()
 NB = numpy.transpose(T2, (1, 2, 0))
