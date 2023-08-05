@@ -11,14 +11,14 @@ jobs:
         uses: actions/checkout@v3.5.3
 
       - name: Python
-        uses: actions/setup-python@v4.6.1
+        uses: actions/setup-python@v4.7.0
         with:
           python-version: 3.11.4
           architecture: x64
 
       - name: Setup
         run: |
-          pip3 install pyinstaller==5.13.0 numpy==1.25.0 opencv-python==4.7.0.72 pillow==9.5.0 torch==2.0.1 torchvision==0.15.2
+          pip3 install pyinstaller==5.13.0 numpy==1.25.2 opencv-python==4.8.0.74 pillow==10.0.0 torch==2.0.1 torchvision==0.15.2
           pyinstaller A.py
 
       - name: Zip
