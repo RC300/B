@@ -41,8 +41,8 @@ class Generator(torch.nn.Module):
 
     def forward(self, tensor):
         TC = self.model(tensor) * 0.5 + 0.5
-        TC = torchvision.transforms.functional.convert_image_dtype(TC, torch.uint8)
-        TC = torchvision.transforms.functional.crop(TC, 0, 0, 512, W0).numpy()
+        TC = torchvision.transforms.functional.crop(TC, 0, 0, 512, W0)
+        TC = torchvision.transforms.functional.convert_image_dtype(TC, torch.uint8).numpy()
         return numpy.transpose(TC, (1, 2, 0))
 
 class ResnetBlock(torch.nn.Module):
