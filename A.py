@@ -39,11 +39,12 @@ class Generator(torch.nn.Module):
         model += [torch.nn.ReflectionPad2d(3), torch.nn.Conv2d(64, 3, 7), torch.nn.Tanh()]
         self.model = torch.nn.Sequential(*model)
 
-    def forward(self, tensor):
-        TC = self.model(tensor) * 0.5 + 0.5
-        TC = torchvision.transforms.functional.crop(TC, 0, 0, 512, W0)
-        TC = torchvision.transforms.ConvertImageDtype(torch.uint8)(TC).numpy()
-        return numpy.transpose(TC, (1, 2, 0))
+    def forward(self, IN):
+        TS = torchvision.transforms.ToTensor()(IN)
+        TS = self.model(TS) * 0.5 + 0.5
+        TS = torchvision.transforms.functional.crop(TS, 0, 0, 512, W0)
+        TS = torchvision.transforms.ConvertImageDtype(torch.uint8)(TS).numpy()
+        return numpy.transpose(TS, (1, 2, 0))
 
 class ResnetBlock(torch.nn.Module):
 
@@ -53,22 +54,20 @@ class ResnetBlock(torch.nn.Module):
         conv_block += [torch.nn.ReflectionPad2d(1), torch.nn.Conv2d(1024, 1024, 3), torch.nn.InstanceNorm2d(1)]
         self.conv_block = torch.nn.Sequential(*conv_block)
 
-    def forward(self, tensor): return tensor + self.conv_block(tensor)
+    def forward(self, IN): return IN + self.conv_block(IN)
 
 GE = Generator()
 
-T1 = torchvision.transforms.ToTensor()(RI)
 GE.load_state_dict(torch.load(args.model + '1.lib'))
-with torch.inference_mode(): NA = GE(T1)
+with torch.inference_mode(): NA = GE(RI)
 M1 = cv2.inRange(NA, (0, 255, 0), (0, 255, 0))
 M2 = cv2.bitwise_not(M1)
 N1 = cv2.bitwise_or(NA, NA, mask=M1) + cv2.bitwise_or(RI, RI, mask=M2)
 I1 = cv2.resize(N1, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
 
-T2 = torchvision.transforms.ToTensor()(NA)
 GE.load_state_dict(torch.load(args.model + '2.lib'))
-with torch.inference_mode(): NB = GE(T2)
+with torch.inference_mode(): NB = GE(NA)
 N2 = cv2.bitwise_or(NB, NB, mask=M1) + cv2.bitwise_or(RI, RI, mask=M2)
 I2 = cv2.resize(N2, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
@@ -90,9 +89,8 @@ N3 = cv2.bitwise_or(N1, N1, mask=M1) + cv2.bitwise_or(NM, NM, mask=M2)
 I3 = cv2.resize(N3, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
-T4 = torchvision.transforms.ToTensor()(N3)
 GE.load_state_dict(torch.load(args.model + '3.lib'))
-with torch.inference_mode(): ND = GE(T4)
+with torch.inference_mode(): ND = GE(N3)
 C4 = numpy.dsplit(ND, 3)
 R4 = cv2.normalize(C4[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
 G4 = cv2.normalize(C4[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
