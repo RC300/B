@@ -8,9 +8,8 @@ args = parser.parse_args()
 
 I0 = cv2.cvtColor(cv2.imread(args.input), cv2.COLOR_BGR2RGB)
 W0 = math.ceil(I0.shape[1] / I0.shape[0] * 512)
-RI = cv2.resize(I0, (W0, 512), interpolation=cv2.INTER_CUBIC)
-IV = RI.size // 120
-C0 = numpy.dsplit(RI, 3)
+IV = I0.size // 120
+C0 = numpy.dsplit(I0, 3)
 SR = numpy.sort(C0[0], None)
 SG = numpy.sort(C0[1], None)
 SB = numpy.sort(C0[2], None)
@@ -40,11 +39,13 @@ class Generator(torch.nn.Module):
         self.model = torch.nn.Sequential(*model)
 
     def forward(self, IN):
-        TS = torchvision.transforms.ToTensor()(IN)
+        IR = cv2.resize(IN, (W0, 512), interpolation=cv2.INTER_CUBIC)
+        TS = torchvision.transforms.ToTensor()(IR)
         TS = self.model(TS) * 0.5 + 0.5
         TS = torchvision.transforms.functional.crop(TS, 0, 0, 512, W0)
         TS = torchvision.transforms.ConvertImageDtype(torch.uint8)(TS).numpy()
-        return numpy.transpose(TS, (1, 2, 0))
+        NI = numpy.transpose(TS, (1, 2, 0))
+        return cv2.resize(NI, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 
 class ResnetBlock(torch.nn.Module):
 
@@ -59,19 +60,21 @@ class ResnetBlock(torch.nn.Module):
 GE = Generator()
 
 GE.load_state_dict(torch.load(args.model + '1.lib'))
-with torch.inference_mode(): NA = GE(RI)
+with torch.inference_mode(): NA = GE(I0)
 M1 = cv2.inRange(NA, (0, 255, 0), (0, 255, 0))
-CT = cv2.findContours(M1, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)[-2]
-N1 = cv2.drawContours(RI, CT, -1, (0, 255, 0), -1)
-I1 = cv2.resize(N1, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
-
 M2 = cv2.bitwise_not(M1)
+N1 = cv2.bitwise_or(NA, NA, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
+cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(N1, cv2.COLOR_BGR2RGB))
+
 GE.load_state_dict(torch.load(args.model + '2.lib'))
 with torch.inference_mode(): NB = GE(NA)
-N2 = cv2.bitwise_or(NB, NB, mask=M1) + cv2.bitwise_or(RI, RI, mask=M2)
-I2 = cv2.resize(N2, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
+P0 = cv2.inRange(NB, (255, 0, 0), (255, 0, 0))
+for CT in cv2.findContours(P0, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)[-2]:
+    (x, y), r = cv2.minEnclosingCircle(CT)
+    x, y, r = int(x), int(y), int(r)
+    cv2.circle(NB, (x, y), r, (255, 0, 0), -1)
+N2 = cv2.bitwise_or(NB, NB, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
+cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(N2, cv2.COLOR_BGR2RGB))
 
 P1 = cv2.inRange(N2, (0, 0, 0), (0, 0, 0))
 P2 = cv2.inRange(N2, (255, 0, 0), (255, 0, 0))
@@ -87,8 +90,7 @@ for P in P1, P2, P3, P4:
         if P is P3: cv2.circle(N1, (x, y), r, (255, 0, 255), -1)
         if P is P4: cv2.circle(N1, (x, y), r, (0, 0, 255), -1)
 N3 = cv2.bitwise_or(N1, N1, mask=M1) + cv2.bitwise_or(NM, NM, mask=M2)
-I3 = cv2.resize(N3, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
+cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(N3, cv2.COLOR_BGR2RGB))
 
 GE.load_state_dict(torch.load(args.model + '3.lib'))
 with torch.inference_mode(): ND = GE(N3)
@@ -97,8 +99,5 @@ R4 = cv2.normalize(C4[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
 G4 = cv2.normalize(C4[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
 B4 = cv2.normalize(C4[2], None, SB[IV], SB[-IV], cv2.NORM_MINMAX)
 N4 = numpy.dstack((R4, G4, B4))
-N4 = cv2.resize(N4, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-M3 = cv2.inRange(I1, (0, 255, 0), (0, 255, 0))
-M4 = cv2.bitwise_not(M3)
-I4 = cv2.bitwise_or(N4, N4, mask=M3) + cv2.bitwise_or(I0, I0, mask=M4)
-cv2.imwrite(args.output + 'X4.jpg', cv2.cvtColor(I4, cv2.COLOR_BGR2RGB))
+N4 = cv2.bitwise_or(N4, N4, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
+cv2.imwrite(args.output + 'X4.jpg', cv2.cvtColor(N4, cv2.COLOR_BGR2RGB))
