@@ -21,14 +21,8 @@ jobs:
           pip3 install pyinstaller==6.3.0 numpy==1.26.2 opencv-python==4.8.1.78 pillow==10.1.0 torch==2.1.2 torchvision==0.16.2
           pyinstaller A.py
 
-      - name: Zip
-        uses: thedoctor0/zip-release@0.7.6
-        with:
-          filename: A.zip
-          path: ./dist/A/.
-
       - name: File
         uses: actions/upload-artifact@v4.0.0
         with:
-          name: File A
-          path: A.zip
+          name: A
+          path: dist/A/
