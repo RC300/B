@@ -43,8 +43,8 @@ class Generator(torch.nn.Module):
         TS = torchvision.transforms.ToTensor()(IR)
         TS = self.model(TS) * 0.5 + 0.5
         TS = torchvision.transforms.functional.crop(TS, 0, 0, 512, W0)
-        TS = torchvision.transforms.ConvertImageDtype(torch.uint8)(TS).numpy()
-        NI = numpy.transpose(TS, (1, 2, 0))
+        TS = torchvision.transforms.ConvertImageDtype(torch.uint8)(TS)
+        NI = TS.numpy().transpose((1, 2, 0))
         return cv2.resize(NI, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 
 class ResnetBlock(torch.nn.Module):
