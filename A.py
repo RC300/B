@@ -81,7 +81,7 @@ P2 = cv2.inRange(N2, (255, 0, 0), (255, 0, 0))
 P3 = cv2.inRange(N2, (255, 0, 255), (255, 0, 255))
 P4 = cv2.inRange(N2, (0, 0, 255), (0, 0, 255))
 for P in P1, P2, P3, P4:
-    for CN in cv2.findContours(P, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)[-2]:
+    for CN in cv2.findContours(P, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)[-2]:
         (x, y), r = cv2.minEnclosingCircle(CN)
         x, y, r = math.ceil(x), math.ceil(y), math.ceil(r)
         if P is P1: cv2.circle(N1, (x, y), r, (0, 205, 0), -1)
