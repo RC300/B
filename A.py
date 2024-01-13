@@ -70,7 +70,7 @@ GT.load_state_dict(torch.load(args.model + '2.lib'))
 with torch.inference_mode(): NB = GT(NA)
 P0 = cv2.inRange(NB, (255, 0, 0), (255, 0, 0))
 N2 = cv2.bitwise_or(NB, NB, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
-for CT in cv2.findContours(P0, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)[-2]:
+for CT in cv2.findContours(P0, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)[-2]:
     (x, y), r = cv2.minEnclosingCircle(CT)
     x, y, r = int(x), int(y), int(r)
     cv2.circle(N2, (x, y), r, (255, 0, 0), -1)
