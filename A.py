@@ -25,18 +25,17 @@ class Network(torch.nn.Module):
 
     def __init__(self):
         super().__init__()
-        model = [torch.nn.ReflectionPad2d(3), torch.nn.Conv2d(3, 64, 7), torch.nn.InstanceNorm2d(1), torch.nn.ReLU()]
-        model += [torch.nn.Conv2d(64, 128, 3, 2, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU()]
-        model += [torch.nn.Conv2d(128, 256, 3, 2, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU()]
-        model += [torch.nn.Conv2d(256, 512, 3, 2, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU()]
-        model += [torch.nn.Conv2d(512, 1024, 3, 2, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU()]
-        model += [ResnetBlock() for i in range(9)]
-        model += [torch.nn.ConvTranspose2d(1024, 512, 3, 2, 1, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU()]
-        model += [torch.nn.ConvTranspose2d(512, 256, 3, 2, 1, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU()]
-        model += [torch.nn.ConvTranspose2d(256, 128, 3, 2, 1, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU()]
-        model += [torch.nn.ConvTranspose2d(128, 64, 3, 2, 1, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU()]
-        model += [torch.nn.ReflectionPad2d(3), torch.nn.Conv2d(64, 3, 7), torch.nn.Tanh()]
-        self.model = torch.nn.Sequential(*model)
+        self.model = torch.nn.Sequential(torch.nn.ReflectionPad2d(3), torch.nn.Conv2d(3, 64, 7), torch.nn.InstanceNorm2d(1), torch.nn.ReLU(),
+            torch.nn.Conv2d(64, 128, 3, 2, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU(),
+            torch.nn.Conv2d(128, 256, 3, 2, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU(),
+            torch.nn.Conv2d(256, 512, 3, 2, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU(),
+            torch.nn.Conv2d(512, 1024, 3, 2, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU(),
+            ResnetBlock(), ResnetBlock(), ResnetBlock(), ResnetBlock(), ResnetBlock(), ResnetBlock(), ResnetBlock(), ResnetBlock(), ResnetBlock(),
+            torch.nn.ConvTranspose2d(1024, 512, 3, 2, 1, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU(),
+            torch.nn.ConvTranspose2d(512, 256, 3, 2, 1, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU(),
+            torch.nn.ConvTranspose2d(256, 128, 3, 2, 1, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU(),
+            torch.nn.ConvTranspose2d(128, 64, 3, 2, 1, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU(),
+            torch.nn.ReflectionPad2d(3), torch.nn.Conv2d(64, 3, 7), torch.nn.Tanh())
 
     def forward(self, IN):
         IR = cv2.resize(IN, (W0, 512), interpolation=cv2.INTER_CUBIC)
@@ -51,11 +50,10 @@ class ResnetBlock(torch.nn.Module):
 
     def __init__(self):
         super().__init__()
-        conv_block = [torch.nn.ReflectionPad2d(1), torch.nn.Conv2d(1024, 1024, 3), torch.nn.InstanceNorm2d(1), torch.nn.ReLU()]
-        conv_block += [torch.nn.ReflectionPad2d(1), torch.nn.Conv2d(1024, 1024, 3), torch.nn.InstanceNorm2d(1)]
-        self.conv_block = torch.nn.Sequential(*conv_block)
+        self.conv_block = torch.nn.Sequential(torch.nn.ReflectionPad2d(1), torch.nn.Conv2d(1024, 1024, 3), torch.nn.InstanceNorm2d(1),
+            torch.nn.ReLU(), torch.nn.ReflectionPad2d(1), torch.nn.Conv2d(1024, 1024, 3), torch.nn.InstanceNorm2d(1))
 
-    def forward(self, IN): return IN + self.conv_block(IN)
+    def forward(self, IN): return self.conv_block(IN) + IN
 
 GT = Network()
 
