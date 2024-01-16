@@ -30,7 +30,7 @@ class Network(torch.nn.Module):
             torch.nn.Conv2d(128, 256, 3, 2, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU(),
             torch.nn.Conv2d(256, 512, 3, 2, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU(),
             torch.nn.Conv2d(512, 1024, 3, 2, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU(),
-            ResnetBlock(), ResnetBlock(), ResnetBlock(), ResnetBlock(), ResnetBlock(), ResnetBlock(), ResnetBlock(), ResnetBlock(), ResnetBlock(),
+            ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock(),
             torch.nn.ConvTranspose2d(1024, 512, 3, 2, 1, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU(),
             torch.nn.ConvTranspose2d(512, 256, 3, 2, 1, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU(),
             torch.nn.ConvTranspose2d(256, 128, 3, 2, 1, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU(),
@@ -40,20 +40,20 @@ class Network(torch.nn.Module):
     def forward(self, IN):
         IR = cv2.resize(IN, (W0, 512), interpolation=cv2.INTER_CUBIC)
         TS = torchvision.transforms.ToTensor()(IR)
-        TS = self.model(TS) * 0.5 + 0.5
-        TS = torchvision.transforms.functional.crop(TS, 0, 0, 512, W0)
-        TS = torchvision.transforms.ConvertImageDtype(torch.uint8)(TS)
-        NI = TS.numpy().transpose((1, 2, 0))
+        TR = self.model(TS) * 0.5 + 0.5
+        TI = torchvision.transforms.functional.crop(TR, 0, 0, 512, W0)
+        TI = torchvision.transforms.ConvertImageDtype(torch.uint8)(TI)
+        NI = TI.numpy().transpose((1, 2, 0))
         return cv2.resize(NI, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 
-class ResnetBlock(torch.nn.Module):
+class ResBlock(torch.nn.Module):
 
     def __init__(self):
         super().__init__()
         self.conv_block = torch.nn.Sequential(torch.nn.ReflectionPad2d(1), torch.nn.Conv2d(1024, 1024, 3), torch.nn.InstanceNorm2d(1),
             torch.nn.ReLU(), torch.nn.ReflectionPad2d(1), torch.nn.Conv2d(1024, 1024, 3), torch.nn.InstanceNorm2d(1))
 
-    def forward(self, IN): return self.conv_block(IN) + IN
+    def forward(self, TS): return self.conv_block(TS) + TS
 
 GT = Network()
 
