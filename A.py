@@ -58,14 +58,14 @@ class ResBlock(torch.nn.Module):
 GT = Network()
 
 GT.load_state_dict(torch.load(args.model + '1.lib'))
-with torch.inference_mode(): NA = GT(I0)
+with torch.inference_mode(): NA = GT.forward(I0)
 M1 = cv2.inRange(NA, (0, 255, 0), (0, 255, 0))
 M2 = cv2.bitwise_not(M1)
 N1 = cv2.bitwise_or(NA, NA, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(N1, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '2.lib'))
-with torch.inference_mode(): NB = GT(NA)
+with torch.inference_mode(): NB = GT.forward(NA)
 P0 = cv2.inRange(NB, (255, 0, 0), (255, 0, 0))
 N2 = cv2.bitwise_or(NB, NB, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 for CT in cv2.findContours(P0, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)[-2]:
@@ -91,7 +91,7 @@ N3 = cv2.bitwise_or(N1, N1, mask=M1) + cv2.bitwise_or(NM, NM, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(N3, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '3.lib'))
-with torch.inference_mode(): ND = GT(N3)
+with torch.inference_mode(): ND = GT.forward(N3)
 C4 = numpy.dsplit(ND, 3)
 R4 = cv2.normalize(C4[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
 G4 = cv2.normalize(C4[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
