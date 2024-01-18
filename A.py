@@ -37,7 +37,7 @@ class Network(torch.nn.Module):
         torch.nn.ConvTranspose2d(128, 64, 3, 2, 1, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU(),
         torch.nn.ReflectionPad2d(3), torch.nn.Conv2d(64, 3, 7), torch.nn.Tanh())
 
-    def forward(self, IN):
+    def __call__(self, IN):
         IR = cv2.resize(IN, (W0, 512), interpolation=cv2.INTER_CUBIC)
         TS = torchvision.transforms.ToTensor()(IR)
         TR = self.model(TS) * 0.5 + 0.5
@@ -53,19 +53,19 @@ class ResBlock(torch.nn.Module):
         self.conv_block = torch.nn.Sequential(torch.nn.ReflectionPad2d(1), torch.nn.Conv2d(1024, 1024, 3), torch.nn.InstanceNorm2d(1),
         torch.nn.ReLU(), torch.nn.ReflectionPad2d(1), torch.nn.Conv2d(1024, 1024, 3), torch.nn.InstanceNorm2d(1))
 
-    def forward(self, TS): return self.conv_block(TS) + TS
+    def __call__(self, TS): return self.conv_block(TS) + TS
 
 GT = Network()
 
 GT.load_state_dict(torch.load(args.model + '1.lib'))
-with torch.inference_mode(): NA = GT.forward(I0)
+with torch.inference_mode(): NA = GT(I0)
 M1 = cv2.inRange(NA, (0, 255, 0), (0, 255, 0))
 M2 = cv2.bitwise_not(M1)
 N1 = cv2.bitwise_or(NA, NA, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(N1, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '2.lib'))
-with torch.inference_mode(): NB = GT.forward(NA)
+with torch.inference_mode(): NB = GT(NA)
 P0 = cv2.inRange(NB, (255, 0, 0), (255, 0, 0))
 N2 = cv2.bitwise_or(NB, NB, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 for CT in cv2.findContours(P0, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)[-2]:
@@ -91,7 +91,7 @@ N3 = cv2.bitwise_or(N1, N1, mask=M1) + cv2.bitwise_or(NM, NM, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(N3, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '3.lib'))
-with torch.inference_mode(): ND = GT.forward(N3)
+with torch.inference_mode(): ND = GT(N3)
 C4 = numpy.dsplit(ND, 3)
 R4 = cv2.normalize(C4[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
 G4 = cv2.normalize(C4[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
