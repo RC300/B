@@ -30,7 +30,7 @@ class Network(torch.nn.Module):
         torch.nn.Conv2d(128, 256, 3, 2, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU(),
         torch.nn.Conv2d(256, 512, 3, 2, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU(),
         torch.nn.Conv2d(512, 1024, 3, 2, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU())
-        self.model += torch.nn.Sequential(ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock())
+        self.model += torch.nn.Sequential(ResnetBlock() for i in range(9))
         self.model += torch.nn.Sequential(torch.nn.ConvTranspose2d(1024, 512, 3, 2, 1, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU(),
         torch.nn.ConvTranspose2d(512, 256, 3, 2, 1, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU(),
         torch.nn.ConvTranspose2d(256, 128, 3, 2, 1, 1), torch.nn.InstanceNorm2d(1), torch.nn.ReLU(),
@@ -46,7 +46,7 @@ class Network(torch.nn.Module):
         NI = TI.numpy().transpose((1, 2, 0))
         return cv2.resize(NI, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 
-class ResBlock(torch.nn.Module):
+class ResnetBlock(torch.nn.Module):
 
     def __init__(self):
         super().__init__()
