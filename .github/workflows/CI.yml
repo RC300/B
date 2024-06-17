@@ -8,12 +8,12 @@ jobs:
     runs-on: windows-2022
     steps:
       - name: Check
-        uses: actions/checkout@v4.1.6
+        uses: actions/checkout@v4.1.7
 
       - name: Python
         uses: actions/setup-python@v5.1.0
         with:
-          python-version: 3.11.9
+          python-version: 3.12.4
           architecture: x64
 
       - name: Setup
