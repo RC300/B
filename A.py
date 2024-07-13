@@ -1,4 +1,4 @@
-import cv2, math, numpy, torch, argparse, torchvision
+import cv2, math, numpy, torch, argparse, torchvision.transforms.v2
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input')
@@ -39,10 +39,11 @@ class Network(torch.nn.Module):
 
     def __call__(self, IN):
         IR = cv2.resize(IN, (W0, 512), interpolation=cv2.INTER_CUBIC)
-        TS = torchvision.transforms.ToTensor()(IR)
+        TS = torchvision.transforms.v2.ToImage()(IR)
+        TS = torchvision.transforms.v2.ToDtype(torch.float32)(TS)
         TR = self.model(TS) * 0.5 + 0.5
-        TI = torchvision.transforms.functional.crop(TR, 0, 0, 512, W0)
-        TI = torchvision.transforms.ConvertImageDtype(torch.uint8)(TI)
+        TI = torchvision.transforms.v2.RandomCrop(0, 0, 512, W0)(TR)
+        TI = torchvision.transforms.v2.ToDtype(torch.uint8)(TI)
         NI = TI.numpy().transpose((1, 2, 0))
         return cv2.resize(NI, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 
@@ -70,7 +71,8 @@ P0 = cv2.inRange(NB, (255, 0, 0), (255, 0, 0))
 N2 = cv2.bitwise_or(NB, NB, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 for CT in cv2.findContours(P0, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)[-2]:
     (x, y), r = cv2.minEnclosingCircle(CT)
-    cv2.circle(N2, (int(x), int(y)), int(r), (255, 0, 0), -1)
+    x, y, r = math.ceil(x), math.ceil(y), math.ceil(r)
+    cv2.circle(N2, (x, y), r, (255, 0, 0), -1)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(N2, cv2.COLOR_BGR2RGB))
 
 P1 = cv2.inRange(N2, (0, 0, 0), (0, 0, 0))
