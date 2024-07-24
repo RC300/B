@@ -7,7 +7,7 @@ parser.add_argument('-o', '--output')
 args = parser.parse_args()
 
 I0 = cv2.cvtColor(cv2.imread(args.input), cv2.COLOR_BGR2RGB)
-W0 = math.ceil(I0.shape[1] / I0.shape[0] * 512)
+W1 = math.ceil(I0.shape[1] / I0.shape[0] * 512)
 IV = I0.size // 120
 C0 = numpy.dsplit(I0, 3)
 SR = numpy.sort(C0[0], None)
@@ -38,7 +38,7 @@ class Network(torch.nn.Module):
         torch.nn.ReflectionPad2d(3), torch.nn.Conv2d(64, 3, 7), torch.nn.Tanh())
 
     def __call__(self, IN):
-        IR = cv2.resize(IN, (W0, 512), interpolation=cv2.INTER_CUBIC)
+        IR = cv2.resize(IN, (W1, 512), interpolation=cv2.INTER_CUBIC)
         TS = torchvision.transforms.v2.ToImage()(IR)
         TS = torchvision.transforms.v2.ToDtype(torch.float32, True)(TS)
         TR = self.model(TS) * 0.5 + 0.5
