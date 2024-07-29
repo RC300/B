@@ -60,7 +60,6 @@ GT = Network()
 
 GT.load_state_dict(torch.load(args.model + '1.lib'))
 with torch.inference_mode(): IA = GT(I0)
-
 M1 = cv2.inRange(IA, (0, 255, 0), (0, 255, 0))
 M2 = cv2.bitwise_not(M1)
 I1 = cv2.bitwise_and(IA, IA, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
@@ -68,7 +67,6 @@ cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '2.lib'))
 with torch.inference_mode(): IB = GT(IA)
-
 I2 = cv2.bitwise_and(IB, IB, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
@@ -79,22 +77,17 @@ P4 = cv2.inRange(I2, (0, 0, 255), (0, 0, 255))
 for P in P1, P2, P3, P4:
     for CN in cv2.findContours(P, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]:
         (x, y), r = cv2.minEnclosingCircle(CN)
-        x, y, r = math.ceil(x), math.ceil(y), math.ceil(r)
+        x, y, r, z = math.ceil(x), math.ceil(y), math.ceil(r), math.ceil(r / 4)
         if P is P1: cv2.ellipse(I1, (x, y), (r, r), 0, 0, 360, (0, 205, 0), -1)
         if P is P2: cv2.ellipse(I1, (x, y), (r, r), 0, 0, 360, (255, 0, 0), -1)
+        if P is P2: cv2.ellipse(I1, (x, y), (z, z), 0, 0, 360, (255, 255, 255), -1)
         if P is P3: cv2.ellipse(I1, (x, y), (r, r), 0, 0, 360, (255, 0, 255), -1)
         if P is P4: cv2.ellipse(I1, (x, y), (r, r), 0, 0, 360, (0, 0, 255), -1)
-P5 = cv2.inRange(I1, (255, 0, 0), (255, 0, 0))
-for CT in cv2.findContours(P5, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]:
-    (x, y), r = cv2.minEnclosingCircle(CT)
-    x, y, r = math.ceil(x), math.ceil(y), math.ceil(r / 4)
-    cv2.ellipse(I1, (x, y), (r, r), 0, 0, 360, (255, 255, 255), -1)
 I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '3.lib'))
 with torch.inference_mode(): ID = GT(I3)
-
 C4 = numpy.dsplit(ID, 3)
 R4 = cv2.normalize(C4[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
 G4 = cv2.normalize(C4[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
