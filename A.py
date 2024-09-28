@@ -78,8 +78,7 @@ for P in P1, P2, P3, P4:
     for CN in cv2.findContours(P, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]:
         (x, y), r = cv2.minEnclosingCircle(CN)
         x, y, r, z = math.ceil(x), math.ceil(y), math.ceil(r), math.ceil(r / 4)
-        if r < 10: x = y = r = z = 0
-        if x and y and r and z > 0:
+        if r > 10:
             if P is P1: cv2.ellipse(I1, (x, y), (r, r), 0, 0, 360, (0, 205, 0), -1)
             if P is P2: cv2.ellipse(I1, (x, y), (r, r), 0, 0, 360, (255, 0, 0), -1)
             if P is P2: cv2.ellipse(I1, (x, y), (z, z), 0, 0, 360, (255, 255, 255), -1)
