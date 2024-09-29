@@ -78,12 +78,11 @@ for P in P1, P2, P3, P4:
     for CN in cv2.findContours(P, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]:
         (x, y), r = cv2.minEnclosingCircle(CN)
         x, y, r, z = math.ceil(x), math.ceil(y), math.ceil(r), math.ceil(r / 4)
-        if r > 10:
-            if P is P1: cv2.ellipse(I1, (x, y), (r, r), 0, 0, 360, (0, 205, 0), -1)
-            if P is P2: cv2.ellipse(I1, (x, y), (r, r), 0, 0, 360, (255, 0, 0), -1)
-            if P is P2: cv2.ellipse(I1, (x, y), (z, z), 0, 0, 360, (255, 255, 255), -1)
-            if P is P3: cv2.ellipse(I1, (x, y), (r, r), 0, 0, 360, (255, 0, 255), -1)
-            if P is P4: cv2.ellipse(I1, (x, y), (r, r), 0, 0, 360, (0, 0, 255), -1)
+        if P is P1 and r > 10: cv2.ellipse(I1, (x, y), (r, r), 0, 0, 360, (0, 205, 0), -1)
+        if P is P2 and r > 10: cv2.ellipse(I1, (x, y), (r, r), 0, 0, 360, (255, 0, 0), -1)
+        if P is P2 and r > 10: cv2.ellipse(I1, (x, y), (z, z), 0, 0, 360, (255, 255, 255), -1)
+        if P is P3 and r > 10: cv2.ellipse(I1, (x, y), (r, r), 0, 0, 360, (255, 0, 255), -1)
+        if P is P4 and r > 10: cv2.ellipse(I1, (x, y), (r, r), 0, 0, 360, (0, 0, 255), -1)
 I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
