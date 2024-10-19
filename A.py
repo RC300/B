@@ -38,13 +38,12 @@ class Network(torch.nn.Module):
         torch.nn.ReflectionPad2d(3), torch.nn.Conv2d(64, 3, 7), torch.nn.Tanh())
 
     def __call__(self, IN):
-        IR = cv2.resize(IN, (W1, 512), interpolation=cv2.INTER_CUBIC)
-        TS = torchvision.transforms.v2.ToImage()(IR)
+        TS = torchvision.transforms.v2.ToImage()(IN)
         TS = torchvision.transforms.v2.ToDtype(torch.float32, True)(TS)
         TR = self.model(TS) * 0.5 + 0.5
         TI = torchvision.transforms.v2.ToDtype(torch.uint8, True)(TR)
         NI = TI.numpy().transpose((1, 2, 0))
-        NC = NI[0:IR.shape[0], 0:IR.shape[1]]
+        NC = NI[0:IN.shape[0], 0:IN.shape[1]]
         return cv2.resize(NC, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 
 class ResBlock(torch.nn.Module):
@@ -58,15 +57,17 @@ class ResBlock(torch.nn.Module):
 
 GT = Network()
 
+N1 = cv2.resize(I0, (W1, 512), interpolation=cv2.INTER_CUBIC)
 GT.load_state_dict(torch.load(args.model + '1.lib', weights_only=True))
-with torch.inference_mode(): IA = GT(I0)
+with torch.inference_mode(): IA = GT(N1)
 M1 = cv2.inRange(IA, (0, 255, 0), (0, 255, 0))
 M2 = cv2.bitwise_not(M1)
 I1 = cv2.bitwise_and(IA, IA, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
 
+N2 = cv2.resize(IA, (W1, 512), interpolation=cv2.INTER_CUBIC)
 GT.load_state_dict(torch.load(args.model + '2.lib', weights_only=True))
-with torch.inference_mode(): IB = GT(IA)
+with torch.inference_mode(): IB = GT(N2)
 I2 = cv2.bitwise_and(IB, IB, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
@@ -86,8 +87,9 @@ for P in P1, P2, P3, P4:
 I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
+N3 = cv2.resize(I3, (W1, 512), interpolation=cv2.INTER_CUBIC)
 GT.load_state_dict(torch.load(args.model + '3.lib', weights_only=True))
-with torch.inference_mode(): ID = GT(I3)
+with torch.inference_mode(): ID = GT(N3)
 C4 = numpy.dsplit(ID, 3)
 R4 = cv2.normalize(C4[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
 G4 = cv2.normalize(C4[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
