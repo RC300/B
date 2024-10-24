@@ -43,8 +43,7 @@ class Network(torch.nn.Module):
         TR = self.model(TS) * 0.5 + 0.5
         TI = torchvision.transforms.v2.ToDtype(torch.uint8, True)(TR)
         NI = TI.numpy().transpose((1, 2, 0))
-        NC = NI[0:IN.shape[0], 0:IN.shape[1]]
-        return cv2.resize(NC, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
+        return NI[0:IN.shape[0], 0:IN.shape[1]]
 
 class ResBlock(torch.nn.Module):
 
@@ -60,15 +59,16 @@ GT = Network()
 N1 = cv2.resize(I0, (W1, 512), interpolation=cv2.INTER_CUBIC)
 GT.load_state_dict(torch.load(args.model + '1.lib', weights_only=True))
 with torch.inference_mode(): IA = GT(N1)
-M1 = cv2.inRange(IA, (0, 255, 0), (0, 255, 0))
+NA = cv2.resize(IA, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
+M1 = cv2.inRange(NA, (0, 255, 0), (0, 255, 0))
 M2 = cv2.bitwise_not(M1)
-I1 = cv2.bitwise_and(IA, IA, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
+I1 = cv2.bitwise_and(NA, NA, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
 
-N2 = cv2.resize(IA, (W1, 512), interpolation=cv2.INTER_CUBIC)
 GT.load_state_dict(torch.load(args.model + '2.lib', weights_only=True))
-with torch.inference_mode(): IB = GT(N2)
-I2 = cv2.bitwise_and(IB, IB, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
+with torch.inference_mode(): IB = GT(IA)
+NB = cv2.resize(IB, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
+I2 = cv2.bitwise_and(NB, NB, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
 P1 = cv2.inRange(I2, (0, 0, 0), (0, 0, 0))
@@ -90,7 +90,8 @@ cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 N3 = cv2.resize(I3, (W1, 512), interpolation=cv2.INTER_CUBIC)
 GT.load_state_dict(torch.load(args.model + '3.lib', weights_only=True))
 with torch.inference_mode(): ID = GT(N3)
-C4 = numpy.dsplit(ID, 3)
+ND = cv2.resize(ID, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
+C4 = numpy.dsplit(ND, 3)
 R4 = cv2.normalize(C4[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
 G4 = cv2.normalize(C4[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
 B4 = cv2.normalize(C4[2], None, SB[IV], SB[-IV], cv2.NORM_MINMAX)
