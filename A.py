@@ -79,21 +79,21 @@ CT = cv2.findContours(P1, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
 CA = cv2.findContours(P2, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
 CB = cv2.findContours(P3, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
 CV = cv2.findContours(P4, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
-for CT in CT:
-    D1 = cv2.minEnclosingCircle(CT)
+for TC in CT:
+    D1 = cv2.minEnclosingCircle(TC)
     XT, YT, RT = math.ceil(D1[0][0]), math.ceil(D1[0][1]), math.ceil(D1[1])
     if RT > 10: cv2.ellipse(I1, (XT, YT), (RT, RT), 0, 0, 360, (0, 205, 0), -1)
-for CA in CA:
-    D2 = cv2.minEnclosingCircle(CA)
+for AC in CA:
+    D2 = cv2.minEnclosingCircle(AC)
     XA, YA, RA, ZA = math.ceil(D2[0][0]), math.ceil(D2[0][1]), math.ceil(D2[1]), math.ceil(D2[1] / 4)
     if RA > 10: cv2.ellipse(I1, (XA, YA), (RA, RA), 0, 0, 360, (255, 0, 0), -1)
     if RA > 10: cv2.ellipse(I1, (XA, YA), (ZA, ZA), 0, 0, 360, (255, 255, 255), -1)
-for CB in CB:
-    D3 = cv2.minEnclosingCircle(CB)
+for BC in CB:
+    D3 = cv2.minEnclosingCircle(BC)
     XB, YB, RB = math.ceil(D3[0][0]), math.ceil(D3[0][1]), math.ceil(D3[1])
     if RB > 10: cv2.ellipse(I1, (XB, YB), (RB, RB), 0, 0, 360, (255, 0, 255), -1)
-for CV in CV:
-    D4 = cv2.minEnclosingCircle(CV)
+for VC in CV:
+    D4 = cv2.minEnclosingCircle(VC)
     XV, YV, RV = math.ceil(D4[0][0]), math.ceil(D4[0][1]), math.ceil(D4[1])
     if RV > 10: cv2.ellipse(I1, (XV, YV), (RV, RV), 0, 0, 360, (0, 0, 255), -1)
 I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
