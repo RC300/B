@@ -59,9 +59,10 @@ GT = Network()
 N1 = cv2.resize(I0, (W1, 512), interpolation=cv2.INTER_CUBIC)
 GT.load_state_dict(torch.load(args.model + '1.lib', weights_only=True))
 with torch.inference_mode(): IA = GT(N1)
-NA = cv2.resize(IA, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-M1 = cv2.inRange(NA, (0, 255, 0), (0, 255, 0))
+M1 = cv2.inRange(IA, (0, 255, 0), (0, 255, 0))
+M1 = cv2.resize(M1, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 M2 = cv2.bitwise_not(M1)
+NA = cv2.resize(IA, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 I1 = cv2.bitwise_and(NA, NA, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
 
@@ -71,18 +72,14 @@ NB = cv2.resize(IB, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 I2 = cv2.bitwise_and(NB, NB, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
-P1 = cv2.inRange(IB, (0, 0, 0), (0, 0, 0))
-P2 = cv2.inRange(IB, (255, 0, 0), (255, 0, 0))
-P3 = cv2.inRange(IB, (255, 0, 255), (255, 0, 255))
-P4 = cv2.inRange(IB, (0, 0, 255), (0, 0, 255))
-PA = cv2.resize(P1, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-PB = cv2.resize(P2, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-PC = cv2.resize(P3, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-PD = cv2.resize(P4, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-CT = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
-CA = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
-CB = cv2.findContours(PC, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
-CV = cv2.findContours(PD, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
+P1 = cv2.inRange(I2, (0, 0, 0), (0, 0, 0))
+P2 = cv2.inRange(I2, (255, 0, 0), (255, 0, 0))
+P3 = cv2.inRange(I2, (255, 0, 255), (255, 0, 255))
+P4 = cv2.inRange(I2, (0, 0, 255), (0, 0, 255))
+CT = cv2.findContours(P1, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
+CA = cv2.findContours(P2, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
+CB = cv2.findContours(P3, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
+CV = cv2.findContours(P4, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
 for TC in CT:
     (XT, YT), RT = cv2.minEnclosingCircle(TC)
     XT, YT, RT = math.ceil(XT), math.ceil(YT), math.ceil(RT)
