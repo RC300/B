@@ -75,15 +75,14 @@ P1 = cv2.inRange(I2, (0, 0, 0), (0, 0, 0))
 P2 = cv2.inRange(I2, (255, 0, 0), (255, 0, 0))
 P3 = cv2.inRange(I2, (255, 0, 255), (255, 0, 255))
 P4 = cv2.inRange(I2, (0, 0, 255), (0, 0, 255))
-P5 = cv2.inRange(P1, (255, 255, 255))
-CT = cv2.findContours(P5, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
+CT = cv2.findContours(P1, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
 CA = cv2.findContours(P2, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
 CB = cv2.findContours(P3, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
 CV = cv2.findContours(P4, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
 for TC in CT:
     (XT, YT), RT = cv2.minEnclosingCircle(TC)
-    XT, YT, RT = math.ceil(XT), math.ceil(YT), math.ceil(RT)
-    if RT > 10: cv2.circle(I1, (XT, YT), RT, (0, 205, 0), -1)
+    XT, YT, RT = math.ceil(XT), math.ceil(YT), math.ceil(RT) > 10
+    cv2.circle(I1, (XT, YT), RT, (0, 205, 0), -1)
 for AC in CA:
     (XA, YA), RA = cv2.minEnclosingCircle(AC)
     XA, YA, RA, ZA = math.ceil(XA), math.ceil(YA), math.ceil(RA), math.ceil(RA / 4)
