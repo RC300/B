@@ -67,8 +67,7 @@ cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '2.lib', weights_only=True))
 with torch.inference_mode(): IB = GT(IA)
-with torch.inference_mode(): IC = GT(IB)
-NB = cv2.resize(IC, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
+NB = cv2.resize(IB, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 I2 = cv2.bitwise_and(NB, NB, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
@@ -76,7 +75,8 @@ P1 = cv2.inRange(I2, (0, 0, 0), (0, 0, 0))
 P2 = cv2.inRange(I2, (255, 0, 0), (255, 0, 0))
 P3 = cv2.inRange(I2, (255, 0, 255), (255, 0, 255))
 P4 = cv2.inRange(I2, (0, 0, 255), (0, 0, 255))
-CT = cv2.findContours(P1, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
+P5 = cv2.inRange(P1, (255, 255, 255), (255, 255, 255))
+CT = cv2.findContours(P5, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
 CA = cv2.findContours(P2, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
 CB = cv2.findContours(P3, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
 CV = cv2.findContours(P4, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
