@@ -85,24 +85,24 @@ CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
 CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
 for TC in CT:
     (XT, YT), RT = cv2.minEnclosingCircle(TC)
-    RT = RT > 30
     XT, YT, RT = math.ceil(XT), math.ceil(YT), math.ceil(RT)
+    RT = RT > 30
     cv2.circle(I1, (XT, YT), RT, (0, 205, 0), -1)
 for AC in CA:
     (XA, YA), RA = cv2.minEnclosingCircle(AC)
-    RA = RA > 10
     XA, YA, RA, ZA = math.ceil(XA), math.ceil(YA), math.ceil(RA), math.ceil(RA / 4)
+    RA = RA > 10
     cv2.circle(I1, (XA, YA), RA, (255, 0, 0), -1)
     cv2.circle(I1, (XA, YA), ZA, (255, 255, 255), -1)
 for BC in CB:
     (XB, YB), RB = cv2.minEnclosingCircle(BC)
-    RB = RB > 10
     XB, YB, RB = math.ceil(XB), math.ceil(YB), math.ceil(RB)
+    RB = RB > 10
     cv2.circle(I1, (XB, YB), RB, (255, 0, 255), -1)
 for VC in CV:
     (XV, YV), RV = cv2.minEnclosingCircle(VC)
-    RV = RV > 10
     XV, YV, RV = math.ceil(XV), math.ceil(YV), math.ceil(RV)
+    RV = RV > 10
     cv2.circle(I1, (XV, YV), RV, (0, 0, 255), -1)
 I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
