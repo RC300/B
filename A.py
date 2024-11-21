@@ -83,7 +83,7 @@ CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
 for TC in CT:
     (XT, YT), RT = cv2.minEnclosingCircle(TC)
     XT, YT, RT = math.ceil(XT), math.ceil(YT), math.ceil(RT)
-    RA, ZA = math.ceil(RT / 4), math.ceil(RT / 8)
+    RA, ZA = math.ceil(RT / 2), math.ceil(RT / 4)
     if RT > 30: cv2.circle(I1, (XT, YT), RT, (0, 205, 0), -1)
     if RT > 30: cv2.circle(I1, (XT, YT), RA, (255, 0, 0), -1)
     if RT > 30: cv2.circle(I1, (XT, YT), ZA, (255, 255, 255), -1)
