@@ -72,26 +72,21 @@ I2 = cv2.bitwise_and(NB, NB, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
 P1 = cv2.inRange(IB, (0, 0, 0), (0, 0, 0))
-P2 = cv2.inRange(IB, (255, 0, 0), (255, 0, 0))
 P3 = cv2.inRange(IB, (255, 0, 255), (255, 0, 255))
 P4 = cv2.inRange(IB, (0, 0, 255), (0, 0, 255))
 PT = cv2.resize(P1, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-PA = cv2.resize(P2, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 PB = cv2.resize(P3, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 PV = cv2.resize(P4, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
-CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
 CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
 CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
-for TC in CT: AA = cv2.minEnclosingCircle(TC)
-    (XT, YT), RT = AA
+for TC in CT:
+    (XT, YT), RT = cv2.minEnclosingCircle(TC)
     XT, YT, RT = math.ceil(XT), math.ceil(YT), math.ceil(RT)
+    RA, ZA = math.ceil(RT / 4), math.ceil(RT / 8)
     if RT > 30: cv2.circle(I1, (XT, YT), RT, (0, 205, 0), -1)
-for AC in CA:
-    (XA, YA), RA = cv2.minEnclosingCircle(AC)
-    XA, YA, RA, ZA = math.ceil(XA), math.ceil(YA), math.ceil(RA), math.ceil(RA / 4)
-    if RA > 10: cv2.circle(I1, (XA, YA), RA, (255, 0, 0), -1)
-    if RA > 10: cv2.circle(I1, (XA, YA), ZA, (255, 255, 255), -1)
+    if RT > 30: cv2.circle(I1, (XT, YT), RA, (255, 0, 0), -1)
+    if RT > 30: cv2.circle(I1, (XT, YT), ZA, (255, 255, 255), -1)
 for BC in CB:
     (XB, YB), RB = cv2.minEnclosingCircle(BC)
     XB, YB, RB = math.ceil(XB), math.ceil(YB), math.ceil(RB)
