@@ -39,8 +39,8 @@ class Network(torch.nn.Module):
 
     def __call__(self, IN):
         TS = torchvision.transforms.v2.ToImage()(IN)
-        TD = torchvision.transforms.v2.ToDtype(torch.float32, True)(TS)
-        TR = self.model(TD) * 0.5 + 0.5
+        TS = torchvision.transforms.v2.ToDtype(torch.float32, True)(TS)
+        TR = self.model(TS) * 0.5 + 0.5
         TI = torchvision.transforms.v2.ToDtype(torch.uint8, True)(TR)
         NI = TI.numpy().transpose((1, 2, 0))
         return NI[0:IN.shape[0], 0:IN.shape[1]]
@@ -52,12 +52,13 @@ class ResBlock(torch.nn.Module):
         self.conv_block = torch.nn.Sequential(torch.nn.ReflectionPad2d(1), torch.nn.Conv2d(1024, 1024, 3), torch.nn.InstanceNorm2d(1024),
         torch.nn.ReLU(), torch.nn.ReflectionPad2d(1), torch.nn.Conv2d(1024, 1024, 3), torch.nn.InstanceNorm2d(1024))
 
-    def __call__(self, TS): return self.conv_block(TS) + TS
+    def __call__(self, TS): return self.conv_block(TSz) + TS
 
 GT = Network()
 
 N1 = cv2.resize(I0, (W1, 512), interpolation=cv2.INTER_CUBIC)
-GT.load_state_dict(torch.load(args.model + '1.lib', weights_only=True))
+L1 = torch.load(args.model + '1.lib', weights_only=True)
+GT.load_state_dict(L1)
 with torch.inference_mode(): IA = GT(N1)
 NA = cv2.resize(IA, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 M1 = cv2.inRange(NA, (0, 255, 0), (0, 255, 0))
@@ -65,7 +66,8 @@ M2 = cv2.bitwise_not(M1)
 I1 = cv2.bitwise_and(NA, NA, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
 
-GT.load_state_dict(torch.load(args.model + '2.lib', weights_only=True))
+L2 = torch.load(args.model + '2.lib', weights_only=True)
+GT.load_state_dict(L2)
 with torch.inference_mode(): IB = GT(IA)
 NB = cv2.resize(IB, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 I2 = cv2.bitwise_and(NB, NB, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
@@ -104,7 +106,8 @@ I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
 N3 = cv2.resize(I3, (W1, 512), interpolation=cv2.INTER_CUBIC)
-GT.load_state_dict(torch.load(args.model + '3.lib', weights_only=True))
+L3 = torch.load(args.model + '3.lib', weights_only=True)
+GT.load_state_dict(L3)
 with torch.inference_mode(): ID = GT(N3)
 ND = cv2.resize(ID, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 C4 = numpy.dsplit(ND, 3)
