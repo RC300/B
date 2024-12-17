@@ -83,10 +83,10 @@ CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
 CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
 CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
 CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
-TC = numpy.ceil(CT)
-AC = numpy.ceil(CA)
-BC = numpy.ceil(CB)
-VC = numpy.ceil(CV)
+TC = math.ceil(CT)
+AC = math.ceil(CA)
+BC = math.ceil(CB)
+VC = math.ceil(CV)
 for TC in TC:
     (XT, YT), RT = cv2.minEnclosingCircle(TC)
     XT, YT, RT = math.ceil(XT), math.ceil(YT), math.ceil(RT)
