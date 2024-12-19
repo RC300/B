@@ -83,8 +83,6 @@ CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
 CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
 CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
 CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
-K1 = numpy.max(CT)
-print(K1)
 K2 = numpy.max(CT, axis=0)
 print(K2)
 K3 = numpy.max(CT, axis=1)
