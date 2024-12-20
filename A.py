@@ -62,7 +62,7 @@ with torch.inference_mode(): IA = GT(N1)
 NA = cv2.resize(IA, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 M1 = cv2.inRange(NA, (0, 255, 0), (0, 255, 0))
 M2 = cv2.bitwise_not(M1)
-I1 = I0[M1 > 0] = (0, 255, 0).astype(numpy.uint8)
+I1 = cv2.bitwise_and(NA, NA, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '2.lib', weights_only=True))
@@ -79,14 +79,13 @@ PT = cv2.resize(P1, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 PA = cv2.resize(P2, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 PB = cv2.resize(P3, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 PV = cv2.resize(P4, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
-CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
-CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
-CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[-2]
-for TC in CT:
-    (XT, YT), RT = cv2.minEnclosingCircle(TC)
-    XT, YT, RT = math.ceil(XT), math.ceil(YT), math.ceil(RT)
-    if RT > 30: cv2.circle(I1, (XT, YT), RT, (0, 205, 0), -1)
+CT = cv2.findContours(PT, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)[-2]
+CA = cv2.findContours(PA, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)[-2]
+CB = cv2.findContours(PB, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)[-2]
+CV = cv2.findContours(PV, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)[-2]
+(XT, YT), RT = cv2.minEnclosingCircle(TC)
+XT, YT, RT = math.ceil(XT), math.ceil(YT), math.ceil(RT)
+if RT > 30: cv2.circle(I1, (XT, YT), RT, (0, 205, 0), -1)
 for AC in CA:
     (XA, YA), RA = cv2.minEnclosingCircle(AC)
     XA, YA, RA, ZA = math.ceil(XA), math.ceil(YA), math.ceil(RA), math.ceil(RA / 4)
