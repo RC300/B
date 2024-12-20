@@ -62,7 +62,7 @@ with torch.inference_mode(): IA = GT(N1)
 NA = cv2.resize(IA, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 M1 = cv2.inRange(NA, (0, 255, 0), (0, 255, 0))
 M2 = cv2.bitwise_not(M1)
-I1 = cv2.bitwise_and(NA, NA, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
+I1 = I0[M1 > 0] = (0, 255, 0)
 cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '2.lib', weights_only=True))
@@ -90,16 +90,16 @@ for TC in CT:
 for AC in CA:
     (XA, YA), RA = cv2.minEnclosingCircle(AC)
     XA, YA, RA, ZA = math.ceil(XA), math.ceil(YA), math.ceil(RA), math.ceil(RA / 4)
-    cv2.circle(I1, (XA, YA), RA, (255, 0, 0), -1)
-    cv2.circle(I1, (XA, YA), ZA, (255, 255, 255), -1)
+    if RA > 10: cv2.circle(I1, (XA, YA), RA, (255, 0, 0), -1)
+    if RA > 10: cv2.circle(I1, (XA, YA), ZA, (255, 255, 255), -1)
 for BC in CB:
     (XB, YB), RB = cv2.minEnclosingCircle(BC)
     XB, YB, RB = math.ceil(XB), math.ceil(YB), math.ceil(RB)
-    cv2.circle(I1, (XB, YB), RB, (255, 0, 255), -1)
+    if RB > 10: cv2.circle(I1, (XB, YB), RB, (255, 0, 255), -1)
 for VC in CV:
     (XV, YV), RV = cv2.minEnclosingCircle(VC)
     XV, YV, RV = math.ceil(XV), math.ceil(YV), math.ceil(RV)
-    cv2.circle(I1, (XV, YV), RV, (0, 0, 255), -1)
+    if RV > 10: cv2.circle(I1, (XV, YV), RV, (0, 0, 255), -1)
 I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
