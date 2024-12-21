@@ -83,7 +83,7 @@ CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-CN = CT, CA, CB, CV
+CN = CT + CA + CB + CV
 for CN in CN:
     (XP, YP), RP = cv2.minEnclosingCircle(CN)
     if CN is CT:
