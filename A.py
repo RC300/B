@@ -85,6 +85,12 @@ CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
 for TC in CT:
+    (XG, YG), RG = cv2.minEnclosingCircle(TC)
+    XG, YG, RG = math.ceil(XG), math.ceil(YG), math.ceil(RG)
+    if RG > 30: cv2.circle(I3, (XG, YG), RG, (0, 255, 0), -1)
+M3 = cv2.inRange(I3, (0, 255, 0), (0, 255, 0))
+M4 = cv2.bitwise_not(M3)
+for TC in CT:
     (XT, YT), RT = cv2.minEnclosingCircle(TC)
     XT, YT, RT = math.ceil(XT), math.ceil(YT), math.ceil(RT)
     if RT > 30: cv2.circle(I3, (XT, YT), RT, (0, 205, 0), -1)
@@ -112,5 +118,5 @@ R4 = cv2.normalize(C4[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
 G4 = cv2.normalize(C4[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
 B4 = cv2.normalize(C4[2], None, SB[IV], SB[-IV], cv2.NORM_MINMAX)
 I4 = numpy.dstack((R4, G4, B4))
-I4 = cv2.bitwise_and(I4, I4, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
+I4 = cv2.bitwise_and(I4, I4, mask=M3) + cv2.bitwise_and(I0, I0, mask=M4)
 cv2.imwrite(args.output + 'X4.jpg', cv2.cvtColor(I4, cv2.COLOR_BGR2RGB))
