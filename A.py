@@ -72,23 +72,17 @@ I2 = cv2.bitwise_and(NB, NB, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
 P1 = cv2.inRange(IB, (0, 0, 0), (0, 0, 0))
-cv2.imwrite(args.output + 'A1.jpg', cv2.cvtColor(P1, cv2.COLOR_BGR2RGB))
 P2 = cv2.inRange(IB, (255, 0, 0), (255, 0, 0))
 P3 = cv2.inRange(IB, (255, 0, 255), (255, 0, 255))
 P4 = cv2.inRange(IB, (0, 0, 255), (0, 0, 255))
 PT = cv2.resize(P1, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-cv2.imwrite(args.output + 'A2.jpg', cv2.cvtColor(PT, cv2.COLOR_BGR2RGB))
-P8 = cv2.inRange(NB, (0, 0, 0), (0, 0, 0))
-cv2.imwrite(args.output + 'A3.jpg', cv2.cvtColor(P8, cv2.COLOR_BGR2RGB))
-P9 = cv2.inRange(I2, (0, 0, 0), (0, 0, 0))
-cv2.imwrite(args.output + 'A4.jpg', cv2.cvtColor(P9, cv2.COLOR_BGR2RGB))
 PA = cv2.resize(P2, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 PB = cv2.resize(P3, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 PV = cv2.resize(P4, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
+CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 for TC in CT:
     (XT, YT), RT = cv2.minEnclosingCircle(TC)
     XT, YT, RT = math.ceil(XT), math.ceil(YT), math.ceil(RT)
