@@ -7,9 +7,7 @@ parser.add_argument('-o', '--output')
 args = parser.parse_args()
 
 I0 = cv2.cvtColor(cv2.imread(args.input), cv2.COLOR_BGR2RGB)
-W1 = I0.shape[0] // 1.5
-IX = cv2.resize(I0, (W1, I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-W2 = math.ceil(IX.shape[1] / IX.shape[0] * 512)
+W1 = math.ceil(I0.shape[1] / I0.shape[0] * 512)
 IV = I0.size // 120
 C0 = numpy.dsplit(I0, 3)
 SR = numpy.sort(C0[0], None)
@@ -58,7 +56,7 @@ class ResBlock(torch.nn.Module):
 
 GT = Network()
 
-N1 = cv2.resize(IX, (W2, 512), interpolation=cv2.INTER_CUBIC)
+N1 = cv2.resize(I0, (W1, 512), interpolation=cv2.INTER_CUBIC)
 GT.load_state_dict(torch.load(args.model + '1.lib', weights_only=True))
 with torch.inference_mode(): IA = GT(N1)
 NA = cv2.resize(IA, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
@@ -85,27 +83,27 @@ CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
+I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
 for TC in CT:
     (XT, YT), RT = cv2.minEnclosingCircle(TC)
     XT, YT, RT = math.ceil(XT), math.ceil(YT), math.ceil(RT)
-    if RT > 30: cv2.circle(I1, (XT, YT), RT, (0, 205, 0), -1)
+    if RT > 30: cv2.circle(I3, (XT, YT), RT, (0, 205, 0), -1)
 for AC in CA:
     (XA, YA), RA = cv2.minEnclosingCircle(AC)
     XA, YA, RA, ZA = math.ceil(XA), math.ceil(YA), math.ceil(RA), math.ceil(RA / 4)
-    if RA > 10: cv2.circle(I1, (XA, YA), RA, (255, 0, 0), -1)
-    if RA > 10: cv2.circle(I1, (XA, YA), ZA, (255, 255, 255), -1)
+    if RA > 10: cv2.circle(I3, (XA, YA), RA, (255, 0, 0), -1)
+    if RA > 10: cv2.circle(I3, (XA, YA), ZA, (255, 255, 255), -1)
 for BC in CB:
     (XB, YB), RB = cv2.minEnclosingCircle(BC)
     XB, YB, RB = math.ceil(XB), math.ceil(YB), math.ceil(RB)
-    if RB > 10: cv2.circle(I1, (XB, YB), RB, (255, 0, 255), -1)
+    if RB > 10: cv2.circle(I3, (XB, YB), RB, (255, 0, 255), -1)
 for VC in CV:
     (XV, YV), RV = cv2.minEnclosingCircle(VC)
     XV, YV, RV = math.ceil(XV), math.ceil(YV), math.ceil(RV)
-    if RV > 10: cv2.circle(I1, (XV, YV), RV, (0, 0, 255), -1)
-I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
+    if RV > 10: cv2.circle(I3, (XV, YV), RV, (0, 0, 255), -1)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
-N3 = cv2.resize(I3, (W2, 512), interpolation=cv2.INTER_CUBIC)
+N3 = cv2.resize(I3, (W1, 512), interpolation=cv2.INTER_CUBIC)
 GT.load_state_dict(torch.load(args.model + '3.lib', weights_only=True))
 with torch.inference_mode(): ID = GT(N3)
 ND = cv2.resize(ID, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
