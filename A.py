@@ -83,7 +83,7 @@ CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-CG = cv2.findContours(M1, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
+CG = cv2.findContours(M1, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 for TC in CT:
     (XT, YT), RT = cv2.minEnclosingCircle(TC)
     XT, YT, RT = math.ceil(XT), math.ceil(YT), math.ceil(RT)
@@ -102,7 +102,7 @@ for VC in CV:
     XV, YV, RV = math.ceil(XV), math.ceil(YV), math.ceil(RV)
     if RV > 10: cv2.circle(I1, (XV, YV), RV, (0, 0, 255), -1)
 I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
-a, b, w, h = cv2.boundingRect(CG)
+a, b, w, h = cv2.boundingRect(CG[0])
 cv2.rectangle(I3, (a, b), (a + w, b + h), (0, 0, 255), 3)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
