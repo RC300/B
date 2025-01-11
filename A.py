@@ -82,8 +82,7 @@ PV = cv2.resize(P4, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-CG, _ = cv2.findContours(M1, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+CV, _ = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 for TC in CT:
     (XT, YT), RT = cv2.minEnclosingCircle(TC)
     XT, YT, RT = math.ceil(XT), math.ceil(YT), math.ceil(RT)
@@ -97,19 +96,10 @@ for BC in CB:
     (XB, YB), RB = cv2.minEnclosingCircle(BC)
     XB, YB, RB = math.ceil(XB), math.ceil(YB), math.ceil(RB)
     if RB > 10: cv2.circle(I1, (XB, YB), RB, (255, 0, 255), -1)
-for VC in CV:
-    (XV, YV), RV = cv2.minEnclosingCircle(VC)
-    XV, YV, RV = math.ceil(XV), math.ceil(YV), math.ceil(RV)
-    if RV > 10: cv2.circle(I1, (XV, YV), RV, (0, 0, 255), -1)
-IC = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
-a, b, w, h = cv2.boundingRect(CG[0])
-print(a)
-print(b)
-print(w)
-print(h)
-print(a + w)
-print(b + h)
-I3 = cv2.rectangle(IC, (a, b), (a + w, b + h), (0, 0, 255), 3)
+(XV, YV), RV = cv2.minEnclosingCircle(VC[0])
+XV, YV, RV = math.ceil(XV), math.ceil(YV), math.ceil(RV)
+if RV > 10: cv2.circle(I1, (XV, YV), RV, (0, 0, 255), -1)
+I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
 N3 = cv2.resize(I3, (W1, 512), interpolation=cv2.INTER_CUBIC)
