@@ -96,7 +96,7 @@ for BC in CB:
     (XB, YB), RB = cv2.minEnclosingCircle(BC)
     XB, YB, RB = math.ceil(XB), math.ceil(YB), math.ceil(RB)
     if RB > 10: cv2.circle(I1, (XB, YB), RB, (255, 0, 255), -1)
-(XV, YV), RV = cv2.minEnclosingCircle(VC[0])
+(XV, YV), RV = cv2.minEnclosingCircle(CV[0])
 XV, YV, RV = math.ceil(XV), math.ceil(YV), math.ceil(RV)
 if RV > 10: cv2.circle(I1, (XV, YV), RV, (0, 0, 255), -1)
 I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
