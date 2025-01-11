@@ -103,6 +103,10 @@ for VC in CV:
     if RV > 10: cv2.circle(I1, (XV, YV), RV, (0, 0, 255), -1)
 IC = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
 a, b, w, h = cv2.boundingRect(CG[0])
+print(a)
+print(b)
+print(a + w)
+print(b + h)
 I3 = cv2.rectangle(IC, (a, b), (a + w, b + h), (0, 0, 255), 3)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
