@@ -104,7 +104,8 @@ for VC in CV:
 I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
 for GC in CG:
     a, b, w, h = cv2.boundingRect(GC)
-    cv2.rectangle(I3, (a, b), (a + w, b + h), (0, 0, 255), 3)
+    print(a)
+    print(b)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
 N3 = cv2.resize(I3, (W1, 512), interpolation=cv2.INTER_CUBIC)
