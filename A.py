@@ -88,8 +88,6 @@ for GC in CG: a, b, w, h = cv2.boundingRect(GC)
 for TC in CT:
     (XT, YT), RT = cv2.minEnclosingCircle(TC)
     XT, YT, RT = math.ceil(XT), math.ceil(YT), math.ceil(RT)
-    print(a)
-    print(a // 2)
     if RT > 30 and XT > a * 2.5: cv2.circle(I1, (XT, YT), RT, (0, 205, 0), -1)
     if RT > 30 and XT < a * 2.5: cv2.circle(I1, (XT, YT), RT, (0, 0, 255), -1)
 for AC in CA:
