@@ -83,13 +83,14 @@ CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
+CG = cv2.findContours(M1, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
+for GC in CG: a, b, c, d = cv2.boundingRect(GC)
 for TC in CT:
-    a, b, c, d = cv2.boundingRect(TC)
     (XT, YT), RT = cv2.minEnclosingCircle(TC)
     XT, YT, RT = math.ceil(XT), math.ceil(YT), math.ceil(RT)
-    if XT >= a + (c // 2): RK = RT
+    if XT > a + (c // 2): RK = RT
     if RT > 30: cv2.circle(I1, (XT, YT), RT, (0, 205, 0), -1)
-    if RT > 30: cv2.circle(I1, (XT, YT), RK, (0, 205, 0), -1)
+    if RK > 30: cv2.circle(I1, (XT, YT), RK, (0, 205, 0), -1)
 for AC in CA:
     (XA, YA), RA = cv2.minEnclosingCircle(AC)
     XA, YA, RA, ZA = math.ceil(XA), math.ceil(YA), math.ceil(RA), math.ceil(RA / 4)
