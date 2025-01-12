@@ -86,7 +86,7 @@ CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 for TC in CT:
     (XT, YT), RT = cv2.minEnclosingCircle(TC)
     XT, YT, RT = math.ceil(XT), math.ceil(YT), math.ceil(RT)
-    AA = list(RT)
+    AA = list((XT, YT, RT))
     print(AA)
     BB = sorted(AA)
     print(BB)
