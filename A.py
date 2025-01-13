@@ -88,13 +88,13 @@ for AC in CA:
     if RT > 30: XA, YA, RA = math.ceil(XT), math.ceil(YT), math.ceil(RT)
     cv2.circle(I1, (XA, YA), RA, (0, 205, 0), -1)
 for BC in CB:
-    (XA, YA), RA = cv2.minEnclosingCircle(BC)
-    if RA > 10: XB, YB, RB, ZB = math.ceil(XA), math.ceil(YA), math.ceil(RA), math.ceil(RA / 4)
+    (XR, YR), RR = cv2.minEnclosingCircle(BC)
+    if RA > 10: XB, YB, RB, ZB = math.ceil(XR), math.ceil(YR), math.ceil(RR), math.ceil(RR / 4)
     cv2.circle(I1, (XB, YB), RB, (255, 0, 0), -1)
     cv2.circle(I1, (XB, YB), ZB, (255, 255, 255), -1)
 for CC in CC:
-    (XR, YR), RR = cv2.minEnclosingCircle(CC)
-    if RR > 10: XC, YC, RC = math.ceil(XR), math.ceil(YR), math.ceil(RR)
+    (XZ, YZ), RZ = cv2.minEnclosingCircle(CC)
+    if RR > 10: XC, YC, RC = math.ceil(XZ), math.ceil(YZ), math.ceil(RZ)
     cv2.circle(I1, (XC, YC), RC, (255, 0, 255), -1)
 for DC in CD:
     (XV, YV), RV = cv2.minEnclosingCircle(DC)
