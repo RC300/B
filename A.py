@@ -84,7 +84,7 @@ CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 for TC in CT:
-    (math.ceil(XT), math.ceil(YT)), math.ceil(RT) = cv2.minEnclosingCircle(TC)
+    (math.ceil(XT), math.ceil(YT)), math.ceil(RT) == cv2.minEnclosingCircle(TC)
     if RT > 30: cv2.circle(I1, (XT, YT), RT, (0, 205, 0), -1)
 for AC in CA:
     (XA, YA), RA = cv2.minEnclosingCircle(AC)
