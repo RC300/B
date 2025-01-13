@@ -90,8 +90,8 @@ for TC in CT:
     for AC in CA:
         (XA, YA), RA = cv2.minEnclosingCircle(AC)
         XA, YA, RA, ZA = math.ceil(XA), math.ceil(YA), math.ceil(RA), math.ceil(RA / 4)
-        if RA > 10: cv2.circle(I1, (XΤ, YΤ), RA, (255, 0, 0), -1)
-        if RA > 10: cv2.circle(I1, (XΤ, YΤ), ZA, (255, 255, 255), -1)
+    if RA > 10: cv2.circle(I1, (XT, YT), RA, (255, 0, 0), -1)
+    if RA > 10: cv2.circle(I1, (XT, YT), ZA, (255, 255, 255), -1)
 for BC in CB:
     (XB, YB), RB = cv2.minEnclosingCircle(BC)
     XB, YB, RB = math.ceil(XB), math.ceil(YB), math.ceil(RB)
