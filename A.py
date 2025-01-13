@@ -93,8 +93,8 @@ for BC in CB:
     cv2.circle(I1, (XB, YB), RB, (255, 0, 0), -1)
     cv2.circle(I1, (XB, YB), ZB, (255, 255, 255), -1)
 for CC in CC:
-    (XB, YB), RR = cv2.minEnclosingCircle(CC)
-    if RR > 10: XC, YC, RC = math.ceil(XB), math.ceil(YB), math.ceil(RR)
+    (XR, YR), RR = cv2.minEnclosingCircle(CC)
+    if RR > 10: XC, YC, RC = math.ceil(XR), math.ceil(YR), math.ceil(RR)
     cv2.circle(I1, (XC, YC), RC, (255, 0, 255), -1)
 for DC in CD:
     (XV, YV), RV = cv2.minEnclosingCircle(DC)
