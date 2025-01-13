@@ -71,6 +71,10 @@ NB = cv2.resize(IB, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 I2 = cv2.bitwise_and(NB, NB, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
+GM = numpy.full_like(N1, (0, 255, 0))
+M3 = cv2.inRange(IA, (0, 255, 0), (0, 255, 0))
+M4 = cv2.bitwise_not(M3)
+IB = cv2.bitwise_and(IB, IB, mask=M3) + cv2.bitwise_and(GM, GM, mask=M4)
 P1 = cv2.inRange(IB, (0, 0, 0), (0, 0, 0))
 P2 = cv2.inRange(IB, (255, 0, 0), (255, 0, 0))
 P3 = cv2.inRange(IB, (255, 0, 255), (255, 0, 255))
@@ -84,6 +88,7 @@ CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 D1 = [cv2.minEnclosingCircle(TC) for TC in CT]
+print(D1)
 D2 = [cv2.minEnclosingCircle(AC) for AC in CA]
 RX = max(a[1] for a in D1)
 RY = max(b[1] for b in D2)
