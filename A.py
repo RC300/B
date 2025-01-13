@@ -84,7 +84,7 @@ CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 D1 = [cv2.minEnclosingCircle(TC) for TC in CT]
-D2 = D1.sort()
+D2 = max(D1)
 print(D2)
 for TC in CT:
     (XT, YT), RT = cv2.minEnclosingCircle(TC)
