@@ -92,7 +92,6 @@ D2 = [cv2.minEnclosingCircle(AC) for AC in CA]
 RX = math.ceil(max(zip(*D1[1])))
 RY = math.ceil(max(zip(*D2[1])))
 for TC in CT:
-    print(cv2.minEnclosingCircle(TC))
     (XT, YT), RT = cv2.minEnclosingCircle(TC)
     XT, YT, RT = math.ceil(XT), math.ceil(YT), math.ceil(RT)
     if RT > 30: cv2.circle(I1, (XT, YT), RX, (0, 205, 0), -1)
