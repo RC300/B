@@ -91,8 +91,9 @@ D1 = [cv2.minEnclosingCircle(TC) for TC in CT]
 D2 = [cv2.minEnclosingCircle(AC) for AC in CA]
 RX = math.ceil(max(a[1] for a in D1))
 RY = math.ceil(max(b[1] for b in D2))
-RR = (*D1)
-print(RR)
+T4 = (*D1,)
+T5 = ((x, y, z) for x, y, z in T4)
+print(T5)
 for TC in CT:
     (XT, YT), RT = cv2.minEnclosingCircle(TC)
     XT, YT, RT = math.ceil(XT), math.ceil(YT), math.ceil(RT)
