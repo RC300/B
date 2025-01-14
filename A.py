@@ -91,7 +91,7 @@ L1 = [cv2.minEnclosingCircle(TC) for TC in CT]
 L2 = [cv2.minEnclosingCircle(AC) for AC in CA]
 Y1 = math.ceil(max(a[0][1] for a in L1))
 Y2 = math.ceil(min(b[0][1] for b in L1))
-YX = Y1 + ((Y1 - Y2) // 2)
+YX = Y1 - ((Y1 - Y2) // 2)
 RX = math.ceil(max(c[1] for c in L1))
 RY = math.ceil(max(d[1] for d in L2))
 for TC in CT:
