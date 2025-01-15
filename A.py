@@ -87,8 +87,10 @@ CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-D1 = numpy.ceil(numpy.array([cv2.minEnclosingCircle(TC) for TC in CT]))
-D2 = numpy.ceil(numpy.array([cv2.minEnclosingCircle(AC) for AC in CA]))
+D1 = numpy.array([cv2.minEnclosingCircle(TC) for TC in CT], dtype=object)
+D2 = numpy.array([cv2.minEnclosingCircle(AC) for AC in CA], dtype=object)
+D1 = numpy.ceil(D1)
+D2 = numpy.ceil(D2)
 RX = max(a[1] for a in D1)
 RY = max(b[1] for b in D2)
 for TC in CT:
