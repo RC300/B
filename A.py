@@ -87,25 +87,24 @@ CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-D1 = [cv2.minEnclosingCircle(TC) for TC in CT]
-D2 = (cv2.minEnclosingCircle(AC) for AC in CA)
-RX = math.ceil(max(a[1] for a in D1))
-RY = math.ceil(max(b[1] for b in D2))
-for TC in D1:
+L1 = [cv2.minEnclosingCircle(TC) for TC in CT]
+L2 = [cv2.minEnclosingCircle(AC) for AC in CA]
+L3 = [cv2.minEnclosingCircle(BC) for BC in CB]
+L4 = [cv2.minEnclosingCircle(VC) for VC in CV]
+RX = math.ceil(max(a[1] for a in L1))
+RY = math.ceil(max(b[1] for b in L2))
+for TC in L1:
     XT, YT, RT = math.ceil(TC[0][0]), math.ceil(TC[0][1]), math.ceil(TC[1])
     if RT > 30: cv2.circle(I1, (XT, YT), RX, (0, 205, 0), -1)
-for AC in CA:
-    (XA, YA), RA = cv2.minEnclosingCircle(AC)
-    XA, YA, RA, ZA = math.ceil(XA), math.ceil(YA), math.ceil(RA), math.ceil(RY / 4)
+for AC in L2:
+    XA, YA, RA, ZA = math.ceil(AC[0][0]), math.ceil(AC[0][1]), math.ceil(AC[1]), math.ceil(RY / 4)
     if RA > 10: cv2.circle(I1, (XA, YA), RY, (255, 0, 0), -1)
     if RA > 10: cv2.circle(I1, (XA, YA), ZA, (255, 255, 255), -1)
-for BC in CB:
-    (XB, YB), RB = cv2.minEnclosingCircle(BC)
-    XB, YB, RB = math.ceil(XB), math.ceil(YB), math.ceil(RB)
+for BC in L3:
+    XB, YB, RB = math.ceil(BC[0][0]), math.ceil(BC[0][1]), math.ceil(BC[1])
     if RB > 10: cv2.circle(I1, (XB, YB), RB, (255, 0, 255), -1)
-for VC in CV:
-    (XV, YV), RV = cv2.minEnclosingCircle(VC)
-    XV, YV, RV = math.ceil(XV), math.ceil(YV), math.ceil(RV)
+for VC in L4:
+    XV, YV, RV = math.ceil(VC[0][0]), math.ceil(VC[0][1]), math.ceil(VC[1])
     if RV > 10: cv2.circle(I1, (XV, YV), RV, (0, 0, 255), -1)
 I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
