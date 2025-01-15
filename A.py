@@ -87,8 +87,8 @@ CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-D1 = (cv2.minEnclosingCircle(TC) for TC in CT)
-D2 = (cv2.minEnclosingCircle(AC) for AC in CA)
+D1 = [cv2.minEnclosingCircle(TC) for TC in CT]
+D2 = [cv2.minEnclosingCircle(AC) for AC in CA]
 RX = math.ceil(max(a[1] for a in D1))
 RY = math.ceil(max(b[1] for b in D2))
 print(c[1]for c in D1)
