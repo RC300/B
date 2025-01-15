@@ -101,10 +101,10 @@ for AC in L2:
     if RA > 10: cv2.circle(I1, (XA, YA), RY, (255, 0, 0), -1)
     if RA > 10: cv2.circle(I1, (XA, YA), ZA, (255, 255, 255), -1)
 for BC in L3:
-    XB, YB, RB = math.ceil(BC[0][0]), math.ceil(BC[0][1]), math.ceil(max(BC[1]))
+    XB, YB, RB = math.ceil(BC[0][0]), math.ceil(BC[0][1]), max(math.ceil(BC[1]))
     cv2.circle(I1, (XB, YB), RB, (255, 0, 255), -1)
 for VC in L4:
-    XV, YV, RV = math.ceil(VC[0][0]), math.ceil(VC[0][1]), math.ceil(max(VC[1]))
+    XV, YV, RV = math.ceil(VC[0][0]), math.ceil(VC[0][1]), max(math.ceil(VC[1]))
     cv2.circle(I1, (XV, YV), RV, (0, 0, 255), -1)
 I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
