@@ -93,14 +93,15 @@ L3 = [cv2.minEnclosingCircle(BC) for BC in CB]
 L4 = [cv2.minEnclosingCircle(VC) for VC in CV]
 RX = math.ceil(max(a[1] for a in L1))
 RY = math.ceil(max(b[1] for b in L2))
-for TC in L1: XT, YT, RT = TC[0][0], TC[0][1], TC[1]
-XT, YT, RT = math.ceil(XT), math.ceil(YT), math.ceil(RT)
-if RT > 30: cv2.circle(I1, (XT, YT), RX, (0, 205, 0), -1)
+for TC in L1:
+    XT, YT = TC[0][0], TC[0][1]
+    XT, YT = math.ceil(XT), math.ceil(YT)
+    if TC[1] > 30: cv2.circle(I1, (XT, YT), RX, (0, 205, 0), -1)
 for AC in L2:
-    XA, YA, RA = AC[0][0], AC[0][1], AC[1]
-    XA, YA, RA, ZA = math.ceil(XA), math.ceil(YA), math.ceil(RA), math.ceil(RY / 4)
-    if RA > 10: cv2.circle(I1, (XA, YA), RY, (255, 0, 0), -1)
-    if RA > 10: cv2.circle(I1, (XA, YA), ZA, (255, 255, 255), -1)
+    XA, YA = AC[0][0], AC[0][1]
+    XA, YA, ZA = math.ceil(XA), math.ceil(YA), math.ceil(RY / 4)
+    if AC[1] > 10: cv2.circle(I1, (XA, YA), RY, (255, 0, 0), -1)
+    if AC[1] > 10: cv2.circle(I1, (XA, YA), ZA, (255, 255, 255), -1)
 for BC in L3:
     XB, YB, RB = BC[0][0], BC[0][1], BC[1]
     XB, YB, RB = math.ceil(XB), math.ceil(YB), math.ceil(RB)
