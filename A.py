@@ -94,6 +94,7 @@ L4 = [cv2.minEnclosingCircle(VC) for VC in CV]
 for TC in L1:
     XT, YT, RT, RX = TC[0][0], TC[0][1], TC[1], max([TC[1]])
     XT, YT, RT, RX = math.ceil(XT), math.ceil(YT), math.ceil(RT), math.ceil(RX)
+    print(RX)
     if RT > 30: cv2.circle(I1, (XT, YT), RX, (0, 205, 0), -1)
 for AC in L2:
     XA, YA, RA, RS = AC[0][0], AC[0][1], AC[1], max([AC[1]])
