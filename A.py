@@ -87,10 +87,10 @@ CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-L1 = [cv2.minEnclosingCircle(TC) for TC in CT][1] > 30
-L2 = [cv2.minEnclosingCircle(AC) for AC in CA][1] > 10
-L3 = [cv2.minEnclosingCircle(BC) for BC in CB][1] > 10
-L4 = [cv2.minEnclosingCircle(VC) for VC in CV][1] > 10
+L1 = [cv2.minEnclosingCircle(TC) for TC in CT if TC[1] > 30]
+L2 = [cv2.minEnclosingCircle(AC) for AC in CA if AC[1] > 10]
+L3 = [cv2.minEnclosingCircle(BC) for BC in CB if BC[1] > 10]
+L4 = [cv2.minEnclosingCircle(VC) for VC in CV if VC[1] > 10]
 RX = math.ceil(max(a[1] for a in L1))
 RY = math.ceil(max(b[1] for b in L2))
 for TC in L1:
