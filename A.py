@@ -94,21 +94,17 @@ L4 = [cv2.minEnclosingCircle(VC) for VC in CV]
 RX = math.ceil(max(a[1] for a in L1))
 RY = math.ceil(max(b[1] for b in L2))
 for TC in L1:
-    XT, YT = TC[0][0], TC[0][1]
-    XT, YT = math.ceil(XT), math.ceil(YT)
+    XT, YT = math.ceil(TC[0][0]), math.ceil(TC[0][1])
     if TC[1] > 30: cv2.circle(I1, (XT, YT), RX, (0, 205, 0), -1)
 for AC in L2:
-    XA, YA = AC[0][0], AC[0][1]
-    XA, YA, ZA = math.ceil(XA), math.ceil(YA), math.ceil(RY / 4)
+    XA, YA, ZA = math.ceil(AC[0][0]), math.ceil(AC[0][1]), math.ceil(RY / 4)
     if AC[1] > 10: cv2.circle(I1, (XA, YA), RY, (255, 0, 0), -1)
     if AC[1] > 10: cv2.circle(I1, (XA, YA), ZA, (255, 255, 255), -1)
 for BC in L3:
-    XB, YB, RB = BC[0][0], BC[0][1], BC[1]
-    XB, YB, RB = math.ceil(XB), math.ceil(YB), math.ceil(RB)
+    XB, YB, RB = math.ceil(BC[0][0]), math.ceil(BC[0][1]), math.ceil(BC[1])
     if RB > 10: cv2.circle(I1, (XB, YB), RB, (255, 0, 255), -1)
 for VC in L4:
-    XV, YV, RV = VC[0][0], VC[0][1], VC[1]
-    XV, YV, RV = math.ceil(XV), math.ceil(YV), math.ceil(RV)
+    XV, YV, RV = math.ceil(VC[0][0]), math.ceil(VC[0][1]), math.ceil(VC[1])
     if RV > 10: cv2.circle(I1, (XV, YV), RV, (0, 0, 255), -1)
 I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
