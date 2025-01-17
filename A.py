@@ -91,13 +91,13 @@ LT = (cv2.minEnclosingCircle(TC) for TC in CT)
 LA = (cv2.minEnclosingCircle(AC) for AC in CA)
 LB = (cv2.minEnclosingCircle(BC) for BC in CB)
 LV = (cv2.minEnclosingCircle(VC) for VC in CV)
-L1 = math.ceil(a[0][0], a[0][1], a[1] for a in LT if a[1] > 30)
+L1 = [a for a in LT if a[1] > 30]
 L2 = [b for b in LA if b[1] > 10]
 L3 = [c for c in LB if c[1] > 10]
 L4 = [d for d in LV if d[1] > 10]
-RT = max(e[1] for e in L1)
+RT = math.ceil(max(e[1] for e in L1))
 RA = math.ceil(max(f[1] for f in L2))
-for D1 in L1: cv2.circle(I1, ((D1[0][0]), (D1[0][1])), RT, (0, 205, 0), -1)
+for D1 in L1: cv2.circle(I1, (math.ceil(D1[0][0]), math.ceil(D1[0][1])), RT, (0, 205, 0), -1)
 for D2 in L2: cv2.circle(I1, (math.ceil(D2[0][0]), math.ceil(D2[0][1])), RA, (255, 0, 0), -1)
 for D3 in L2: cv2.circle(I1, (math.ceil(D3[0][0]), math.ceil(D3[0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
 for D4 in L3: cv2.circle(I1, (math.ceil(D4[0][0]), math.ceil(D4[0][1])), math.ceil(D4[1]), (255, 0, 255), -1)
@@ -105,11 +105,9 @@ for D5 in L4: cv2.circle(I1, (math.ceil(D5[0][0]), math.ceil(D5[0][1])), math.ce
 I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
-N3 = cv2.resize(I3, (W1, 512), interpolation=cv2.INTER_CUBIC)
 GT.load_state_dict(torch.load(args.model + '3.lib', weights_only=True))
-with torch.inference_mode(): ID = GT(N3)
-ND = cv2.resize(ID, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-C4 = numpy.dsplit(ND, 3)
+with torch.inference_mode(): ID = GT(Ι3)
+C4 = numpy.dsplit(ΙD, 3)
 R4 = cv2.normalize(C4[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
 G4 = cv2.normalize(C4[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
 B4 = cv2.normalize(C4[2], None, SB[IV], SB[-IV], cv2.NORM_MINMAX)
