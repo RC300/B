@@ -99,7 +99,7 @@ for D3 in L2: cv2.circle(GM, (math.ceil(D3[0][0]), math.ceil(D3[0][1])), math.ce
 for D4 in L3: cv2.circle(GM, (math.ceil(D4[0][0]), math.ceil(D4[0][1])), math.ceil(D4[1]), (255, 0, 255), -1)
 for D5 in L4: cv2.circle(GM, (math.ceil(D5[0][0]), math.ceil(D5[0][1])), math.ceil(D5[1]), (0, 0, 255), -1)
 I3 = cv2.resize(GM, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-I3 = cv2.bitwise_and(GM, GM, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
+I3 = cv2.bitwise_and(I3, I3, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
 N3 = cv2.resize(I3, (W1, 512), interpolation=cv2.INTER_CUBIC)
