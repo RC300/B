@@ -96,9 +96,8 @@ L2 = [b for b in LA if b[1] > 10]
 L3 = [c for c in LB if c[1] > 10]
 L4 = [d for d in LV if d[1] > 10]
 RT = math.ceil(max(e[1] for e in L1))
-print(L1[1][0])
-print(L1[1][1])
 RA = math.ceil(max(f[1] for f in L2))
+print(L1)
 for D1 in L1: cv2.circle(I1, (math.ceil(D1[0][0]), math.ceil(D1[0][1])), RT, (0, 205, 0), -1)
 for D2 in L2: cv2.circle(I1, (math.ceil(D2[0][0]), math.ceil(D2[0][1])), RA, (255, 0, 0), -1)
 for D3 in L2: cv2.circle(I1, (math.ceil(D3[0][0]), math.ceil(D3[0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
