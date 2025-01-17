@@ -87,20 +87,19 @@ CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-LT = [cv2.minEnclosingCircle(TC) for TC in CT]
-LA = [cv2.minEnclosingCircle(AC) for AC in CA]
-LB = [cv2.minEnclosingCircle(BC) for BC in CB]
-LV = [cv2.minEnclosingCircle(VC) for VC in CV]
+LT = (cv2.minEnclosingCircle(TC) for TC in CT)
+LA = (cv2.minEnclosingCircle(AC) for AC in CA)
+LB = (cv2.minEnclosingCircle(BC) for BC in CB)
+LV = (cv2.minEnclosingCircle(VC) for VC in CV)
 L1 = [a for a in LT if a[1] > 30]
 L2 = [b for b in LA if b[1] > 10]
 L3 = [c for c in LB if c[1] > 10]
 L4 = [d for d in LV if d[1] > 10]
-RT = math.ceil(max(e[1] for e in L1))
-RA = math.ceil(max(f[1] for f in L2))
-YT = math.ceil(max(g[0][1] for g in LT))
+RT = math.ceil(max(L1[1]))
+RA = math.ceil(max(L2[1]))
 for D1 in L1: cv2.circle(I1, (math.ceil(D1[0][0]), math.ceil(D1[0][1])), RT, (0, 205, 0), -1)
-for D2 in L2: cv2.circle(I1, (math.ceil(D2[0][0]), YT), RA, (255, 0, 0), -1)
-for D3 in L2: cv2.circle(I1, (math.ceil(D3[0][0]), YT), math.ceil(RA / 4), (255, 255, 255), -1)
+for D2 in L2: cv2.circle(I1, (math.ceil(D2[0][0]), math.ceil(D2[0][1])), RA, (255, 0, 0), -1)
+for D3 in L2: cv2.circle(I1, (math.ceil(D3[0][0]), math.ceil(D3[0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
 for D4 in L3: cv2.circle(I1, (math.ceil(D4[0][0]), math.ceil(D4[0][1])), math.ceil(D4[1]), (255, 0, 255), -1)
 for D5 in L4: cv2.circle(I1, (math.ceil(D5[0][0]), math.ceil(D5[0][1])), math.ceil(D5[1]), (0, 0, 255), -1)
 I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
