@@ -97,18 +97,25 @@ L3 = [c for c in LB if c[1] > 10]
 L4 = [d for d in LV if d[1] > 10]
 RT = math.ceil(max(e[1] for e in L1))
 RA = math.ceil(max(f[1] for f in L2))
-YA = math.ceil(max(g[0][1] for g in L2))
+if L1:
+    cv2.circle(I1, (math.ceil(L1[0][0][0]), math.ceil(L1[0][0][1])), RT, (0, 255, 0), -1)
+    cv2.circle(I1, (math.ceil(L1[1][0][0]), math.ceil(L1[1][0][1])), RT, (0, 255, 0), -1)
+if L2:
+    cv2.circle(I1, (math.ceil(L2[0][0][0]), math.ceil(L2[0][0][1])), RA, (0, 255, 0), -1)
+    cv2.circle(I1, (math.ceil(L2[1][0][0]), math.ceil(L2[1][0][1])), RA, (0, 255, 0), -1)
+M5 = cv2.inRange(I1, (0, 255, 0), (0, 255, 0))
+M6 = cv2.bitwise_not(M5)
 if L1:
     cv2.circle(I1, (math.ceil(L1[0][0][0]), math.ceil(L1[0][0][1])), RT, (0, 205, 0), -1)
     cv2.circle(I1, (math.ceil(L1[1][0][0]), math.ceil(L1[1][0][1])), RT, (0, 205, 0), -1)
 if L2:
-    cv2.circle(I1, (math.ceil(L2[0][0][0]), YA), RA, (255, 0, 0), -1)
-    cv2.circle(I1, (math.ceil(L2[1][0][0]), YA), RA, (255, 0, 0), -1)
-    cv2.circle(I1, (math.ceil(L2[0][0][0]), YA), math.ceil(RA / 4), (255, 255, 255), -1)
-    cv2.circle(I1, (math.ceil(L2[1][0][0]), YA), math.ceil(RA / 4), (255, 255, 255), -1)
+    cv2.circle(I1, (math.ceil(L2[0][0][0]), math.ceil(L2[0][0][1])), RA, (255, 0, 0), -1)
+    cv2.circle(I1, (math.ceil(L2[1][0][0]), math.ceil(L2[1][0][1])), RA, (255, 0, 0), -1)
+    cv2.circle(I1, (math.ceil(L2[0][0][0]), math.ceil(L2[0][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
+    cv2.circle(I1, (math.ceil(L2[1][0][0]), math.ceil(L2[1][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
 if L3: cv2.circle(I1, (math.ceil(L3[0][0][0]), math.ceil(L3[0][0][1])), math.ceil(L3[0][1]), (255, 0, 255), -1)
 if L4: cv2.circle(I1, (math.ceil(L4[0][0][0]), math.ceil(L4[0][0][1])), math.ceil(L4[0][1]), (0, 0, 255), -1)
-I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
+I3 = cv2.bitwise_and(I1, I1, mask=M5) + cv2.bitwise_and(IS, IS, mask=M6)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
 N3 = cv2.resize(I3, (W1, 512), interpolation=cv2.INTER_CUBIC)
@@ -120,5 +127,5 @@ R4 = cv2.normalize(C4[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
 G4 = cv2.normalize(C4[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
 B4 = cv2.normalize(C4[2], None, SB[IV], SB[-IV], cv2.NORM_MINMAX)
 I4 = numpy.dstack((R4, G4, B4))
-I4 = cv2.bitwise_and(I4, I4, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
+I4 = cv2.bitwise_and(I4, I4, mask=M5) + cv2.bitwise_and(I0, I0, mask=M6)
 cv2.imwrite(args.output + 'X4.jpg', cv2.cvtColor(I4, cv2.COLOR_BGR2RGB))
