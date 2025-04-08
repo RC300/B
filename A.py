@@ -102,8 +102,8 @@ YT = math.ceil(min(g[0][1] for g in L1))
 if L1:
     cv2.circle(I1, (math.ceil(L1[0][0][0]), math.ceil(L1[0][0][1])), RT, (0, 205, 0), -1)
     cv2.circle(I1, (math.ceil(L1[1][0][0]), math.ceil(L1[1][0][1])), RT, (0, 205, 0), -1)
-    cv2.circle(I2, (math.ceil(L1[0][0][0]), YT, RT, (0, 0, 255), 2)
-    cv2.circle(I2, (math.ceil(L1[1][0][0]), YT, RT, (0, 0, 255), 2)
+    cv2.circle(I2, (math.ceil(L1[0][0][0]), YT, RT, (0, 0, 255), 2))
+    cv2.circle(I2, (math.ceil(L1[1][0][0]), YT, RT, (0, 0, 255), 2))
 if L2:
     cv2.circle(I1, (math.ceil(L2[0][0][0]), math.ceil(L2[0][0][1])), RA, (255, 0, 0), -1)
     cv2.circle(I1, (math.ceil(L2[1][0][0]), math.ceil(L2[1][0][1])), RA, (255, 0, 0), -1)
