@@ -101,8 +101,8 @@ RA = math.ceil(max(f[1] for f in L2))
 if L1:
     cv2.circle(I1, (math.ceil(L1[0][0][0]), math.ceil(L1[0][0][1])), RT, (0, 205, 0), -1)
     cv2.circle(I1, (math.ceil(L1[1][0][0]), math.ceil(L1[1][0][1])), RT, (0, 205, 0), -1)
-    cv2.circle(I2, (math.ceil(L1[0][0][0]), math.ceil(L1[0][0][1])), RT, (0, 0, 255), 3)
-    cv2.circle(I2, (math.ceil(L1[1][0][0]), math.ceil(L1[1][0][1])), RT, (0, 0, 255), 3)
+    cv2.circle(I2, (math.ceil(L1[0][0][0]), math.ceil(L1[0][0][1])), RT, (255, 255, 255), 1)
+    cv2.circle(I2, (math.ceil(L1[1][0][0]), math.ceil(L1[1][0][1])), RT, (255, 255, 255), 1)
 if L2:
     cv2.circle(I1, (math.ceil(L2[0][0][0]), math.ceil(L2[0][0][1])), RA, (255, 0, 0), -1)
     cv2.circle(I1, (math.ceil(L2[1][0][0]), math.ceil(L2[1][0][1])), RA, (255, 0, 0), -1)
