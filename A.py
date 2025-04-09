@@ -80,14 +80,10 @@ P2 = cv2.inRange(IC, (255, 0, 0), (255, 0, 0))
 P1 = cv2.bitwise_or(P1, P2)
 P3 = cv2.inRange(IC, (255, 0, 255), (255, 0, 255))
 P4 = cv2.inRange(IC, (0, 0, 255), (0, 0, 255))
-PT = cv2.resize(P1, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-PA = cv2.resize(P2, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-PB = cv2.resize(P3, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-PV = cv2.resize(P4, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
+CT = cv2.findContours(P1, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
+CA = cv2.findContours(P2, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
+CB = cv2.findContours(P3, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
+CV = cv2.findContours(P4, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 LT = (cv2.minEnclosingCircle(TC) for TC in CT)
 LA = (cv2.minEnclosingCircle(AC) for AC in CA)
 LB = (cv2.minEnclosingCircle(BC) for BC in CB)
@@ -96,18 +92,17 @@ L1 = [a for a in LT if a[1] > 30]
 L2 = [b for b in LA if b[1] > 10]
 L3 = [c for c in LB if c[1] > 10]
 L4 = [d for d in LV if d[1] > 10]
-RT = math.ceil(max(e[1] for e in L1))
-RA = math.ceil(max(f[1] for f in L2))
-YT = math.ceil(min(g[0][1] for g in L1))
+RT = int(max(e[1] for e in L1))
+RA = int(max(f[1] for f in L2))
 if L1 and L2:
-    cv2.circle(I1, (math.ceil(L1[0][0][0]), YT), RT, (0, 205, 0), -1)
-    cv2.circle(I1, (math.ceil(L1[1][0][0]), YT), RT, (0, 205, 0), -1)
-    cv2.circle(I1, (math.ceil(L2[0][0][0]), YT), RA, (255, 0, 0), -1)
-    cv2.circle(I1, (math.ceil(L2[1][0][0]), YT), RA, (255, 0, 0), -1)
-    cv2.circle(I1, (math.ceil(L2[0][0][0]), YT), math.ceil(RA / 4), (255, 255, 255), -1)
-    cv2.circle(I1, (math.ceil(L2[1][0][0]), YT), math.ceil(RA / 4), (255, 255, 255), -1)
-if L3: cv2.circle(I1, (math.ceil(L3[0][0][0]), math.ceil(L3[0][0][1])), math.ceil(L3[0][1]), (255, 0, 255), -1)
-if L4: cv2.circle(I1, (math.ceil(L4[0][0][0]), math.ceil(L4[0][0][1])), math.ceil(L4[0][1]), (0, 0, 255), -1)
+    cv2.circle(I1, (int(L1[0][0][0]), int(L1[0][0][1])), RT, (0, 205, 0), -1)
+    cv2.circle(I1, (int(L1[1][0][0]), int(L1[1][0][1])), RT, (0, 205, 0), -1)
+    cv2.circle(I1, (int(L2[0][0][0]), int(L1[0][0][1])), RA, (255, 0, 0), -1)
+    cv2.circle(I1, (int(L2[1][0][0]), int(L1[1][0][1])), RA, (255, 0, 0), -1)
+    cv2.circle(I1, (int(L2[0][0][0]), int(L1[0][0][1])), int(RA / 4), (255, 255, 255), -1)
+    cv2.circle(I1, (int(L2[1][0][0]), int(L1[1][0][1])), int(RA / 4), (255, 255, 255), -1)
+if L3: cv2.circle(I1, (int(L3[0][0][0]), int(L3[0][0][1])), int(L3[0][1]), (255, 0, 255), -1)
+if L4: cv2.circle(I1, (int(L4[0][0][0]), int(L4[0][0][1])), int(L4[0][1]), (0, 0, 255), -1)
 I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
