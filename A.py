@@ -110,7 +110,6 @@ if L3: cv2.circle(I1, (math.ceil(L3[0][0][0]), math.ceil(L3[0][0][1])), math.cei
 if L4: cv2.circle(I1, (math.ceil(L4[0][0][0]), math.ceil(L4[0][0][1])), math.ceil(L4[0][1]), (0, 0, 255), -1)
 I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
-cv2.imwrite(args.output + 'A1.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
 N3 = cv2.resize(I3, (W1, 512), interpolation=cv2.INTER_CUBIC)
 GT.load_state_dict(torch.load(args.model + '3.lib', weights_only=True))
