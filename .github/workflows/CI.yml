@@ -18,7 +18,7 @@ jobs:
 
       - name: Setup
         run: |
-          pip3 install pyinstaller==6.14.1 numpy==2.3.1 opencv-python==4.11.0.86 pillow==11.2.1 torch==2.7.1 torchvision==0.22.1
+          pip3 install pyinstaller==6.14.2 numpy==2.3.1 opencv-python==4.12.0.88 pillow==11.3.0 torch==2.7.1 torchvision==0.22.1
           pyinstaller A.py
 
       - name: File
