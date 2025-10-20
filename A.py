@@ -106,13 +106,8 @@ cv2.circle(I1, (math.ceil(L2[0][0][0]), math.ceil(L1[0][0][1])), math.ceil(RA / 
 cv2.circle(I1, (math.ceil(L2[1][0][0]), math.ceil(L1[1][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
 if L3: cv2.circle(I1, (math.ceil(L3[0][0][0]), math.ceil(L3[0][0][1])), math.ceil(L3[0][1]), (255, 0, 255), -1)
 if L4: cv2.circle(I1, (math.ceil(L4[0][0][0]), math.ceil(L4[0][0][1])), math.ceil(L4[0][1]), (0, 0, 255), -1)
-I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
+I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
-
-C9 = numpy.dsplit(N1, 3)
-R9 = numpy.sort(C9[0], None)
-G9 = numpy.sort(C9[1], None)
-B9 = numpy.sort(C9[2], None)
 
 N3 = cv2.resize(I3, (W1, 512), interpolation=cv2.INTER_CUBIC)
 GT.load_state_dict(torch.load(args.model + '3.lib', weights_only=True))
