@@ -42,8 +42,7 @@ class Network(torch.nn.Module):
         TS = torchvision.transforms.v2.ToDtype(torch.float32, True)(TS)
         TR = self.model(TS) * 0.5 + 0.5
         TI = torchvision.transforms.v2.ToDtype(torch.uint8, True)(TR)
-        NI = TI.numpy().transpose((1, 2, 0))
-        return NI[0:IN.shape[0], 0:IN.shape[1]]
+        return TI.numpy().transpose((1, 2, 0))
 
 class ResBlock(torch.nn.Module):
 
@@ -59,7 +58,8 @@ GT = Network()
 N1 = cv2.resize(I0, (W1, 512), interpolation=cv2.INTER_CUBIC)
 GT.load_state_dict(torch.load(args.model + '1.lib'))
 with torch.inference_mode(): IA = GT(N1)
-NA = cv2.resize(IA, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
+NA = IA[0:N1.shape[0], 0:N1.shape[1]]
+NA = cv2.resize(NA, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 M1 = cv2.inRange(NA, (0, 255, 0), (0, 255, 0))
 M2 = cv2.bitwise_not(M1)
 I1 = cv2.bitwise_and(NA, NA, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
@@ -67,7 +67,8 @@ cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '2.lib'))
 with torch.inference_mode(): IB = GT(IA)
-NB = cv2.resize(IB, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
+NB = IB[0:N1.shape[0], 0:N1.shape[1]]
+NB = cv2.resize(NB, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 I2 = cv2.bitwise_and(NB, NB, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
@@ -100,10 +101,10 @@ RT = math.ceil(max(e[1] for e in L1))
 RA = math.ceil(max(f[1] for f in L2))
 cv2.circle(I1, (math.ceil(L1[0][0][0]), math.ceil(L1[0][0][1])), RT, (0, 205, 0), -1)
 cv2.circle(I1, (math.ceil(L1[1][0][0]), math.ceil(L1[1][0][1])), RT, (0, 205, 0), -1)
-cv2.circle(I1, (math.ceil(L1[0][0][0]), math.ceil(L1[0][0][1])), RA, (255, 0, 0), -1)
-cv2.circle(I1, (math.ceil(L1[1][0][0]), math.ceil(L1[1][0][1])), RA, (255, 0, 0), -1)
-cv2.circle(I1, (math.ceil(L1[0][0][0]), math.ceil(L1[0][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
-cv2.circle(I1, (math.ceil(L1[1][0][0]), math.ceil(L1[1][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
+cv2.circle(I1, (math.ceil(L2[0][0][0]), math.ceil(L1[0][0][1])), RA, (255, 0, 0), -1)
+cv2.circle(I1, (math.ceil(L2[1][0][0]), math.ceil(L1[1][0][1])), RA, (255, 0, 0), -1)
+cv2.circle(I1, (math.ceil(L2[0][0][0]), math.ceil(L1[0][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
+cv2.circle(I1, (math.ceil(L2[1][0][0]), math.ceil(L1[1][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
 if L3: cv2.circle(I1, (math.ceil(L3[0][0][0]), math.ceil(L3[0][0][1])), math.ceil(L3[0][1]), (255, 0, 255), -1)
 if L4: cv2.circle(I1, (math.ceil(L4[0][0][0]), math.ceil(L4[0][0][1])), math.ceil(L4[0][1]), (0, 0, 255), -1)
 I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
@@ -112,7 +113,8 @@ cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 N3 = cv2.resize(I3, (W1, 512), interpolation=cv2.INTER_CUBIC)
 GT.load_state_dict(torch.load(args.model + '3.lib'))
 with torch.inference_mode(): ID = GT(N3)
-ND = cv2.resize(ID, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
+ND = ID[0:N1.shape[0], 0:N1.shape[1]]
+ND = cv2.resize(ND, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 C4 = numpy.dsplit(ND, 3)
 R4 = cv2.normalize(C4[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
 G4 = cv2.normalize(C4[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
