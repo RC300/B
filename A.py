@@ -75,6 +75,7 @@ GM = numpy.full_like(N1, (0, 255, 0))
 M3 = cv2.inRange(IA, (0, 255, 0), (0, 255, 0))
 M4 = cv2.bitwise_not(M3)
 IC = cv2.bitwise_and(IB, IB, mask=M3) + GM
+cv2.imwrite(args.output + 'A1.jpg', cv2.cvtColor(IC, cv2.COLOR_BGR2RGB))
 P1 = cv2.inRange(IC, (0, 0, 0), (0, 0, 0))
 P2 = cv2.inRange(IC, (255, 0, 0), (255, 0, 0))
 P1 = cv2.bitwise_or(P1, P2)
