@@ -58,8 +58,8 @@ GT = Network()
 N1 = cv2.resize(I0, (W1, 512), interpolation=cv2.INTER_CUBIC)
 GT.load_state_dict(torch.load(args.model + '1.lib'))
 with torch.inference_mode(): IA = GT(N1)
-NA = IA[0:N1.shape[0], 0:N1.shape[1]]
-NA = cv2.resize(NA, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
+AN = IA[0:N1.shape[0], 0:N1.shape[1]]
+NA = cv2.resize(AN, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 M1 = cv2.inRange(NA, (0, 255, 0), (0, 255, 0))
 M2 = cv2.bitwise_not(M1)
 I1 = cv2.bitwise_and(NA, NA, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
@@ -67,13 +67,13 @@ cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '2.lib'))
 with torch.inference_mode(): IB = GT(IA)
-NB = IB[0:N1.shape[0], 0:N1.shape[1]]
-NB = cv2.resize(NB, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
+BN = IB[0:N1.shape[0], 0:N1.shape[1]]
+NB = cv2.resize(BN, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 I2 = cv2.bitwise_and(NB, NB, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
 GM = numpy.full_like(N1, (0, 255, 0))
-M3 = cv2.inRange(IA, (0, 255, 0), (0, 255, 0))
+M3 = cv2.inRange(AN, (0, 255, 0), (0, 255, 0))
 M4 = cv2.bitwise_not(M3)
 IC = cv2.bitwise_and(IB, IB, mask=M3) + cv2.bitwise_and(GM, GM, mask=M4)
 P1 = cv2.inRange(IC, (0, 0, 0), (0, 0, 0))
@@ -113,8 +113,8 @@ cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 N3 = cv2.resize(I3, (W1, 512), interpolation=cv2.INTER_CUBIC)
 GT.load_state_dict(torch.load(args.model + '3.lib'))
 with torch.inference_mode(): ID = GT(N3)
-ND = ID[0:N1.shape[0], 0:N1.shape[1]]
-ND = cv2.resize(ND, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
+DN = ID[0:N1.shape[0], 0:N1.shape[1]]
+ND = cv2.resize(DN, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 C4 = numpy.dsplit(ND, 3)
 R4 = cv2.normalize(C4[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
 G4 = cv2.normalize(C4[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
