@@ -109,7 +109,7 @@ if L4: cv2.circle(I1, (math.ceil(L4[0][0][0]), math.ceil(L4[0][0][1])), math.cei
 I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
-I9 = cv2.bitwise_and(IA, IA, mask=M4)
+I9 = cv2.bitwise_and(N1, N1, mask=M3) + cv2.bitwise_and(IA, IA, mask=M4)
 C9 = numpy.dsplit(I9, 3)
 R9 = numpy.sort(C9[0], None)
 G9 = numpy.sort(C9[1], None)
