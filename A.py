@@ -13,9 +13,12 @@ C0 = numpy.dsplit(I0, 3)
 SR = numpy.sort(C0[0], None)
 SG = numpy.sort(C0[1], None)
 SB = numpy.sort(C0[2], None)
-R0 = cv2.normalize(C0[0], None, 0, 255, cv2.NORM_MINMAX)
-G0 = cv2.normalize(C0[1], None, 0, 255, cv2.NORM_MINMAX)
-B0 = cv2.normalize(C0[2], None, 0, 255, cv2.NORM_MINMAX)
+V1 = numpy.clip(C0[0], SR[IV], SR[-IV])
+V2 = numpy.clip(C0[1], SG[IV], SG[-IV])
+V3 = numpy.clip(C0[2], SB[IV], SB[-IV])
+R0 = cv2.normalize(V1, None, 0, 255, cv2.NORM_MINMAX)
+G0 = cv2.normalize(V2, None, 0, 255, cv2.NORM_MINMAX)
+B0 = cv2.normalize(V3, None, 0, 255, cv2.NORM_MINMAX)
 IS = numpy.dstack((R0, G0, B0))
 
 class Network(torch.nn.Module):
@@ -37,7 +40,7 @@ class Network(torch.nn.Module):
     def __call__(self, IN):
         TS = torchvision.transforms.v2.ToImage()(IN)
         TS = torchvision.transforms.v2.ToDtype(torch.float32, True)(TS)
-        TR = self.model(TS) * 0.5 + 0.5
+        TR = self.model(TS) * 0.5
         TI = torchvision.transforms.v2.ToDtype(torch.uint8, True)(TR)
         NI = TI.numpy().transpose((1, 2, 0))
         return NI[0:IN.shape[0], 0:IN.shape[1]]
@@ -111,9 +114,9 @@ GT.load_state_dict(torch.load(args.model + '3.lib'))
 with torch.inference_mode(): ID = GT(N3)
 ND = cv2.resize(ID, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 C4 = numpy.dsplit(ND, 3)
-R4 = cv2.normalize(C4[0], None, 0, 255, cv2.NORM_MINMAX)
-G4 = cv2.normalize(C4[1], None, 0, 255, cv2.NORM_MINMAX)
-B4 = cv2.normalize(C4[2], None, 0, 255, cv2.NORM_MINMAX)
+R4 = cv2.normalize(C4[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
+G4 = cv2.normalize(C4[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
+B4 = cv2.normalize(C4[2], None, SB[IV], SB[-IV], cv2.NORM_MINMAX)
 I4 = numpy.dstack((R4, G4, B4))
 I4 = cv2.bitwise_and(I4, I4, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X4.jpg', cv2.cvtColor(I4, cv2.COLOR_BGR2RGB))
