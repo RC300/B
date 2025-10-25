@@ -41,11 +41,10 @@ class Network(torch.nn.Module):
         TS = torchvision.transforms.v2.ToImage()(IN)
         TS = torchvision.transforms.v2.ToDtype(torch.float32, True)(TS)
         TD = torch.std(TS)
-        print(TD)
         TM = torch.mean(TS)
-        print(TM)
-        TR = self.model(TS) * TD + TM
-        TI = torchvision.transforms.v2.ToDtype(torch.uint8, True)(TR)
+        TR = self.model(TS) * 0.5 + 0.5
+        TN = TR * TD + TM
+        TI = torchvision.transforms.v2.ToDtype(torch.uint8, True)(TN)
         NI = TI.numpy().transpose((1, 2, 0))
         return NI[0:IN.shape[0], 0:IN.shape[1]]
 
