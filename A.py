@@ -25,6 +25,10 @@ print(numpy.mean((I0)))
 print(numpy.std((I0)))
 print(numpy.median(I0))
 
+print(numpy.mean((IS)))
+print(numpy.std((IS)))
+print(numpy.median(IS))
+
 class Network(torch.nn.Module):
 
     def __init__(self):
