@@ -13,9 +13,9 @@ C0 = numpy.dsplit(I0, 3)
 SR = numpy.sort(C0[0], None)
 SG = numpy.sort(C0[1], None)
 SB = numpy.sort(C0[2], None)
-V1 = numpy.clip(C0[0], SR[IV], SR[-IV])
-V2 = numpy.clip(C0[1], SG[IV], SG[-IV])
-V3 = numpy.clip(C0[2], SB[IV], SB[-IV])
+V1 = numpy.clip(C0[0], 0, 127)
+V2 = numpy.clip(C0[1], 0, 127)
+V3 = numpy.clip(C0[2], 0, 127)
 R0 = cv2.normalize(V1, None, 0, 255, cv2.NORM_MINMAX)
 G0 = cv2.normalize(V2, None, 0, 255, cv2.NORM_MINMAX)
 B0 = cv2.normalize(V3, None, 0, 255, cv2.NORM_MINMAX)
@@ -29,7 +29,7 @@ class Network(torch.nn.Module):
         torch.nn.Conv2d(64, 128, 3, 2, 1), torch.nn.InstanceNorm2d(128), torch.nn.ReLU(),
         torch.nn.Conv2d(128, 256, 3, 2, 1), torch.nn.InstanceNorm2d(256), torch.nn.ReLU(),
         torch.nn.Conv2d(256, 512, 3, 2, 1), torch.nn.InstanceNorm2d(512), torch.nn.ReLU(),
-        torch.nn.Conv2d(512, 1024, 3, 2, 1), torch.nn.InstanceNorm2d(1024), torch.nn.Tanh())
+        torch.nn.Conv2d(512, 1024, 3, 2, 1), torch.nn.InstanceNorm2d(1024), torch.nn.ReLU())
         self.model += torch.nn.Sequential(ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock())
         self.model += torch.nn.Sequential(torch.nn.ConvTranspose2d(1024, 512, 3, 2, 1, 1), torch.nn.InstanceNorm2d(512), torch.nn.ReLU(),
         torch.nn.ConvTranspose2d(512, 256, 3, 2, 1, 1), torch.nn.InstanceNorm2d(256), torch.nn.ReLU(),
