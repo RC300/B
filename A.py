@@ -8,6 +8,18 @@ args = parser.parse_args()
 
 I0 = cv2.cvtColor(cv2.imread(args.input), cv2.COLOR_BGR2RGB)
 W1 = math.ceil(I0.shape[1] / I0.shape[0] * 512)
+IV = I0.size // 120
+C0 = numpy.dsplit(I0, 3)
+SR = numpy.sort(C0[0], None)
+SG = numpy.sort(C0[1], None)
+SB = numpy.sort(C0[2], None)
+V1 = numpy.clip(C0[0], SR[IV], SR[-IV])
+V2 = numpy.clip(C0[1], SG[IV], SG[-IV])
+V3 = numpy.clip(C0[2], SB[IV], SB[-IV])
+R0 = cv2.normalize(V1, None, 0, 255, cv2.NORM_MINMAX)
+G0 = cv2.normalize(V2, None, 0, 255, cv2.NORM_MINMAX)
+B0 = cv2.normalize(V3, None, 0, 255, cv2.NORM_MINMAX)
+IS = numpy.dstack((R0, G0, B0))
 
 class Network(torch.nn.Module):
 
@@ -23,7 +35,7 @@ class Network(torch.nn.Module):
         torch.nn.ConvTranspose2d(512, 256, 3, 2, 1, 1), torch.nn.InstanceNorm2d(256), torch.nn.ReLU(),
         torch.nn.ConvTranspose2d(256, 128, 3, 2, 1, 1), torch.nn.InstanceNorm2d(128), torch.nn.ReLU(),
         torch.nn.ConvTranspose2d(128, 64, 3, 2, 1, 1), torch.nn.InstanceNorm2d(64), torch.nn.ReLU(),
-        torch.nn.ReflectionPad2d(3), torch.nn.Conv2d(64, 3, 7), torch.nn.Tanh())
+        torch.nn.ReflectionPad2d(3), torch.nn.Conv2d(64, 3, 7), torch.nn.ReLU())
 
     def __call__(self, IN):
         TS = torchvision.transforms.v2.ToImage()(IN)
@@ -58,19 +70,6 @@ with torch.inference_mode(): IB = GT(IA)
 NB = cv2.resize(IB, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 I2 = cv2.bitwise_and(NB, NB, mask=M1) + cv2.bitwise_and(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
-
-IV = I0.size // 120
-C0 = numpy.dsplit(I1, 3)
-SR = numpy.sort(C0[0], None)
-SG = numpy.sort(C0[1], None)
-SB = numpy.sort(C0[2], None)
-V1 = numpy.clip(C0[0], SR[IV], SR[-IV])
-V2 = numpy.clip(C0[1], SG[IV], SG[-IV])
-V3 = numpy.clip(C0[2], SB[IV], SB[-IV])
-R0 = cv2.normalize(V1, None, 0, 255, cv2.NORM_MINMAX)
-G0 = cv2.normalize(V2, None, 0, 255, cv2.NORM_MINMAX)
-B0 = cv2.normalize(V3, None, 0, 255, cv2.NORM_MINMAX)
-IS = numpy.dstack((R0, G0, B0))
 
 GM = numpy.full_like(N1, (0, 255, 0))
 M3 = cv2.inRange(IA, (0, 255, 0), (0, 255, 0))
