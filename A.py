@@ -23,6 +23,7 @@ IS = numpy.dstack((R0, G0, B0))
 
 print(numpy.mean((I0)))
 print(numpy.std((I0)))
+print(numpy.median(I0))
 
 class Network(torch.nn.Module):
 
