@@ -13,13 +13,16 @@ C0 = numpy.dsplit(I0, 3)
 SR = numpy.sort(C0[0], None)
 SG = numpy.sort(C0[1], None)
 SB = numpy.sort(C0[2], None)
-V1 = numpy.clip(C0[0], 127, 255)
-V2 = numpy.clip(C0[1], 127, 255)
-V3 = numpy.clip(C0[2], 127, 255)
+V1 = numpy.clip(C0[0], SR[IV], SR[-IV])
+V2 = numpy.clip(C0[1], SG[IV], SG[-IV])
+V3 = numpy.clip(C0[2], SB[IV], SB[-IV])
 R0 = cv2.normalize(V1, None, 0, 255, cv2.NORM_MINMAX)
 G0 = cv2.normalize(V2, None, 0, 255, cv2.NORM_MINMAX)
 B0 = cv2.normalize(V3, None, 0, 255, cv2.NORM_MINMAX)
 IS = numpy.dstack((R0, G0, B0))
+
+print(numpy.mean((I0)))
+print(numpy.std((I0)))
 
 class Network(torch.nn.Module):
 
