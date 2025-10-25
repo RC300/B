@@ -38,8 +38,8 @@ class Network(torch.nn.Module):
         torch.nn.ReflectionPad2d(3), torch.nn.Conv2d(64, 3, 7), torch.nn.Tanh())
 
     def __call__(self, IN):
-        TS = torchvision.transforms.v2.ToImage()(IN)
-        TS = torchvision.transforms.v2.ToDtype(torch.float32, True)(TS)
+        TA = torchvision.transforms.v2.ToImage()(IN)
+        TS = torchvision.transforms.v2.ToDtype(torch.float32, True)(TA)
         TD = torch.std(TS)
         TM = torch.mean(TS)
         TR = self.model(TS) * 0.5 + 0.5
