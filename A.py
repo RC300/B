@@ -94,8 +94,8 @@ LB = (cv2.minEnclosingCircle(BC) for BC in CB)
 LV = (cv2.minEnclosingCircle(VC) for VC in CV)
 L1 = [a for a in LT if a[1] > 30]
 L2 = [b for b in LA if b[1] > 10]
-L3 = [c for c in LB if c[1] > max(c)]
-L4 = [d for d in LV if d[1] > max(d)]
+L3 = [c for c in LB if c[1] == max(c)]
+L4 = [d for d in LV if d[1] == max(d)]
 RT = math.ceil(max(e[1] for e in L1))
 RA = math.ceil(max(f[1] for f in L2))
 if L1:
