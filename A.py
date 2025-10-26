@@ -39,9 +39,9 @@ class Network(torch.nn.Module):
 
     def __call__(self, IN):
         TS = torchvision.transforms.v2.ToImage()(IN)
+        TS = torchvision.transforms.v2.ToDtype(torch.float32, True)(TS)
         TR = self.model(TS) * 0.5 + 0.5
-        TI = torchvision.transforms.v2.ToDtype(torch.uint8, True)(TR)
-        NI = TI.numpy().transpose((1, 2, 0))
+        NI = TR.numpy().transpose((1, 2, 0))
         return NI[0:IN.shape[0], 0:IN.shape[1]]
 
 class ResBlock(torch.nn.Module):
