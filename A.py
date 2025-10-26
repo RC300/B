@@ -41,7 +41,8 @@ class Network(torch.nn.Module):
         TS = torchvision.transforms.v2.ToImage()(IN)
         TS = torchvision.transforms.v2.ToDtype(torch.float32, True)(TS)
         TR = self.model(TS) * 0.5 + 0.5
-        NI = TR.numpy().transpose((1, 2, 0))
+        TI = torchvision.transforms.v2.ToDtype(torch.uint8, True)(TR)
+        NI = TI.numpy().transpose((1, 2, 0))
         return NI[0:IN.shape[0], 0:IN.shape[1]]
 
 class ResBlock(torch.nn.Module):
@@ -99,10 +100,10 @@ RT = math.ceil(max(e[1] for e in L1))
 RA = math.ceil(max(f[1] for f in L2))
 cv2.circle(I1, (math.ceil(L1[0][0][0]), math.ceil(L1[0][0][1])), RT, (0, 205, 0), -1)
 cv2.circle(I1, (math.ceil(L1[1][0][0]), math.ceil(L1[1][0][1])), RT, (0, 205, 0), -1)
-cv2.circle(I1, (math.ceil(L2[0][0][0]), math.ceil(L1[0][0][1])), RA, (255, 0, 0), -1)
-cv2.circle(I1, (math.ceil(L2[1][0][0]), math.ceil(L1[1][0][1])), RA, (255, 0, 0), -1)
-cv2.circle(I1, (math.ceil(L2[0][0][0]), math.ceil(L1[0][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
-cv2.circle(I1, (math.ceil(L2[1][0][0]), math.ceil(L1[1][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
+cv2.circle(I1, (math.ceil(L2[0][0][0]), math.ceil(L2[0][0][1])), RA, (255, 0, 0), -1)
+cv2.circle(I1, (math.ceil(L2[1][0][0]), math.ceil(L2[1][0][1])), RA, (255, 0, 0), -1)
+cv2.circle(I1, (math.ceil(L2[0][0][0]), math.ceil(L2[0][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
+cv2.circle(I1, (math.ceil(L2[1][0][0]), math.ceil(L2[1][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
 if L3: cv2.circle(I1, (math.ceil(L3[0][0][0]), math.ceil(L3[0][0][1])), math.ceil(L3[0][1]), (255, 0, 255), -1)
 if L4: cv2.circle(I1, (math.ceil(L4[0][0][0]), math.ceil(L4[0][0][1])), math.ceil(L4[0][1]), (0, 0, 255), -1)
 I3 = cv2.bitwise_and(I1, I1, mask=M1) + cv2.bitwise_and(IS, IS, mask=M2)
