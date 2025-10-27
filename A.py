@@ -101,11 +101,11 @@ RA = math.ceil(max(f[1] for f in L2))
 
 KT = math.ceil(min(g[0][0] for g in L1))
 print(KT)
-YT = math.ceil(max(h[0][0] for h in L1))
+YT = math.ceil(max(h[0][1] for h in L1))
 print(YT)
 UT = math.ceil(min(i[1][0] for i in L1))
 print(UT)
-ZT = math.ceil(max(j[1][0] for j in L1))
+ZT = math.ceil(max(j[1][1] for j in L1))
 print(ZT)
 
 if L1:
