@@ -97,12 +97,17 @@ L2 = [b for b in LA if b[1] > 10]
 L3 = [c for c in LB if c[1] > 10]
 L4 = [d for d in LV if d[1] > 10]
 RT = math.ceil(max(e[1] for e in L1))
-print(RT)
 RA = math.ceil(max(f[1] for f in L2))
-YT = math.ceil(max(g[0][0] for g in L1))
+
+KT = math.ceil(min(g[0][0] for g in L1))
+print(KT)
+YT = math.ceil(max(h[0][0] for h in L1))
 print(YT)
-UT = math.ceil(max(h[0][1] for h in L1))
+UT = math.ceil(min(i[1][0] for i in L1))
 print(UT)
+ZT = math.ceil(max(j[1][0] for j in L1))
+print(ZT)
+
 if L1:
     cv2.circle(I1, (math.ceil(L1[0][0][0]), math.ceil(L1[0][0][1])), RT, (0, 205, 0), -1)
     cv2.circle(I1, (math.ceil(L1[1][0][0]), math.ceil(L1[1][0][1])), RT, (0, 205, 0), -1)
