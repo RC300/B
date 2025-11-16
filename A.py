@@ -102,10 +102,10 @@ if L1:
     cv2.circle(I1, (math.ceil(L1[0][0][0]), math.ceil(max(g[0][1] for g in L1))), RT, (0, 205, 0), -1)
     cv2.circle(I1, (math.ceil(L1[1][0][0]), math.ceil(max(g[0][1] for g in L1))), RT, (0, 205, 0), -1)
 if L2:
-    cv2.circle(I1, (math.ceil(L2[0][0][0]), math.ceil(L2[0][0][1])), RA, (255, 0, 0), -1)
-    cv2.circle(I1, (math.ceil(L2[1][0][0]), math.ceil(L2[1][0][1])), RA, (255, 0, 0), -1)
-    cv2.circle(I1, (math.ceil(L2[0][0][0]), math.ceil(L2[0][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
-    cv2.circle(I1, (math.ceil(L2[1][0][0]), math.ceil(L2[1][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
+    cv2.circle(I1, (math.ceil(L2[0][0][0]), math.ceil(max(h[0][1] for h in L2))), RA, (255, 0, 0), -1)
+    cv2.circle(I1, (math.ceil(L2[1][0][0]), math.ceil(max(h[0][1] for h in L2))), RA, (255, 0, 0), -1)
+    cv2.circle(I1, (math.ceil(L2[0][0][0]), math.ceil(max(h[0][1] for h in L2))), math.ceil(RA / 4), (255, 255, 255), -1)
+    cv2.circle(I1, (math.ceil(L2[1][0][0]), math.ceil(max(h[0][1] for h in L2))), math.ceil(RA / 4), (255, 255, 255), -1)
 if L3:
     cv2.circle(I1, (math.ceil(L3[0][0][0]), math.ceil(L3[0][0][1])), math.ceil(L3[0][1]), (255, 0, 255), -1)
 if L4:
