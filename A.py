@@ -43,8 +43,7 @@ class Network(torch.nn.Module):
         TR = self.model(TS) * 0.5 + 0.5
         TI = torchvision.transforms.v2.ToDtype(torch.uint8, True)(TR)
         NI = TI.numpy().transpose((1, 2, 0))
-        CE = numpy.ceil(NI)
-        return CE[0:IN.shape[0], 0:IN.shape[1]]
+        return NI[0:IN.shape[0], 0:IN.shape[1]]
 
 class ResBlock(torch.nn.Module):
 
@@ -100,8 +99,8 @@ L4 = [d for d in LV if d[1] > 10]
 RT = math.ceil(max(e[1] for e in L1))
 RA = math.ceil(max(f[1] for f in L2))
 if L1:
-    cv2.circle(I1, (math.ceil(L1[0][0][0]), math.ceil(L1[0][0][1])), RT, (0, 205, 0), -1)
-    cv2.circle(I1, (math.ceil(L1[1][0][0]), math.ceil(L1[1][0][1])), RT, (0, 205, 0), -1)
+    cv2.circle(I1, (math.ceil(L1[0][0][0]), math.ceil(max(g[0][1] for g in L1))), RT, (0, 205, 0), -1)
+    cv2.circle(I1, (math.ceil(L1[1][0][0]), math.ceil(max(g[0][1] for g in L1))), RT, (0, 205, 0), -1)
 if L2:
     cv2.circle(I1, (math.ceil(L2[0][0][0]), math.ceil(L2[0][0][1])), RA, (255, 0, 0), -1)
     cv2.circle(I1, (math.ceil(L2[1][0][0]), math.ceil(L2[1][0][1])), RA, (255, 0, 0), -1)
