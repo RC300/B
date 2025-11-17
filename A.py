@@ -92,14 +92,11 @@ LT = (cv2.minEnclosingCircle(TC) for TC in CT)
 LA = (cv2.minEnclosingCircle(AC) for AC in CA)
 LB = (cv2.minEnclosingCircle(BC) for BC in CB)
 LV = (cv2.minEnclosingCircle(VC) for VC in CV)
-ZT = [a for a in LT if a[1] > 30]
-ZA = [b for b in LA if b[1] > 10]
-ZB = [c for c in LB if c[1] > 10]
-ZV = [d for d in LV if d[1] > 10]
-L1 = numpy.ceil(ZT)
-L2 = numpy.ceil(ZA)
-L3 = numpy.ceil(ZB)
-L4 = numpy.ceil(ZV)
+L1 = list(a for a in LT if a[1] > 30)
+print(L1)
+L2 = list(b for b in LA if b[1] > 10)
+L3 = list(c for c in LB if c[1] > 10)
+L4 = list(d for d in LV if d[1] > 10)
 RT = math.ceil(max(e[1] for e in L1))
 RA = math.ceil(max(f[1] for f in L2))
 if L1:
