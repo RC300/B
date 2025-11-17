@@ -92,16 +92,14 @@ LT = (cv2.minEnclosingCircle(TC) for TC in CT)
 LA = (cv2.minEnclosingCircle(AC) for AC in CA)
 LB = (cv2.minEnclosingCircle(BC) for BC in CB)
 LV = (cv2.minEnclosingCircle(VC) for VC in CV)
-L1 = list(a for a in LT if a[1] > 30)
-print(L1)
-L2 = list(b for b in LA if b[1] > 10)
-L3 = list(c for c in LB if c[1] > 10)
-L4 = list(d for d in LV if d[1] > 10)
-RT = math.ceil(max(e[1] for e in L1))
+L2 = [b for b in LA if b[1] > 10]
+L3 = [c for c in LB if c[1] > 10]
+L4 = [d for d in LV if d[1] > 10]
+RT = math.ceil(max(e[1] for e in LT))
 RA = math.ceil(max(f[1] for f in L2))
-if L1:
-    cv2.circle(I1, (math.ceil(L1[0][0][0]), math.ceil(L1[0][0][1])), RT, (0, 205, 0), -1)
-    cv2.circle(I1, (math.ceil(L1[1][0][0]), math.ceil(L1[1][0][1])), RT, (0, 205, 0), -1)
+if LT[1] > 30:
+    cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), RT, (0, 205, 0), -1)
+    cv2.circle(I1, (math.ceil(LT[1][0][0]), math.ceil(LT[1][0][1])), RT, (0, 205, 0), -1)
 if L2:
     cv2.circle(I1, (math.ceil(L2[0][0][0]), math.ceil(L2[0][0][1])), RA, (255, 0, 0), -1)
     cv2.circle(I1, (math.ceil(L2[1][0][0]), math.ceil(L2[1][0][1])), RA, (255, 0, 0), -1)
