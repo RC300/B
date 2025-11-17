@@ -98,14 +98,15 @@ L3 = [c for c in LB if c[1] > 10]
 L4 = [d for d in LV if d[1] > 10]
 RT = math.ceil(max(e[1] for e in L1))
 RA = math.ceil(max(f[1] for f in L2))
-if L1[0] is not None: cv2.circle(I1, (math.ceil(L1[0][0][0]), math.ceil(L1[0][0][1])), RT, (0, 205, 0), -1)
-if L1[1] is not None: cv2.circle(I1, (math.ceil(L1[1][0][0]), math.ceil(L1[1][0][1])), RT, (0, 205, 0), -1)
-if L2[0] is not None: cv2.circle(I1, (math.ceil(L2[0][0][0]), math.ceil(L2[0][0][1])), RA, (255, 0, 0), -1)
-if L2[1] is not None: cv2.circle(I1, (math.ceil(L2[1][0][0]), math.ceil(L2[1][0][1])), RA, (255, 0, 0), -1)
-if L2[0] is not None: cv2.circle(I1, (math.ceil(L2[0][0][0]), math.ceil(L2[0][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
-if L2[1] is not None: cv2.circle(I1, (math.ceil(L2[1][0][0]), math.ceil(L2[1][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
-if L3 is not None: cv2.circle(I1, (math.ceil(L3[0][0][0]), math.ceil(L3[0][0][1])), math.ceil(L3[0][1]), (255, 0, 255), -1)
-if L4 is not None: cv2.circle(I1, (math.ceil(L4[0][0][0]), math.ceil(L4[0][0][1])), math.ceil(L4[0][1]), (0, 0, 255), -1)
+if L1[0] or L1[1]:
+    cv2.circle(I1, (math.ceil(L1[0][0][0]), math.ceil(L1[0][0][1])), RT, (0, 205, 0), -1)
+    cv2.circle(I1, (math.ceil(L1[1][0][0]), math.ceil(L1[1][0][1])), RT, (0, 205, 0), -1)
+if L2[0]: cv2.circle(I1, (math.ceil(L2[0][0][0]), math.ceil(L2[0][0][1])), RA, (255, 0, 0), -1)
+if L2[1]: cv2.circle(I1, (math.ceil(L2[1][0][0]), math.ceil(L2[1][0][1])), RA, (255, 0, 0), -1)
+if L2[0]: cv2.circle(I1, (math.ceil(L2[0][0][0]), math.ceil(L2[0][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
+if L2[1]: cv2.circle(I1, (math.ceil(L2[1][0][0]), math.ceil(L2[1][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
+if L3: cv2.circle(I1, (math.ceil(L3[0][0][0]), math.ceil(L3[0][0][1])), math.ceil(L3[0][1]), (255, 0, 255), -1)
+if L4: cv2.circle(I1, (math.ceil(L4[0][0][0]), math.ceil(L4[0][0][1])), math.ceil(L4[0][1]), (0, 0, 255), -1)
 I3 = cv2.bitwise_or(I1, I1, mask=M1) + cv2.bitwise_or(IS, IS, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
