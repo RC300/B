@@ -99,10 +99,10 @@ L4 = [d for d in LV if d[1] > 10]
 RT = math.ceil(max(e[1] for e in L1))
 RA = math.ceil(max(f[1] for f in L2))
 if L1:
-    ((x, y), r) = L1
+    x, y, r = L1
     cv2.circle(I1, (math.ceil(x), math.ceil(y)), RT, (0, 205, 0), -1)
 if L2:
-    ((x, y), r) = L2
+    x, y, r = L2
     cv2.circle(I1, (math.ceil(x), math.ceil(y)), RA, (255, 0, 0), -1)
     cv2.circle(I1, (math.ceil(x), math.ceil(y)), math.ceil(RA / 4), (255, 255, 255), -1)
 if L3: cv2.circle(I1, (math.ceil(L3[0][0][0]), math.ceil(L3[0][0][1])), math.ceil(L3[0][1]), (255, 0, 255), -1)
