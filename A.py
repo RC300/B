@@ -92,11 +92,10 @@ for TC in CT: LT = cv2.minEnclosingCircle(TC)
 for AC in CA: LA = cv2.minEnclosingCircle(AC)
 for BC in CB: LB = cv2.minEnclosingCircle(BC)
 for VC in CV: LV = cv2.minEnclosingCircle(VC)
-L1 = LT[1] > 30
-print(L1)
-L2 = LA[1] > 10
-L3 = LB[1] > 10
-L4 = LV[1] > 10
+if LT: L1 = LT[1] > 30
+if LA: L2 = LA[1] > 10
+if LB: L3 = LB[1] > 10
+if LV: L4 = LV[1] > 10
 RT = math.ceil(max(e[1] for e in L1))
 RA = math.ceil(max(f[1] for f in L2))
 cv2.circle(I1, (math.ceil(L1[0][0][0]), math.ceil(L1[0][0][1])), RT, (0, 205, 0), -1)
