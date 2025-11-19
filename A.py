@@ -92,9 +92,7 @@ LT = (cv2.minEnclosingCircle(TC) for TC in CT)
 LA = (cv2.minEnclosingCircle(AC) for AC in CA)
 LB = (cv2.minEnclosingCircle(BC) for BC in CB)
 LV = (cv2.minEnclosingCircle(VC) for VC in CV)
-Z1 = [math.ceil(x[1]) for x in LT]
-print(Z1)
-L1 = [a for a in LT if a[1] > 30]
+L1 = [a[1] > 30 for a in LT]
 L2 = [b for b in LA if b[1] > 10]
 L3 = [c for c in LB if c[1] > 10]
 L4 = [d for d in LV if d[1] > 10]
