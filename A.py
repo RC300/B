@@ -92,7 +92,7 @@ LT = (cv2.minEnclosingCircle(TC) for TC in CT)
 LA = (cv2.minEnclosingCircle(AC) for AC in CA)
 LB = (cv2.minEnclosingCircle(BC) for BC in CB)
 LV = (cv2.minEnclosingCircle(VC) for VC in CV)
-Z1 = result = [x for y in LT for x in y]
+Z1 = [x for y in LT for x in y]
 print(Z1)
 Z2 = [math.ceil(x) for x in Z1]
 print(Z2)
