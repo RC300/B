@@ -88,7 +88,7 @@ CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-LT = [numpy.ceil(cv2.minEnclosingCircle(TC)) for TC in CT if numpy.ceil(TC[-1]) > 30]
+LT = [numpy.ceil(cv2.minEnclosingCircle(TC)) for TC in CT if round(TC[-1], 1)]
 print(LT)
 LA = [cv2.minEnclosingCircle(AC) for AC in CA]
 LB = [cv2.minEnclosingCircle(BC) for BC in CB]
