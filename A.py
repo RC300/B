@@ -88,7 +88,7 @@ CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-LT = [if cv2.minEnclosingCircle(TC)[1] > 30 for TC in CT]
+LT = [cv2.minEnclosingCircle(TC)[1] > 30 for TC in CT]
 print(LT)
 LA = [cv2.minEnclosingCircle(AC) for AC in CA if cv2.minEnclosingCircle(AC)[1] > 10]
 LB = [cv2.minEnclosingCircle(BC) for BC in CB if cv2.minEnclosingCircle(BC)[1] > 10]
