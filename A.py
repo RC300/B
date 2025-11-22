@@ -92,7 +92,7 @@ LT = [cv2.minEnclosingCircle(TC) for TC in CT if cv2.minEnclosingCircle(TC)[1] >
 LA = [cv2.minEnclosingCircle(AC) for AC in CA if cv2.minEnclosingCircle(AC)[1] > 10]
 LB = [cv2.minEnclosingCircle(BC) for BC in CB if cv2.minEnclosingCircle(BC)[1] > 10]
 LV = [cv2.minEnclosingCircle(VC) for VC in CV if cv2.minEnclosingCircle(VC)[1] > 10]
-L1 = [*a for a in LT]
+L1 = *[a for a in LT]
 print(L1)
 RT = math.ceil(max(a[1] for a in LT))
 RA = math.ceil(max(b[1] for b in LA))
