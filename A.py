@@ -97,7 +97,7 @@ RA = math.ceil(max(b[1] for b in LA))
 if LT:
     cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), RT, (0, 205, 0), -1)
     cv2.circle(I1, (math.ceil(LT[1][0][0]), math.ceil(LT[1][0][1])), RT, (0, 205, 0), -1)
-if LT and LA: 
+if LT and LA:
     cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(LA[0][0][1])), RA, (255, 0, 0), -1)
     cv2.circle(I1, (math.ceil(LT[1][0][0]), math.ceil(LA[1][0][1])), RA, (255, 0, 0), -1)
     cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(LA[0][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
