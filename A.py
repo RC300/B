@@ -75,7 +75,6 @@ GM = numpy.full_like(I0, (0, 255, 0))
 IC = cv2.bitwise_or(NB, NB, mask=M1) + cv2.bitwise_or(GM, GM, mask=M2)
 P1 = cv2.inRange(IC, (0, 0, 0), (0, 0, 0))
 P2 = cv2.inRange(IC, (255, 0, 0), (255, 0, 0))
-P1 = cv2.bitwise_or(P1, P2)
 P3 = cv2.inRange(IC, (255, 0, 255), (255, 0, 255))
 P4 = cv2.inRange(IC, (0, 0, 255), (0, 0, 255))
 CT = cv2.findContours(P1, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
