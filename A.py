@@ -83,10 +83,6 @@ PT = cv2.resize(P1, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 PA = cv2.resize(P2, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 PB = cv2.resize(P3, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 PV = cv2.resize(P4, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-cv2.imwrite(args.output + 'A1.jpg', cv2.cvtColor(PT, cv2.COLOR_BGR2RGB))
-cv2.imwrite(args.output + 'A2.jpg', cv2.cvtColor(PA, cv2.COLOR_BGR2RGB))
-cv2.imwrite(args.output + 'A3.jpg', cv2.cvtColor(PB, cv2.COLOR_BGR2RGB))
-cv2.imwrite(args.output + 'A4.jpg', cv2.cvtColor(PV, cv2.COLOR_BGR2RGB))
 CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
