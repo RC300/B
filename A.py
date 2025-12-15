@@ -95,7 +95,7 @@ RT = math.ceil(max(a[1] for a in LT))
 RA = math.ceil(max(b[1] for b in LA))
 YT = math.ceil(max(c[0][1] for c in LT))
 TY = math.ceil(min(d[0][1] for d in LT))
-LT = [RT + (YT - TY) if min(e[1] for e in LT)]
+LT = [min(e[1]) == RT + (YT - TY)]
 cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(LT[0][1]), (0, 205, 0), -1)
 cv2.circle(I1, (math.ceil(LT[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(LT[1][1]), (0, 205, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), RA, (255, 0, 0), -1)
