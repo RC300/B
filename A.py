@@ -94,7 +94,7 @@ LV = [cv2.minEnclosingCircle(VC) for VC in CV if cv2.minEnclosingCircle(VC)[1] >
 RT = math.ceil(max(a[1] for a in LT))
 RA = math.ceil(max(b[1] for b in LA))
 RJ = math.ceil(min(c[1] for c in LT))
-RF = RT + (RT - RJ)
+RF = RT + math.ceil((RT - RJ) / 2)
 cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), RT, (0, 205, 0), -1)
 cv2.circle(I1, (math.ceil(LT[1][0][0]), math.ceil(LT[1][0][1])), RF, (0, 205, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), RA, (255, 0, 0), -1)
