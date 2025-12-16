@@ -93,8 +93,11 @@ LB = [cv2.minEnclosingCircle(x) for x in CB if cv2.minEnclosingCircle(x)[1] > 10
 LV = [cv2.minEnclosingCircle(x) for x in CV if cv2.minEnclosingCircle(x)[1] > 10]
 RT = math.ceil(max(x[1] for x in LT))
 RA = math.ceil(max(x[1] for x in LA))
-cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), RT + RA, (0, 205, 0), -1)
-cv2.circle(I1, (math.ceil(LT[1][0][0]), math.ceil(LT[1][0][1])), RT + RA, (0, 205, 0), -1)
+RD = math.ceil(max(x[1] for x in LT)) - math.ceil(min(x[1] for x in LT))
+YD = math.ceil(max(x[0][1] for x in LT)) - math.ceil(min(x[0][1] for x in LT))
+LT = [min(x[1] for x in LT) + RD + YD if min(x[1] for x in LT) < max(x[1] for x in LT)]
+cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(LT[0][1]), (0, 205, 0), -1)
+cv2.circle(I1, (math.ceil(LT[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(LT[1][1]), (0, 205, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), RA, (255, 0, 0), -1)
 cv2.circle(I1, (math.ceil(LA[1][0][0]), math.ceil(LT[1][0][1])), RA, (255, 0, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
