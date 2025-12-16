@@ -13,7 +13,7 @@ jobs:
       - name: Python
         uses: actions/setup-python@v6.1.0
         with:
-          python-version: 3.14.2
+          python-version: 3.13.11
           architecture: x64
 
       - name: Setup
