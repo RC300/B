@@ -93,7 +93,7 @@ LB = [cv2.minEnclosingCircle(x) for x in CB if cv2.minEnclosingCircle(x)[1] > 10
 LV = [cv2.minEnclosingCircle(x) for x in CV if cv2.minEnclosingCircle(x)[1] > 10]
 RT = max(x[1] for x in LT)
 RA = max(x[1] for x in LA)
-L1 = [cv2.minEnclosingCircle(x) for x in CT if cv2.minEnclosingCircle(x)[1] > 30].sort()
+L1 = LT.sort()
 print(L1)
 cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RT), (0, 205, 0), -1)
 cv2.circle(I1, (math.ceil(LT[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(RT), (0, 205, 0), -1)
