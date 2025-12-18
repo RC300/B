@@ -83,7 +83,7 @@ PT = cv2.resize(P1, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 PA = cv2.resize(P2, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 PB = cv2.resize(P3, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 PV = cv2.resize(P4, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
+CT = numpy.array(cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0])
 CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
@@ -93,9 +93,8 @@ LB = sorted([cv2.minEnclosingCircle(x) for x in CB if cv2.minEnclosingCircle(x)[
 LV = sorted([cv2.minEnclosingCircle(x) for x in CV if cv2.minEnclosingCircle(x)[1] > 10])
 RT = max(x[1] for x in LT)
 RA = max(x[1] for x in LA)
-YD = max(x[0][1] for x in LT) - min(x[0][1] for x in LT)
-cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RT) + math.ceil(YD), (0, 205, 0), -1)
-cv2.circle(I1, (math.ceil(LT[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(RT) + math.ceil(YD), (0, 205, 0), -1)
+cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RT), (0, 205, 0), -1)
+cv2.circle(I1, (math.ceil(LT[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(RT), (0, 205, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RA), (255, 0, 0), -1)
 cv2.circle(I1, (math.ceil(LA[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(RA), (255, 0, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
