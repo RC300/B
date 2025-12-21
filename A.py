@@ -93,7 +93,7 @@ LB = sorted(cv2.minEnclosingCircle(BC) for BC in CB if cv2.minEnclosingCircle(BC
 LV = sorted(cv2.minEnclosingCircle(VC) for VC in CV if cv2.minEnclosingCircle(VC)[1] > 10)
 RT = max(a[1] for a in LT)
 RA = max(b[1] for b in LA)
-L1 = sorted(LT, key=lambda: LT[1])
+L1 = sorted(LT, key=lambda x: x[1])
 print(LT)
 print(L1)
 cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RT), (0, 205, 0), -1)
