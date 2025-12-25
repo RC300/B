@@ -62,7 +62,8 @@ with torch.inference_mode(): IA = GT(N1)
 NA = cv2.resize(IA, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 MG = cv2.inRange(NA, (0, 255, 0), (0, 255, 0))
 CM = cv2.findContours(MG, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-M1 = [cv2.contourArea(MC) for MC in CM if cv2.contourArea(MC) > 100]
+GC = [cv2.contourArea(MC) for MC in CM if cv2.contourArea(MC) > 100]
+M1 = cv2.inRange(GC, (0, 255, 0), (0, 255, 0))
 M2 = cv2.bitwise_not(M1)
 I1 = cv2.bitwise_or(NA, NA, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
