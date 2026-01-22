@@ -13,12 +13,12 @@ jobs:
       - name: Python
         uses: actions/setup-python@v6.1.0
         with:
-          python-version: 3.13.11
+          python-version: 3.14.2
           architecture: x64
 
       - name: Setup
         run: |
-          pip3 install pyinstaller==6.17.0 numpy==2.2.6 opencv-python==4.12.0.88 pillow==12.0.0 torch==2.9.1 torchvision==0.24.1
+          pip3 install pyinstaller==6.18.0 numpy==2.4.1 opencv-python==4.13.0.90 pillow==12.1.0 torch==2.9.1 torchvision==0.24.1
           pyinstaller A.py
 
       - name: File
