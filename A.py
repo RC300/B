@@ -7,6 +7,7 @@ parser.add_argument('-o', '--output')
 args = parser.parse_args()
 
 I0 = cv2.cvtColor(cv2.imread(args.input), cv2.COLOR_BGR2RGB)
+W1 = math.ceil(I0.shape[1] / I0.shape[0] * 512)
 IV = I0.size // 120
 C0 = numpy.dsplit(I0, 3)
 SR = numpy.sort(C0[0], None)
@@ -55,24 +56,24 @@ class ResBlock(torch.nn.Module):
 
 GT = Network()
 
+N1 = cv2.resize(I0, (W1, 512), interpolation=cv2.INTER_CUBIC)
 GT.load_state_dict(torch.load(args.model + '1.lib'))
-with torch.inference_mode(): IA = GT(I0)
-M1 = cv2.inRange(IA, (0, 255, 0), (0, 255, 0))
+with torch.inference_mode(): IA = GT(N1)
+NA = cv2.resize(IA, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
+M1 = cv2.inRange(NA, (0, 255, 0), (0, 255, 0))
 M2 = cv2.bitwise_not(M1)
-I1 = cv2.bitwise_or(IA, IA, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
+I1 = cv2.bitwise_or(NA, NA, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '2.lib'))
-with torch.inference_mode(): IB = GT(IA)
+with torch.inference_mode(): IB = GT(NA)
 I2 = cv2.bitwise_or(IB, IB, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
-W1 = math.ceil(I0.shape[1] / I0.shape[0] * 512)
-NA = cv2.resize(IA, (W1, 512), interpolation=cv2.INTER_CUBIC)
 NB = cv2.resize(IB, (W1, 512), interpolation=cv2.INTER_CUBIC)
 
-GM = numpy.full_like(NA, (0, 255, 0))
-M3 = cv2.inRange(NA, (0, 255, 0), (0, 255, 0))
+GM = numpy.full_like(N1, (0, 255, 0))
+M3 = cv2.inRange(IA, (0, 255, 0), (0, 255, 0))
 M4 = cv2.bitwise_not(M3)
 IC = cv2.bitwise_or(NB, NB, mask=M3) + cv2.bitwise_or(GM, GM, mask=M4)
 P1 = cv2.inRange(IC, (0, 0, 0), (255, 0, 0))
