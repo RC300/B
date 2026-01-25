@@ -67,7 +67,8 @@ cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
 
 M3 = cv2.inRange(IA, (0, 255, 0), (0, 255, 0))
 M4 = cv2.bitwise_not(M3)
-IX = cv2.bitwise_or(IA, IA, mask=M3) + cv2.bitwise_or(N1, N1, mask=M4)
+N2 = cv2.resize(IS, (W1, 512), interpolation=cv2.INTER_CUBIC)
+IX = cv2.bitwise_or(IA, IA, mask=M3) + cv2.bitwise_or(N2, N2, mask=M4)
 
 GT.load_state_dict(torch.load(args.model + '2.lib'))
 with torch.inference_mode(): IB = GT(IX)
