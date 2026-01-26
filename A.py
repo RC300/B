@@ -107,10 +107,10 @@ N3 = cv2.resize(I3, (W1, 512), interpolation=cv2.INTER_CUBIC)
 
 for CD in CT:
     TL = cv2.boundingRect(CD)
-    if TL[2] > 10: I5 = cv2.rectangle(I2, (TL[0], TL[1]), (TL[0] + TL[2], TL[1] + TL[3]), (0, 0, 255), 2)
-    if TL[2] > 10: I6 = cv2.rectangle(I3, (TL[0], TL[1]), (TL[0] + TL[2], TL[1] + TL[3]), (0, 0, 255), 2)
-cv2.imwrite(args.output + 'A1.jpg', cv2.cvtColor(I5, cv2.COLOR_BGR2RGB))
-cv2.imwrite(args.output + 'A2.jpg', cv2.cvtColor(I6, cv2.COLOR_BGR2RGB))
+    if TL[2] > 10: cv2.rectangle(I2, (TL[0], TL[1]), (TL[0] + TL[2], TL[1] + TL[3]), (0, 0, 255), 2)
+    if TL[2] > 10: cv2.rectangle(I3, (TL[0], TL[1]), (TL[0] + TL[2], TL[1] + TL[3]), (0, 0, 255), 2)
+cv2.imwrite(args.output + 'A1.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
+cv2.imwrite(args.output + 'A2.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '3.lib'))
 with torch.inference_mode(): ID = GT(N3)
