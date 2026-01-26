@@ -91,11 +91,8 @@ LT = sorted(cv2.minEnclosingCircle(TC) for TC in CT if cv2.minEnclosingCircle(TC
 LA = sorted(cv2.minEnclosingCircle(AC) for AC in CA if cv2.minEnclosingCircle(AC)[1] > 10)
 LB = sorted(cv2.minEnclosingCircle(BC) for BC in CB if cv2.minEnclosingCircle(BC)[1] > 10)
 LV = sorted(cv2.minEnclosingCircle(VC) for VC in CV if cv2.minEnclosingCircle(VC)[1] > 10)
-TL = sorted(cv2.boundingRect(CB) for CB in CT)
-MX = max(a[0] for a in TL)
-MW = max(b[2] for b in TL)
-RA = max(c[1] for c in LA)
-RT = (MX + MW) - MX
+RT = max(a[1] for a in LT)
+RA = max(b[1] for b in LA)
 cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RT), (0, 205, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RA), (255, 0, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
@@ -106,8 +103,15 @@ if LB: cv2.circle(I1, (math.ceil(LB[0][0][0]), math.ceil(LB[0][0][1])), math.cei
 if LV: cv2.circle(I1, (math.ceil(LV[0][0][0]), math.ceil(LV[0][0][1])), math.ceil(LV[0][1]), (0, 0, 255), -1)
 I3 = cv2.bitwise_or(I1, I1, mask=M1) + cv2.bitwise_or(IS, IS, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
-
 N3 = cv2.resize(I3, (W1, 512), interpolation=cv2.INTER_CUBIC)
+
+for CB in CT:
+    x, y, w, h = cv2.boundingRect(CT)
+    I5 = cv2.rectangle(I2, (x, y), (x + w, y + h), (0, 0, 255), 2)
+    I6 = cv2.rectangle(I3, (x, y), (x + w, y + h), (0, 0, 255), 2)
+cv2.imwrite(args.output + 'A1.jpg', cv2.cvtColor(I5, cv2.COLOR_BGR2RGB))
+cv2.imwrite(args.output + 'A2.jpg', cv2.cvtColor(I6, cv2.COLOR_BGR2RGB))
+
 GT.load_state_dict(torch.load(args.model + '3.lib'))
 with torch.inference_mode(): ID = GT(N3)
 ND = cv2.resize(ID, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
