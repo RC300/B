@@ -105,7 +105,7 @@ I3 = cv2.bitwise_or(I1, I1, mask=M1) + cv2.bitwise_or(IS, IS, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 N3 = cv2.resize(I3, (W1, 512), interpolation=cv2.INTER_CUBIC)
 
-TL = [cv2.boundingRect(CD) for CD in CT]
+TL = sorted(cv2.boundingRect(CD) for CD in CT)
 I5 = cv2.rectangle(I2, (TL[0], TL[1]), (TL[0] + TL[2], TL[1] + TL[3]), (0, 0, 255), 2)
 I6 = cv2.rectangle(I3, (TL[0], TL[1]), (TL[0] + TL[2], TL[1] + TL[3]), (0, 0, 255), 2)
 cv2.imwrite(args.output + 'A1.jpg', cv2.cvtColor(I5, cv2.COLOR_BGR2RGB))
