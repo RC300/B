@@ -110,10 +110,10 @@ for CD in CT:
     if TL[2] > 10:
         cv2.rectangle(I2, (TL[0], TL[1]), (TL[0] + TL[2], TL[1] + TL[3]), (0, 0, 255), 2)
         cv2.rectangle(I3, (TL[0], TL[1]), (TL[0] + TL[2], TL[1] + TL[3]), (0, 0, 255), 2)
-        cv2.circle(I2, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(TL[1]), (0, 0, 255), 2)
-        cv2.circle(I2, (math.ceil(LT[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(TL[1]), (0, 0, 255), 2)
-        cv2.circle(I3, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(TL[1]), (0, 0, 255), 2)
-        cv2.circle(I3, (math.ceil(LT[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(TL[1]), (0, 0, 255), 2)
+        cv2.circle(I2, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(TL[2]), (0, 0, 255), 2)
+        cv2.circle(I2, (math.ceil(LT[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(TL[2]), (0, 0, 255), 2)
+        cv2.circle(I3, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(TL[2]), (0, 0, 255), 2)
+        cv2.circle(I3, (math.ceil(LT[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(TL[2]), (0, 0, 255), 2)
 cv2.imwrite(args.output + 'A1.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 cv2.imwrite(args.output + 'A2.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
