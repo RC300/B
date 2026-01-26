@@ -104,7 +104,7 @@ if LV: cv2.circle(I1, (math.ceil(LV[0][0][0]), math.ceil(LV[0][0][1])), math.cei
 I3 = cv2.bitwise_or(I1, I1, mask=M1) + cv2.bitwise_or(IS, IS, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
-x, y, w, h = cv2.boundingRect(CT)
+x, y, w, h = (cv2.boundingRect(CB) for CB in CT)
 I5 = cv2.rectangle(I2, (x, y), (x + w, y + h), (0, 0, 255), 2)
 I6 = cv2.rectangle(I3, (x, y), (x + w, y + h), (0, 0, 255), 2)
 cv2.imwrite(args.output + 'A1.jpg', cv2.cvtColor(I5, cv2.COLOR_BGR2RGB))
