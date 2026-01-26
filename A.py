@@ -95,10 +95,11 @@ RT = max(a[1] for a in LT)
 RA = max(b[1] for b in LA)
 for CD in CT:
     TL = [cv2.boundingRect(CD)]
-    RM = max(c[2] for c in TL)
-    print(RM)
-    cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RM), (0, 205, 0), -1)
-    cv2.circle(I1, (math.ceil(LT[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(RM), (0, 205, 0), -1)
+    if TL[2] > 10:
+        RM = max(c[2] for c in TL)
+        print(RM)
+        cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RM), (0, 205, 0), -1)
+        cv2.circle(I1, (math.ceil(LT[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(RM), (0, 205, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RA), (255, 0, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
 cv2.circle(I1, (math.ceil(LA[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(RA), (255, 0, 0), -1)
