@@ -107,7 +107,9 @@ N3 = cv2.resize(I3, (W1, 512), interpolation=cv2.INTER_CUBIC)
 
 for CD in CT:
     x, y, w, h = cv2.boundingRect(CD)
-    if w > 10: cv2.rectangle(I2, (x, y), (x + w, y + h), (0, 0, 255), 2)
+    if w > 10:
+        cv2.rectangle(I2, (x, y), (x + w, y + h), (0, 0, 255), 2)
+        print(w)
     if w > 10: cv2.rectangle(I3, (x, y), (x + w, y + h), (0, 0, 255), 2)
 cv2.imwrite(args.output + 'A1.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 cv2.imwrite(args.output + 'A2.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
