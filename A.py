@@ -107,7 +107,8 @@ N3 = cv2.resize(I3, (W1, 512), interpolation=cv2.INTER_CUBIC)
 
 P5 = cv2.resize(M3, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 CM = cv2.findContours(P5, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-LG = sorted(cv2.boundingRect(MC) for MC in CM if cv2.boundingRect(MC)[2] > 10)
+LG = sorted([cv2.boundingRect(MC) for MC in CM if cv2.boundingRect(MC)[2] > 10])
+print(LG)
 cv2.rectangle(I2, (math.ceil(LG[0]), math.ceil(LG[1])), (math.ceil(LG[0]) + math.ceil(LG[2]), math.ceil(LG[1]) + math.ceil(LG[3])), (0, 0, 255), 2)
 cv2.rectangle(I3, (math.ceil(LG[0]), math.ceil(LG[1])), (math.ceil(LG[0]) + math.ceil(LG[2]), math.ceil(LG[1]) + math.ceil(LG[3])), (0, 0, 255), 2)
 
