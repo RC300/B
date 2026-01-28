@@ -96,7 +96,7 @@ RT = max(a[1] for a in LT)
 RA = max(b[1] for b in LA)
 MY = max(c[1] for c in TL)
 MH = max(d[3] for d in TL)
-YT = MY - (MH / 2)
+YT = MY
 cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(YT)), math.ceil(RT), (0, 205, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(YT)), math.ceil(RA), (255, 0, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(YT)), math.ceil(RA / 4), (255, 255, 255), -1)
