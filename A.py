@@ -111,7 +111,7 @@ XM = min(c[0] for c in TL)
 MY = max(d[1] for d in TL)
 MW = max(d[2] for d in TL)
 MH = max(e[3] for e in TL)
-DX = XM + MW + (MX - XM)
+DX = XM + MX - XM
 cv2.rectangle(I2, (math.ceil(TL[0][0]), math.ceil(TL[0][1])), (math.ceil(DX) + math.ceil(MW), math.ceil(MY) + math.ceil(MH)), (0, 0, 255), 2)
 cv2.rectangle(I3, (math.ceil(TL[0][0]), math.ceil(TL[0][1])), (math.ceil(DX) + math.ceil(MW), math.ceil(MY) + math.ceil(MH)), (0, 0, 255), 2)
 cv2.imwrite(args.output + 'A1.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
