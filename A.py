@@ -112,9 +112,10 @@ MW = max(e[2] for e in TL)
 MH = max(f[3] for f in TL)
 XM = min(g[0] for g in TL)
 YM = min(h[1] for h in TL)
-DW = XM + MX - XM
-cv2.rectangle(I2, (math.ceil(XM), math.ceil(YM)), (math.ceil(DW) + math.ceil(MW), math.ceil(MY) + math.ceil(MH)), (0, 0, 255), 2)
-cv2.rectangle(I3, (math.ceil(XM), math.ceil(YM)), (math.ceil(DW) + math.ceil(MW), math.ceil(MY) + math.ceil(MH)), (0, 0, 255), 2)
+cv2.rectangle(I2, (math.ceil(TL[0][0]), math.ceil(YM)), (math.ceil(TL[0][0]) + math.ceil(MX - XM), math.ceil(MY) + math.ceil(MH)), (0, 0, 255), 2)
+cv2.rectangle(I2, (math.ceil(TL[1][0]), math.ceil(YM)), (math.ceil(TL[1][0]) + math.ceil(MX - XM), math.ceil(MY) + math.ceil(MH)), (0, 0, 255), 2)
+cv2.rectangle(I3, (math.ceil(TL[0][0]), math.ceil(YM)), (math.ceil(TL[0][0]) + math.ceil(MX - XM), math.ceil(MY) + math.ceil(MH)), (0, 0, 255), 2)
+cv2.rectangle(I3, (math.ceil(TL[1][0]), math.ceil(YM)), (math.ceil(TL[1][0]) + math.ceil(MX - XM), math.ceil(MY) + math.ceil(MH)), (0, 0, 255), 2)
 cv2.imwrite(args.output + 'A1.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 cv2.imwrite(args.output + 'A2.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
