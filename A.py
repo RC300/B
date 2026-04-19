@@ -94,7 +94,7 @@ LV = sorted(cv2.minEnclosingCircle(VC) for VC in CV if cv2.minEnclosingCircle(VC
 RT = math.ceil((math.ceil(LT[1][0][0]) - math.ceil(LT[0][0][0])) / 2)
 RA = max(b[1] for b in LA)
 TH = math.ceil((math.ceil(LT[1][0][0]) - math.ceil(LT[0][0][0])))
-cv2.circle(I1, (math.ceil(TH -RT), math.ceil(LT[0][0][1])), math.ceil(RT), (0, 205, 0), -1)
+cv2.circle(I1, (math.ceil(TH - RT), math.ceil(LT[0][0][1])), math.ceil(RT), (0, 205, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RA), (255, 0, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
 cv2.circle(I1, (math.ceil(TH + RT), math.ceil(LT[1][0][1])), math.ceil(RT), (0, 205, 0), -1)
