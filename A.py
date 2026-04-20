@@ -94,10 +94,10 @@ LV = sorted(cv2.minEnclosingCircle(VC) for VC in CV if cv2.minEnclosingCircle(VC
 RT = (math.ceil(LT[1][0][0]) - math.ceil(LT[0][0][0])) / 2
 RA = max(b[1] for b in LA)
 cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RT), (0, 205, 0), -1)
-cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RA), (255, 0, 0), -1)
+cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RT / 4), (255, 0, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
 cv2.circle(I1, (math.ceil(LT[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(RT), (0, 205, 0), -1)
-cv2.circle(I1, (math.ceil(LA[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(RA), (255, 0, 0), -1)
+cv2.circle(I1, (math.ceil(LA[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(RT / 4), (255, 0, 0), -1)
 cv2.circle(I1, (math.ceil(LA[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
 if LB: cv2.circle(I1, (math.ceil(LB[0][0][0]), math.ceil(LB[0][0][1])), math.ceil(LB[0][1]), (255, 0, 255), -1)
 if LV: cv2.circle(I1, (math.ceil(LV[0][0][0]), math.ceil(LV[0][0][1])), math.ceil(LV[0][1]), (0, 0, 255), -1)
