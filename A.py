@@ -93,8 +93,7 @@ LB = sorted(cv2.minEnclosingCircle(BC) for BC in CB if cv2.minEnclosingCircle(BC
 LV = sorted(cv2.minEnclosingCircle(VC) for VC in CV if cv2.minEnclosingCircle(VC)[1] > 10)
 RA = max(a[1] for a in LA)
 YT = max(b[0][1] for b in LT)
-YD = max(c[0][1] for c in LT) - min(d[0][1] for d in LT)
-RT = (math.ceil(LT[1][0][0]) - math.ceil(LT[0][0][0])) / 2 + math.ceil(YD)
+RT = (math.ceil(LT[1][0][0]) - math.ceil(LT[0][0][0])) / 2
 cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(YT)), math.ceil(RT), (0, 205, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RA), (255, 0, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
