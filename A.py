@@ -71,30 +71,22 @@ NB = cv2.resize(IB, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 I2 = cv2.bitwise_or(NB, NB, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
-GM = numpy.full_like(N1, (0, 255, 0))
-M3 = cv2.inRange(IA, (0, 255, 0), (0, 255, 0))
-M4 = cv2.bitwise_not(M3)
-IC = cv2.bitwise_or(IB, IB, mask=M3) + cv2.bitwise_or(GM, GM, mask=M4)
+GM = numpy.full_like(I0, (0, 255, 0))
+IC = cv2.bitwise_or(NB, NB, mask=M1) + cv2.bitwise_or(GM, GM, mask=M2)
 P1 = cv2.inRange(IC, (0, 0, 0), (255, 0, 0))
 P2 = cv2.inRange(IC, (255, 0, 0), (255, 0, 0))
 P3 = cv2.inRange(IC, (255, 0, 255), (255, 0, 255))
 P4 = cv2.inRange(IC, (0, 0, 255), (0, 0, 255))
-PT = cv2.resize(P1, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-PA = cv2.resize(P2, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-PB = cv2.resize(P3, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-PV = cv2.resize(P4, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-LT = [sorted(cv2.minEnclosingCircle(TC) for TC in CT if cv2.minEnclosingCircle(TC)[1] > 30)]
+CT = cv2.findContours(P1, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
+CA = cv2.findContours(P2, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
+CB = cv2.findContours(P3, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
+CV = cv2.findContours(P4, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
+LT = sorted(cv2.minEnclosingCircle(TC) for TC in CT if cv2.minEnclosingCircle(TC)[1] > 30)
 LA = sorted(cv2.minEnclosingCircle(AC) for AC in CA if cv2.minEnclosingCircle(AC)[1] > 10)
 LB = sorted(cv2.minEnclosingCircle(BC) for BC in CB if cv2.minEnclosingCircle(BC)[1] > 10)
 LV = sorted(cv2.minEnclosingCircle(VC) for VC in CV if cv2.minEnclosingCircle(VC)[1] > 10)
 RT = (math.ceil(LT[1][0][0]) - math.ceil(LT[0][0][0])) / 2
 RA = max(b[1] for b in LA)
-print(LT[0])
-print(LT[1])
 cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RT), (0, 205, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RA), (255, 0, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
