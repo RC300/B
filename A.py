@@ -87,11 +87,10 @@ CT = cv2.findContours(PT, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CA = cv2.findContours(PA, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(PB, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CV = cv2.findContours(PV, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-LT = sorted(cv2.minEnclosingCircle(TC) for TC in CT if cv2.minEnclosingCircle(TC)[1] > 30)
-LA = sorted(cv2.minEnclosingCircle(AC) for AC in CA if cv2.minEnclosingCircle(AC)[1] > 10)
-LB = sorted(cv2.minEnclosingCircle(BC) for BC in CB if cv2.minEnclosingCircle(BC)[1] > 10)
-LV = sorted(cv2.minEnclosingCircle(VC) for VC in CV if cv2.minEnclosingCircle(VC)[1] > 10)
-print(LT)
+LT = [sorted(cv2.minEnclosingCircle(TC) for TC in CT if cv2.minEnclosingCircle(TC)[1] > 30)]
+LA = [sorted(cv2.minEnclosingCircle(AC) for AC in CA if cv2.minEnclosingCircle(AC)[1] > 10)]
+LB = [sorted(cv2.minEnclosingCircle(BC) for BC in CB if cv2.minEnclosingCircle(BC)[1] > 10)]
+LV = [sorted(cv2.minEnclosingCircle(VC) for VC in CV if cv2.minEnclosingCircle(VC)[1] > 10)]
 if len(LT) != 2: LT[1][0][0] = LT[0][0][0] + (2 * LT[0][1])
 if len(LT) != 2: LT[1][0][1] = LT[0][0][1]
 if len(LT) != 2: LA[1][0][0] = LT[0][0][0] + (2 * LT[0][1])
