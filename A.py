@@ -59,7 +59,7 @@ NB = cv2.resize(IB, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 I2 = cv2.bitwise_or(NB, NB, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
-BM = numpy.full_like(I0, (0, 0, 0))
+BM = numpy.full_like(I0, (127, 127, 127))
 BI = cv2.bitwise_or(BM, BM, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 IV = I0.size // 120
 C0 = numpy.dsplit(BI, 3)
