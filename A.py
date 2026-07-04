@@ -8,7 +8,7 @@ args = parser.parse_args()
 
 I0 = cv2.cvtColor(cv2.imread(args.input), cv2.COLOR_BGR2RGB)
 W1 = math.ceil(I0.shape[1] / I0.shape[0] * 512)
-IV = I0.size // 120
+IV = I0.size // 100
 C0 = numpy.dsplit(I0, 3)
 SR = numpy.sort(C0[0], None)
 SG = numpy.sort(C0[1], None)
