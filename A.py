@@ -95,7 +95,7 @@ RA = max(a[1] for a in LA)
 YM = max(b[0][1] for b in LT)
 MY = min(c[0][1] for c in LT)
 YT = math.ceil(MY - YM)
-RT = (math.ceil(LT[1][0][0]) - math.ceil(LT[0][0][0])) / 2 + YT
+RT = (math.ceil(LT[1][0][0]) - math.ceil(LT[0][0][0])) / 2 + abs(YT)
 cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(YM)), math.ceil(RT), (0, 205, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(YM)), math.ceil(RA), (255, 0, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(YM)), math.ceil(RA / 4), (255, 255, 255), -1)
