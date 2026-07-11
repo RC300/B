@@ -71,14 +71,10 @@ NB = cv2.resize(IB, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 I2 = cv2.bitwise_or(NB, NB, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
-GM = numpy.full_like(N1, (0, 255, 0))
-M3 = cv2.inRange(IA, (0, 255, 0), (0, 255, 0))
-M4 = cv2.bitwise_not(M3)
-IC = cv2.bitwise_or(IB, IB, mask=M3) + cv2.bitwise_or(GM, GM, mask=M4)
-P1 = cv2.inRange(IC, (0, 0, 0), (255, 0, 0))
-P2 = cv2.inRange(IC, (255, 0, 0), (255, 0, 0))
-P3 = cv2.inRange(IC, (255, 0, 255), (255, 0, 255))
-P4 = cv2.inRange(IC, (0, 0, 255), (0, 0, 255))
+P1 = cv2.inRange(I2, (0, 0, 0), (255, 0, 0))
+P2 = cv2.inRange(I2, (255, 0, 0), (255, 0, 0))
+P3 = cv2.inRange(I2, (255, 0, 255), (255, 0, 255))
+P4 = cv2.inRange(I2, (0, 0, 255), (0, 0, 255))
 CT = cv2.findContours(P1, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CA = cv2.findContours(P2, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(P3, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
