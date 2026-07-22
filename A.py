@@ -8,8 +8,6 @@ args = parser.parse_args()
 
 I0 = cv2.cvtColor(cv2.imread(args.input), cv2.COLOR_BGR2RGB)
 W1 = math.ceil(I0.shape[1] / I0.shape[0] * 512)
-IE = cv2.equalizeHist(I0)
-cv2.imwrite(args.output + 'A1.jpg', cv2.cvtColor(IE, cv2.COLOR_BGR2RGB))
 IV = I0.size // 120
 C0 = numpy.dsplit(I0, 3)
 SR = numpy.sort(C0[0], None)
@@ -22,6 +20,12 @@ R0 = cv2.normalize(V1, None, 0, 255, cv2.NORM_MINMAX)
 G0 = cv2.normalize(V2, None, 0, 255, cv2.NORM_MINMAX)
 B0 = cv2.normalize(V3, None, 0, 255, cv2.NORM_MINMAX)
 IS = numpy.dstack((R0, G0, B0))
+
+IX = cv2.cvtColor(cv2.imread(args.input), cv2.COLOR_BGR2HSV)
+h, s, v = cv2.split(IX)
+EV = cv2.equalizeHist(v)
+IE = cv2.cvtColor(cv2.merge([h, s, v_equalized]), cv2.COLOR_HSV2RGB)
+cv2.imwrite(args.output + 'A1.jpg', cv2.cvtColor(IE, cv2.COLOR_BGR2RGB))
 
 class Network(torch.nn.Module):
 
