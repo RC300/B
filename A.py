@@ -43,8 +43,9 @@ class Network(torch.nn.Module):
         TS = torchvision.transforms.v2.ToDtype(torch.float32, True)(TS)
         TR = self.model(TS) * 0.5 + 0.5
         TI = torchvision.transforms.v2.ToDtype(torch.uint8, True)(TR)
-        NC = TI.numpy().transpose((1, 2, 0))
-        return NC[0:NI.shape[0], 0:NI.shape[1]]
+        NT = TI.numpy().transpose((1, 2, 0))
+        NC = NT[0:NI.shape[0], 0:NI.shape[1]]
+        return cv2.resize(NC, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 
 class ResBlock(torch.nn.Module):
 
@@ -59,16 +60,14 @@ GT = Network()
 
 GT.load_state_dict(torch.load(args.model + '1.lib'))
 with torch.inference_mode(): IA = GT(I0)
-NA = cv2.resize(IA, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-M1 = cv2.inRange(NA, (0, 255, 0), (0, 255, 0))
+M1 = cv2.inRange(IA, (0, 255, 0), (0, 255, 0))
 M2 = cv2.bitwise_not(M1)
-I1 = cv2.bitwise_or(NA, NA, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
+I1 = cv2.bitwise_or(IA, IA, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '2.lib'))
 with torch.inference_mode(): IB = GT(IA)
-NB = cv2.resize(IB, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-I2 = cv2.bitwise_or(NB, NB, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
+I2 = cv2.bitwise_or(IB, IB, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
 P1 = cv2.inRange(I2, (0, 0, 0), (255, 0, 0))
@@ -98,8 +97,7 @@ cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '3.lib'))
 with torch.inference_mode(): ID = GT(I3)
-ND = cv2.resize(ID, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-C4 = numpy.dsplit(ND, 3)
+C4 = numpy.dsplit(ID, 3)
 R4 = cv2.normalize(C4[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
 G4 = cv2.normalize(C4[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
 B4 = cv2.normalize(C4[2], None, SB[IV], SB[-IV], cv2.NORM_MINMAX)
