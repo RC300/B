@@ -24,7 +24,7 @@ IS = numpy.dstack((R0, G0, B0))
 IX = cv2.cvtColor(cv2.imread(args.input), cv2.COLOR_BGR2HSV)
 h, s, v = cv2.split(IX)
 EV = cv2.equalizeHist(v)
-IE = cv2.cvtColor(cv2.merge([h, s, v_equalized]), cv2.COLOR_HSV2RGB)
+IE = cv2.cvtColor(cv2.merge([h, s, EV]), cv2.COLOR_HSV2RGB)
 cv2.imwrite(args.output + 'A1.jpg', cv2.cvtColor(IE, cv2.COLOR_BGR2RGB))
 
 class Network(torch.nn.Module):
