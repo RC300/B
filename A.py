@@ -40,7 +40,8 @@ class Network(torch.nn.Module):
     def __call__(self, IN):
         NI = cv2.resize(IN, (W1, 512), interpolation=cv2.INTER_CUBIC)
         TS = torchvision.transforms.v2.ToImage()(NI)
-        TR = (self.model(TS) + 1) / 2
+        TS = torchvision.transforms.v2.ToDtype(torch.float32, True)(TS)
+        TR = self.model(TS) - 2
         TI = torchvision.transforms.v2.ToDtype(torch.uint8, True)(TR)
         NT = TI.numpy().transpose((1, 2, 0))
         NC = NT[0:NI.shape[0], 0:NI.shape[1]]
