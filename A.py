@@ -41,7 +41,7 @@ class Network(torch.nn.Module):
         NI = cv2.resize(IN, (W1, 512), interpolation=cv2.INTER_CUBIC)
         TS = torchvision.transforms.v2.ToImage()(NI)
         TS = torchvision.transforms.v2.ToDtype(torch.float32, True)(TS)
-        TR = self.model(TS) + 1
+        TR = self.model(TS) * 0.5 + 0.5
         TI = torchvision.transforms.v2.ToDtype(torch.uint8, True)(TR)
         NT = TI.numpy().transpose((1, 2, 0))
         NC = NT[0:NI.shape[0], 0:NI.shape[1]]
@@ -59,7 +59,7 @@ class ResBlock(torch.nn.Module):
 GT = Network()
 
 GT.load_state_dict(torch.load(args.model + '1.lib'))
-with torch.inference_mode(): IA = GT(I0)
+with torch.inference_mode(): IA = GT(IS)
 M1 = cv2.inRange(IA, (0, 255, 0), (0, 255, 0))
 M2 = cv2.bitwise_not(M1)
 I1 = cv2.bitwise_or(IA, IA, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
