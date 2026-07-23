@@ -65,16 +65,11 @@ M2 = cv2.bitwise_not(M1)
 I1 = cv2.bitwise_or(NA, NA, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
 
-GM = numpy.full_like(IA, (0, 255, 0))
 M3 = cv2.inRange(IA, (0, 255, 0), (0, 255, 0))
 M4 = cv2.bitwise_not(M3)
-IX = cv2.bitwise_or(GM, GM, mask=M3)
+IX = cv2.bitwise_or(IA, IA, mask=M3)
 XI = cv2.resize(IX, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 cv2.imwrite(args.output + 'A1.jpg', cv2.cvtColor(XI, cv2.COLOR_BGR2RGB))
-
-IZ = cv2.bitwise_or(IA, IA, mask=M3)
-ZI = cv2.resize(IZ, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-cv2.imwrite(args.output + 'A2.jpg', cv2.cvtColor(ZI, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '2.lib'))
 with torch.inference_mode(): IB = GT(IA)
