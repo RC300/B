@@ -71,7 +71,7 @@ IX = cv2.bitwise_or(IA, IA, mask=M3)
 XI = cv2.resize(IX, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 ZI = cv2.resize(M4, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 cv2.imwrite(args.output + 'A1.jpg', cv2.cvtColor(XI, cv2.COLOR_BGR2RGB))
-cv2.imwrite(args.output + 'A2.jpg', cv2.cvtColor(XI, cv2.COLOR_BGR2RGB))
+cv2.imwrite(args.output + 'A2.jpg', cv2.cvtColor(ZI, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '2.lib'))
 with torch.inference_mode(): IB = GT(IA)
