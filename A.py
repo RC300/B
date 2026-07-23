@@ -70,7 +70,7 @@ M3 = cv2.inRange(IA, (0, 255, 0), (0, 255, 0))
 M4 = cv2.bitwise_not(M3)
 IX = cv2.bitwise_or(GM, GM, mask=M3)
 XI = cv2.resize(IX, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-cv2.imwrite(args.output + 'A1.jpg', cv2.cvtColor(ZI, cv2.COLOR_BGR2RGB))
+cv2.imwrite(args.output + 'A1.jpg', cv2.cvtColor(XI, cv2.COLOR_BGR2RGB))
 
 IZ = cv2.bitwise_or(IA, IA, mask=M3)
 ZI = cv2.resize(IZ, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
