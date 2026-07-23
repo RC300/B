@@ -40,7 +40,6 @@ class Network(torch.nn.Module):
     def __call__(self, IN):
         NI = cv2.resize(IN, (W1, 512), interpolation=cv2.INTER_CUBIC)
         TS = torchvision.transforms.v2.ToImage()(NI)
-        TS = torchvision.transforms.v2.ToDtype(torch.float32, True)(TS)
         TR = self.model(TS) * 0.5 + 0.5
         TI = torchvision.transforms.v2.ToDtype(torch.uint8, True)(TR)
         NT = TI.numpy().transpose((1, 2, 0))
@@ -65,9 +64,8 @@ M2 = cv2.bitwise_not(M1)
 I1 = cv2.bitwise_or(IA, IA, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
 
-IX = cv2.bitwise_or(IA, IA, mask=M1) + cv2.bitwise_or(IS, IS, mask=M2)
 GT.load_state_dict(torch.load(args.model + '2.lib'))
-with torch.inference_mode(): IB = GT(IX)
+with torch.inference_mode(): IB = GT(IA)
 I2 = cv2.bitwise_or(IB, IB, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
