@@ -13,9 +13,9 @@ C0 = cv2.split(I0)
 SR = numpy.sort(C0[0], None)
 SG = numpy.sort(C0[1], None)
 SB = numpy.sort(C0[2], None)
-R0 = cv2.normalize(C0[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
-G0 = cv2.normalize(C0[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
-B0 = cv2.normalize(C0[2], None, SB[IV], SB[-IV], cv2.NORM_MINMAX)
+R0 = cv2.normalize(SR, None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
+G0 = cv2.normalize(SG, None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
+B0 = cv2.normalize(SB, None, SB[IV], SB[-IV], cv2.NORM_MINMAX)
 IS = cv2.merge((R0, G0, B0))
 
 class Network(torch.nn.Module):
