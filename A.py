@@ -2,7 +2,6 @@ import cv2, math, numpy, torch, argparse, torchvision.transforms.v2
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input')
-parser.add_argument('-a', '--mask')
 parser.add_argument('-m', '--model')
 parser.add_argument('-o', '--output')
 args = parser.parse_args()
@@ -10,22 +9,10 @@ args = parser.parse_args()
 I0 = cv2.cvtColor(cv2.imread(args.input), cv2.COLOR_BGR2RGB)
 W1 = math.ceil(I0.shape[1] / I0.shape[0] * 512)
 IV = I0.size // 120
-
-BG = cv2.cvtColor(cv2.imread(args.mask), cv2.COLOR_BGR2RGB)
-BG = cv2.resize(BG, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
-C0 = cv2.split(BG)
+C0 = cv2.split(I0)
 SR = numpy.sort(C0[0], None)
 SG = numpy.sort(C0[1], None)
 SB = numpy.sort(C0[2], None)
-
-C1 = cv2.split(I0)
-V1 = numpy.clip(C1[0], SR[IV], SR[-IV])
-V2 = numpy.clip(C1[1], SG[IV], SG[-IV])
-V3 = numpy.clip(C1[2], SB[IV], SB[-IV])
-R1 = cv2.normalize(V1, None, 0, 255, cv2.NORM_MINMAX)
-G1 = cv2.normalize(V2, None, 0, 255, cv2.NORM_MINMAX)
-B1 = cv2.normalize(V3, None, 0, 255, cv2.NORM_MINMAX)
-IS = cv2.merge((R1, G1, B1))
 
 class Network(torch.nn.Module):
 
@@ -97,7 +84,15 @@ cv2.circle(I1, (math.ceil(LA[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(RA), 
 cv2.circle(I1, (math.ceil(LA[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
 if LB: cv2.circle(I1, (math.ceil(LB[0][0][0]), math.ceil(LB[0][0][1])), math.ceil(LB[0][1]), (255, 0, 255), -1)
 if LV: cv2.circle(I1, (math.ceil(LV[0][0][0]), math.ceil(LV[0][0][1])), math.ceil(LV[0][1]), (0, 0, 255), -1)
-I3 = cv2.bitwise_or(I1, I1, mask=M1) + cv2.bitwise_or(IS, IS, mask=M2)
+IS = cv2.bitwise_or(I1, I1, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
+C3 = cv2.split(IS)
+V1 = numpy.clip(C3[0], SR[IV], SR[-IV])
+V2 = numpy.clip(C3[1], SG[IV], SG[-IV])
+V3 = numpy.clip(C3[2], SB[IV], SB[-IV])
+R3 = cv2.normalize(V1, None, 0, 255, cv2.NORM_MINMAX)
+G3 = cv2.normalize(V2, None, 0, 255, cv2.NORM_MINMAX)
+B3 = cv2.normalize(V3, None, 0, 255, cv2.NORM_MINMAX)
+I3 = cv2.merge((R3, G3, B3))
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '3.lib'))
