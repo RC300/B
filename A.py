@@ -20,10 +20,6 @@ R0 = cv2.normalize(V1, None, 0, 255, cv2.NORM_MINMAX)
 G0 = cv2.normalize(V2, None, 0, 255, cv2.NORM_MINMAX)
 B0 = cv2.normalize(V3, None, 0, 255, cv2.NORM_MINMAX)
 IS = cv2.merge((R0, G0, B0))
-C2 = cv2.split(IS)
-R2 = numpy.sort(C2[0], None)
-G2 = numpy.sort(C2[1], None)
-B2 = numpy.sort(C2[2], None)
 
 class Network(torch.nn.Module):
 
@@ -98,6 +94,10 @@ if LV: cv2.circle(I1, (math.ceil(LV[0][0][0]), math.ceil(LV[0][0][1])), math.cei
 I3 = cv2.bitwise_or(I1, I1, mask=M1) + cv2.bitwise_or(IS, IS, mask=M2)
 cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
+C2 = cv2.split(IA)
+R2 = numpy.sort(C2[0], None)
+G2 = numpy.sort(C2[1], None)
+B2 = numpy.sort(C2[2], None)
 GT.load_state_dict(torch.load(args.model + '3.lib'))
 with torch.inference_mode(): ID = GT(I3)
 C4 = cv2.split(ID)
