@@ -10,8 +10,8 @@ I0 = cv2.cvtColor(cv2.imread(args.input), cv2.COLOR_BGR2RGB)
 W1 = math.ceil(I0.shape[1] / I0.shape[0] * 512)
 IV = I0.size // 120
 C0 = cv2.split(I0)
-SC = numpy.sort(C0, None)
-VC = numpy.clip(C0, SC[IV], SC[-IV])
+S1 = numpy.sort(C0, None)
+VC = numpy.clip(C0, S1[IV], S1[-IV])
 C1 = cv2.normalize(VC, None, 0, 255, cv2.NORM_MINMAX)
 IS = cv2.merge((C1[0], C1[1], C1[2]))
 
@@ -90,8 +90,9 @@ cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '3.lib'))
 with torch.inference_mode(): ID = GT(I3)
-C3 = cv2.split(ID)
-C4 = [(cv2.normalize(f, None, SC[IV], SC[-IV], cv2.NORM_MINMAX) for f in C3)]
-I4 = cv2.merge(C4)
+C4 = cv2.split(ID)
+S4 = numpy.sort(C4, None)
+C4 = cv2.normalize(S4, None, S1[IV], S1[-IV], cv2.NORM_MINMAX)
+I4 = cv2.merge((C4[0], C4[1], C4[2]))
 I4 = cv2.bitwise_or(I4, I4, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X4.jpg', cv2.cvtColor(I4, cv2.COLOR_BGR2RGB))
