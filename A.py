@@ -40,9 +40,10 @@ class Network(torch.nn.Module):
     def __call__(self, IN):
         NI = cv2.resize(IN, (W1, 512), interpolation=cv2.INTER_CUBIC)
         TS = torchvision.transforms.v2.ToImage()(NI)
+        TS = torchvision.transforms.v2.ToDtype(torch.float32, True)(TS)
         TR = self.model(TS) * 0.5 + 0.5
         TI = torchvision.transforms.v2.ToDtype(torch.uint8, True)(TR)
-        NT = TI.numpy().transpose((1, 2, 0))[0:NI.shape[0], 0:NI.shape[1]]
+        NT = TI.numpy()[0:NI.shape[0], 0:NI.shape[1]]
         return cv2.resize(NT, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 
 class ResBlock(torch.nn.Module):
