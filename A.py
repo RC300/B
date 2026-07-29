@@ -11,8 +11,7 @@ W1 = math.ceil(I0.shape[1] / I0.shape[0] * 512)
 IV = I0.size // 120
 A1 = cv2.resize(I0, (W1, 512), interpolation=cv2.INTER_CUBIC)
 S1 = numpy.sort(cv2.split(A1), None)
-C0 = cv2.split(I0)
-V1 = numpy.clip(C0, S1[IV], S1[-IV])
+V1 = numpy.clip(cv2.split(I0), S1[IV], S1[-IV])
 SI = cv2.normalize(V1, None, 0, 255, cv2.NORM_MINMAX)
 IS = cv2.merge((SI[0], SI[1], SI[2]))
 
