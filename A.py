@@ -8,8 +8,8 @@ args = parser.parse_args()
 
 I0 = cv2.cvtColor(cv2.imread(args.input), cv2.COLOR_BGR2RGB)
 W1 = math.ceil(I0.shape[1] / I0.shape[0] * 512)
-D1 = I0.size // 120
-D2 = I0.size // 60
+D1 = I0.size
+D2 = I0.size // 120
 A1 = cv2.resize(I0, (W1, 512), interpolation=cv2.INTER_CUBIC)
 C1 = cv2.split(A1)
 SR = numpy.sort(C1[0], None)
