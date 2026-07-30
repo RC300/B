@@ -9,12 +9,13 @@ args = parser.parse_args()
 I0 = cv2.cvtColor(cv2.imread(args.input), cv2.COLOR_BGR2RGB)
 W1 = math.ceil(I0.shape[1] / I0.shape[0] * 512)
 IV = I0.size // 30
+D1 = I0.size // 120
 C0 = cv2.split(I0)
 SC = numpy.sort(C0, None)
 SR = numpy.sort(C0[0], None)
 SG = numpy.sort(C0[1], None)
 SB = numpy.sort(C0[2], None)
-V1 = numpy.clip(C0, SC[IV], SC[-IV])
+V1 = numpy.clip(C0, SC[D1], SC[-D1])
 SI = cv2.normalize(V1, None, 0, 255, cv2.NORM_MINMAX)
 IS = cv2.merge((SI[0], SI[1], SI[2]))
 
