@@ -10,16 +10,13 @@ I0 = cv2.cvtColor(cv2.imread(args.input), cv2.COLOR_BGR2RGB)
 W1 = math.ceil(I0.shape[1] / I0.shape[0] * 512)
 IV = I0.size // 30
 C0 = cv2.split(I0)
+SC = numpy.sort(C0, None)
 SR = numpy.sort(C0[0], None)
 SG = numpy.sort(C0[1], None)
 SB = numpy.sort(C0[2], None)
-V1 = numpy.clip(C0[0], SR[IV], SR[-IV])
-V2 = numpy.clip(C0[1], SG[IV], SG[-IV])
-V3 = numpy.clip(C0[2], SB[IV], SB[-IV])
-R0 = cv2.normalize(V1, None, 0, 255, cv2.NORM_MINMAX)
-G0 = cv2.normalize(V2, None, 0, 255, cv2.NORM_MINMAX)
-B0 = cv2.normalize(V3, None, 0, 255, cv2.NORM_MINMAX)
-IS = cv2.merge((R0, G0, B0))
+V1 = numpy.clip(C0, SC[IV], SC[-IV])
+SI = cv2.normalize(V1, None, 0, 255, cv2.NORM_MINMAX)
+IS = cv2.merge((SI[0], SI[1], SI[2]))
 
 class Network(torch.nn.Module):
 
@@ -65,7 +62,7 @@ I1 = cv2.bitwise_or(IA, IA, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '2.lib'))
-with torch.inference_mode(): IB = GT(I1)
+with torch.inference_mode(): IB = GT(IA)
 I2 = cv2.bitwise_or(IB, IB, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
