@@ -58,14 +58,14 @@ class ResBlock(torch.nn.Module):
 GT = Network()
 
 GT.load_state_dict(torch.load(args.model + '1.lib'))
-with torch.inference_mode(): IA = GT(IS)
+with torch.inference_mode(): IA = GT(I0)
 M1 = cv2.inRange(IA, (0, 255, 0), (0, 255, 0))
 M2 = cv2.bitwise_not(M1)
 I1 = cv2.bitwise_or(IA, IA, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '2.lib'))
-with torch.inference_mode(): IB = GT(IA)
+with torch.inference_mode(): IB = GT(I1)
 I2 = cv2.bitwise_or(IB, IB, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
