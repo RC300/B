@@ -82,8 +82,8 @@ LA = (b for b in (cv2.minEnclosingCircle(AC) for AC in CA) if b[1] > 10)
 LB = (c for c in (cv2.minEnclosingCircle(BC) for BC in CB) if c[1] > 10)
 LV = (d for d in (cv2.minEnclosingCircle(VC) for VC in CV) if d[1] > 10)
 RA = max(e[1] for e in LA)
-LT = sorted(TL, key=lambda x: x[0][0])[0]
-RT = sorted(TL, key=lambda x: x[0][0])[1]
+LT = sorted(TL, key=lambda x: x[0][0][0])
+RT = sorted(TL, key=lambda x: x[0][0][1])
 RD = (math.ceil(RT[0][0]) - math.ceil(LT[0][0])) / 2
 if LT: cv2.circle(I1, (math.ceil(LT[0][0]), math.ceil(LT[0][1])), math.ceil(RD), (0, 205, 0), -1)
 if LT: cv2.circle(I1, (math.ceil(LT[0][0]), math.ceil(LT[0][1])), math.ceil(RA), (255, 0, 0), -1)
