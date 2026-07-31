@@ -77,13 +77,12 @@ CT = cv2.findContours(P1, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CA = cv2.findContours(P2, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(P3, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CV = cv2.findContours(P4, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-TL = (a for a in (cv2.minEnclosingCircle(TC) for TC in CT) if a[1] > 30)
-LA = (b for b in (cv2.minEnclosingCircle(AC) for AC in CA) if b[1] > 10)
-LB = (c for c in (cv2.minEnclosingCircle(BC) for BC in CB) if c[1] > 10)
-LV = (d for d in (cv2.minEnclosingCircle(VC) for VC in CV) if d[1] > 10)
-RA = max(e[1] for e in LA)
-LT = sorted(TL, key=lambda x: x[0][0][0])
-RT = sorted(TL, key=lambda x: x[0][0][1])
+LA = sorted(a for a in (cv2.minEnclosingCircle(AC) for AC in CA) if a[1] > 10)
+LB = sorted(b for b in (cv2.minEnclosingCircle(BC) for BC in CB) if b[1] > 10)
+LV = sorted(c for c in (cv2.minEnclosingCircle(VC) for VC in CV) if c[1] > 10)
+LT = sorted(d for d in (cv2.minEnclosingCircle(TC) for TC in CT) if d[1] > 30, key=lambda x: x[0][0])[0]
+RT = sorted(e for e in (cv2.minEnclosingCircle(TC) for TC in CT) if e[1] > 30, key=lambda x: x[0][0])[1]
+RA = max(f[1] for f in LA)
 RD = (math.ceil(RT[0][0]) - math.ceil(LT[0][0])) / 2
 if LT: cv2.circle(I1, (math.ceil(LT[0][0]), math.ceil(LT[0][1])), math.ceil(RD), (0, 205, 0), -1)
 if LT: cv2.circle(I1, (math.ceil(LT[0][0]), math.ceil(LT[0][1])), math.ceil(RA), (255, 0, 0), -1)
