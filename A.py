@@ -77,19 +77,18 @@ CT = cv2.findContours(P1, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CA = cv2.findContours(P2, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(P3, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CV = cv2.findContours(P4, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
-LA = sorted(a for a in (cv2.minEnclosingCircle(AC) for AC in CA) if a[1] > 10)
-LB = sorted(b for b in (cv2.minEnclosingCircle(BC) for BC in CB) if b[1] > 10)
-LV = sorted(c for c in (cv2.minEnclosingCircle(VC) for VC in CV) if c[1] > 10)
-LT = sorted((d for d in (cv2.minEnclosingCircle(TC) for TC in CT) if d[1] > 30), key=lambda x: x[0][0])[0]
-RT = sorted((e for e in (cv2.minEnclosingCircle(TC) for TC in CT) if e[1] > 30), key=lambda x: x[0][0])[1]
-RA = max(f[1] for f in LA)
-RD = (math.ceil(RT[0][0]) - math.ceil(LT[0][0])) / 2
-if LT: cv2.circle(I1, (math.ceil(LT[0][0]), math.ceil(LT[0][1])), math.ceil(RD), (0, 205, 0), -1)
-if LT: cv2.circle(I1, (math.ceil(LT[0][0]), math.ceil(LT[0][1])), math.ceil(RA), (255, 0, 0), -1)
-if LT: cv2.circle(I1, (math.ceil(LT[0][0]), math.ceil(LT[0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
-if RT: cv2.circle(I1, (math.ceil(RT[0][0]), math.ceil(RT[0][1])), math.ceil(RD), (0, 205, 0), -1)
-if RT: cv2.circle(I1, (math.ceil(RT[0][0]), math.ceil(RT[0][1])), math.ceil(RA), (255, 0, 0), -1)
-if RT: cv2.circle(I1, (math.ceil(RT[0][0]), math.ceil(RT[0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
+LT = sorted(a for a in (cv2.minEnclosingCircle(TC) for TC in CT) if a[1] > 30)
+LA = sorted(b for b in (cv2.minEnclosingCircle(AC) for AC in CA) if b[1] > 10)
+LB = sorted(c for c in (cv2.minEnclosingCircle(BC) for BC in CB) if c[1] > 10)
+LV = sorted(d for d in (cv2.minEnclosingCircle(VC) for VC in CV) if d[1] > 10)
+RA = max(e[1] for e in LA)
+RT = (math.ceil(LT[1][0][0]) - math.ceil(LT[0][0][0])) / 2
+cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RT), (0, 205, 0), -1)
+cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RA), (255, 0, 0), -1)
+cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
+cv2.circle(I1, (math.ceil(LT[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(RT), (0, 205, 0), -1)
+cv2.circle(I1, (math.ceil(LA[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(RA), (255, 0, 0), -1)
+cv2.circle(I1, (math.ceil(LA[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
 if LB: cv2.circle(I1, (math.ceil(LB[0][0][0]), math.ceil(LB[0][0][1])), math.ceil(LB[0][1]), (255, 0, 255), -1)
 if LV: cv2.circle(I1, (math.ceil(LV[0][0][0]), math.ceil(LV[0][0][1])), math.ceil(LV[0][1]), (0, 0, 255), -1)
 I3 = cv2.bitwise_or(I1, I1, mask=M1) + cv2.bitwise_or(IS, IS, mask=M2)
@@ -97,7 +96,8 @@ cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '3.lib'))
 with torch.inference_mode(): ID = GT(I3)
-C4 = cv2.split(ID)
+IE = cv2.bitwise_or(ID, ID, mask=M1)
+C4 = cv2.split(IE)
 R4 = cv2.normalize(C4[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
 G4 = cv2.normalize(C4[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
 B4 = cv2.normalize(C4[2], None, SB[IV], SB[-IV], cv2.NORM_MINMAX)
