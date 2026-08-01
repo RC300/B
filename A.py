@@ -8,15 +8,10 @@ args = parser.parse_args()
 
 I0 = cv2.cvtColor(cv2.imread(args.input), cv2.COLOR_BGR2RGB)
 W1 = math.ceil(I0.shape[1] / I0.shape[0] * 512)
-IV = I0.size // 30
-D2 = I0.size // 10
+IV = I0.size // 10
 SC = numpy.sort(I0, None)
-V1 = numpy.clip(I0, SC[D2], SC[-D2])
+V1 = numpy.clip(I0, SC[IV], SC[-IV])
 IS = cv2.normalize(V1, None, 0, 255, cv2.NORM_MINMAX)
-C0 = cv2.split(I0)
-SR = numpy.sort(C0[0], None)
-SG = numpy.sort(C0[1], None)
-SB = numpy.sort(C0[2], None)
 
 class Network(torch.nn.Module):
 
@@ -94,9 +89,7 @@ cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 GT.load_state_dict(torch.load(args.model + '3.lib'))
 with torch.inference_mode(): ID = GT(I3)
 C4 = cv2.split(ID)
-R4 = cv2.normalize(C4[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
-G4 = cv2.normalize(C4[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
-B4 = cv2.normalize(C4[2], None, SB[IV], SB[-IV], cv2.NORM_MINMAX)
-I4 = cv2.merge((R4, G4, B4))
+NR = cv2.normalize(C4, None, SC[IV], SC[-IV], cv2.NORM_MINMAX)
+I4 = cv2.merge((NR[0], NR[1], NR[2]))
 I4 = cv2.bitwise_or(I4, I4, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X4.jpg', cv2.cvtColor(I4, cv2.COLOR_BGR2RGB))
