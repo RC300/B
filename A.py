@@ -9,13 +9,14 @@ args = parser.parse_args()
 I0 = cv2.cvtColor(cv2.imread(args.input), cv2.COLOR_BGR2RGB)
 W1 = math.ceil(I0.shape[1] / I0.shape[0] * 512)
 IV = I0.size // 30
+D2 = I0.size // 10
 C0 = cv2.split(I0)
 SR = numpy.sort(C0[0], None)
 SG = numpy.sort(C0[1], None)
 SB = numpy.sort(C0[2], None)
-V1 = numpy.clip(I0, SR[IV], SR[-IV])
-V2 = numpy.clip(V1, SG[IV], SG[-IV])
-V3 = numpy.clip(V2, SB[IV], SB[-IV])
+V1 = numpy.clip(I0, SR[D2], SR[-D2])
+V2 = numpy.clip(V1, SG[D2], SG[-D2])
+V3 = numpy.clip(V2, SB[D2], SB[-D2])
 IS = cv2.normalize(V3, None, 0, 255, cv2.NORM_MINMAX)
 
 class Network(torch.nn.Module):
