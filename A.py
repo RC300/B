@@ -69,7 +69,7 @@ with torch.inference_mode(): IB = GT(IA)
 I2 = cv2.bitwise_or(IB, IB, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
-GM = numpy.full_like(I0, (0, 205, 0), (0, 205, 0))
+GM = numpy.full_like(I0, (0, 205, 0))
 IX = cv2.bitwise_or(GM, GM, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 P1 = cv2.inRange(I2, (0, 0, 0), (255, 0, 0))
 P2 = cv2.inRange(I2, (255, 0, 0), (255, 0, 0))
