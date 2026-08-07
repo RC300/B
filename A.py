@@ -96,7 +96,7 @@ cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '3.lib'))
 with torch.inference_mode(): ID = GT(I3)
-N4 = cv2.bitwise_or(ID, ID, mask=M1) + cv2.bitwise_or(IS, IS, mask=M2)
+N4 = cv2.bitwise_or(ID, ID, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 C4 = cv2.split(N4)
 R4 = cv2.normalize(C4[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
 G4 = cv2.normalize(C4[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
