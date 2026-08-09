@@ -20,9 +20,9 @@ R0 = cv2.normalize(V1, None, 0, 255, cv2.NORM_MINMAX)
 G0 = cv2.normalize(V2, None, 0, 255, cv2.NORM_MINMAX)
 B0 = cv2.normalize(V3, None, 0, 255, cv2.NORM_MINMAX)
 IS = cv2.merge((R0, G0, B0))
-R1 = cv2.normalize(C0[0], None, 0, 255, cv2.NORM_MINMAX)
-G1 = cv2.normalize(C0[1], None, 0, 255, cv2.NORM_MINMAX)
-B1 = cv2.normalize(C0[2], None, 0, 255, cv2.NORM_MINMAX)
+R1 = cv2.normalize(C1[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
+G1 = cv2.normalize(C1[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
+B1 = cv2.normalize(C1[2], None, SB[IV], SB[-IV], cv2.NORM_MINMAX)
 IX = cv2.merge((R1, G1, B1))
 
 class Network(torch.nn.Module):
