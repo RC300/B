@@ -43,8 +43,9 @@ class Network(torch.nn.Module):
         TS = torchvision.transforms.v2.ToDtype(torch.float32, True)(TS)
         TR = self.model(TS) * 0.5 + 0.5
         TI = torchvision.transforms.v2.ToDtype(torch.uint8, True)(TR)
-        NT = TI.permute(1, 2, 0).numpy()[0:NI.shape[0], 0:NI.shape[1]]
-        return cv2.resize(NT, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
+        NT = TI.permute(1, 2, 0).numpy()
+        NC = NT[0:NI.shape[0], 0:NI.shape[1]]
+        return cv2.resize(NC, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 
 class ResBlock(torch.nn.Module):
 
@@ -63,7 +64,6 @@ M1 = cv2.inRange(IA, (0, 255, 0), (0, 255, 0))
 M2 = cv2.bitwise_not(M1)
 I1 = cv2.bitwise_or(IA, IA, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
-cv2.imwrite(args.output + 'A1.jpg', cv2.cvtColor(IA, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '2.lib'))
 with torch.inference_mode(): IB = GT(IA)
