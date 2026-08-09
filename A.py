@@ -20,10 +20,6 @@ R0 = cv2.normalize(V1, None, 0, 255, cv2.NORM_MINMAX)
 G0 = cv2.normalize(V2, None, 0, 255, cv2.NORM_MINMAX)
 B0 = cv2.normalize(V3, None, 0, 255, cv2.NORM_MINMAX)
 IS = cv2.merge((R0, G0, B0))
-R1 = cv2.normalize(C0[0], None, SR[IV], SR[-IV], cv2.NORM_MINMAX)
-G1 = cv2.normalize(C0[1], None, SG[IV], SG[-IV], cv2.NORM_MINMAX)
-B1 = cv2.normalize(C0[2], None, SB[IV], SB[-IV], cv2.NORM_MINMAX)
-IX = cv2.merge((R1, G1, B1))
 
 class Network(torch.nn.Module):
 
@@ -69,9 +65,9 @@ M2 = cv2.bitwise_not(M1)
 I1 = cv2.bitwise_or(IA, IA, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
 
-IZ = cv2.bitwise_or(IA, IA, mask=M1) + cv2.bitwise_or(IX, IX, mask=M2)
+IX = cv2.bitwise_or(IA, IA, mask=M1) + cv2.bitwise_or(IS, IS, mask=M2)
 GT.load_state_dict(torch.load(args.model + '2.lib'))
-with torch.inference_mode(): IB = GT(IZ)
+with torch.inference_mode(): IB = GT(IX)
 I2 = cv2.bitwise_or(IB, IB, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
