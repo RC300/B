@@ -38,10 +38,9 @@ class Network(torch.nn.Module):
         torch.nn.ReflectionPad2d(3), torch.nn.Conv2d(64, 3, 7), torch.nn.Tanh())
 
     def __call__(self, IN):
-        NI = cv2.resize(IN, (W1, 512), interpolation=cv2.INTER_CUBIC)
-        TS = torchvision.transforms.v2.ToImage()(NI)
-        TS = torchvision.transforms.v2.ToDtype(torch.float32, True)(TS)
-        TR = self.model(TS) * 0.5 + 0.5
+        NI = torchvision.transforms.v2.ToImage()(IN)
+        TS = torchvision.transforms.v2.ToDtype(torch.float32, True)(NI)
+        TR = cv2.resize(self.model(TS), (W1, 512), interpolation=cv2.INTER_CUBIC)  * 0.5 + 0.5
         TI = torchvision.transforms.v2.ToDtype(torch.uint8, True)(TR)
         NT = TI.permute(1, 2, 0).numpy()
         NC = NT[0:NI.shape[0], 0:NI.shape[1]]
@@ -66,7 +65,7 @@ I1 = cv2.bitwise_or(IA, IA, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
 
 GT.load_state_dict(torch.load(args.model + '2.lib'))
-with torch.inference_mode(): IB = GT(I1)
+with torch.inference_mode(): IB = GT(IA)
 I2 = cv2.bitwise_or(IB, IB, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
