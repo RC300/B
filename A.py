@@ -60,7 +60,7 @@ GT = Network()
 
 GT.load_state_dict(torch.load(args.model + '1.lib'))
 with torch.inference_mode(): IA = GT(I0)
-M1 = cv2.inRange(IA, (0, 255, 0), (0, 255, 0))
+M1 = cv2.inRange(IA, (0, 0, 0), (0, 255, 0))
 M2 = cv2.bitwise_not(M1)
 I1 = cv2.bitwise_or(IA, IA, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X1.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
@@ -71,12 +71,9 @@ I2 = cv2.bitwise_or(IB, IB, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X2.jpg', cv2.cvtColor(I2, cv2.COLOR_BGR2RGB))
 
 P1 = cv2.inRange(I2, (0, 0, 0), (255, 0, 0))
-P5 = cv2.bitwise_not(P1)
 P2 = cv2.inRange(I2, (255, 0, 0), (255, 0, 0))
 P3 = cv2.inRange(I2, (255, 0, 255), (255, 0, 255))
 P4 = cv2.inRange(I2, (0, 0, 255), (0, 0, 255))
-TM = numpy.full_like(I0, (0, 205, 0))
-I1 = cv2.bitwise_or(TM, TM, mask=P1) + cv2.bitwise_or(I1, I1, mask=P5)
 CT = cv2.findContours(P1, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CA = cv2.findContours(P2, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(P3, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
@@ -86,8 +83,11 @@ LA = sorted(b for b in (cv2.minEnclosingCircle(AC) for AC in CA) if b[1] > 10)
 LB = sorted(c for c in (cv2.minEnclosingCircle(BC) for BC in CB) if c[1] > 10)
 LV = sorted(d for d in (cv2.minEnclosingCircle(VC) for VC in CV) if d[1] > 10)
 RA = max(e[1] for e in LA)
+RT = (math.ceil(LT[1][0][0]) - math.ceil(LT[0][0][0])) / 2
+cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RT), (0, 205, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RA), (255, 0, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
+cv2.circle(I1, (math.ceil(LT[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(RT), (0, 205, 0), -1)
 cv2.circle(I1, (math.ceil(LA[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(RA), (255, 0, 0), -1)
 cv2.circle(I1, (math.ceil(LA[1][0][0]), math.ceil(LT[1][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
 if LB: cv2.circle(I1, (math.ceil(LB[0][0][0]), math.ceil(LB[0][0][1])), math.ceil(LB[0][1]), (255, 0, 255), -1)
