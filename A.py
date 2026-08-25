@@ -107,5 +107,5 @@ cv2.imwrite(args.output + 'X4.jpg', cv2.cvtColor(I4, cv2.COLOR_BGR2RGB))
 
 for TC in CT:
     x, y, w, h = cv2.boundingRect(TC)
-    cv2.rectangle(I1, (x, y), (x + w, y + h), (0, 255, 0), 2)
+    cv2.rectangle(I1, (x, y), (x + w, y + h), (0, 0, 255), 2)
 cv2.imwrite(args.output + 'X5.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
