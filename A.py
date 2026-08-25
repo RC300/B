@@ -105,6 +105,7 @@ I4 = cv2.merge((R4, G4, B4))
 I4 = cv2.bitwise_or(I4, I4, mask=M1) + cv2.bitwise_or(I0, I0, mask=M2)
 cv2.imwrite(args.output + 'X4.jpg', cv2.cvtColor(I4, cv2.COLOR_BGR2RGB))
 
-for TC in CT: x, y, w, h = cv2.boundingRect(TC)
-cv2.rectangle(I3, (x, y), (x + w, y + h), (255, 0, 0), 2)
-cv2.imwrite(args.output + 'X3.jpg', cv2.cvtColor(I3, cv2.COLOR_BGR2RGB))
+for TC in CT:
+    x, y, w, h = cv2.boundingRect(TC)
+    cv2.rectangle(I1, (x, y), (x + w, y + h), (0, 255, 0), 2)
+cv2.imwrite(args.output + 'X5.jpg', cv2.cvtColor(I1, cv2.COLOR_BGR2RGB))
