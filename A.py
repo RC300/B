@@ -91,10 +91,12 @@ YM = min(j[0][1] for j in LT)
 MY = max(k[0][1] for k in LT)
 RT = (math.ceil(TX) - math.ceil(XT)) / 2
 DR = math.ceil(math.ceil(MY) - math.ceil(YM))
-cv2.circle(I1, (math.ceil(TX), math.ceil(YM)), math.ceil(RT + DR), (0, 205, 0), -1)
+RM = RT + DR
+MR = RT - DR
+cv2.circle(I1, (math.ceil(TX), math.ceil(YM)), math.ceil(RM), (0, 205, 0), -1)
 cv2.circle(I1, (math.ceil(AM), math.ceil(YM)), math.ceil(RA), (255, 0, 0), -1)
 cv2.circle(I1, (math.ceil(AM), math.ceil(YM)), math.ceil(RA / 4), (255, 255, 255), -1)
-cv2.circle(I1, (math.ceil(XT), math.ceil(MY)), math.ceil(RT - DR), (0, 205, 0), -1)
+cv2.circle(I1, (math.ceil(XT), math.ceil(MY)), math.ceil(MR), (0, 205, 0), -1)
 cv2.circle(I1, (math.ceil(MA), math.ceil(MY)), math.ceil(RA), (255, 0, 0), -1)
 cv2.circle(I1, (math.ceil(MA), math.ceil(MY)), math.ceil(RA / 4), (255, 255, 255), -1)
 if LB: cv2.circle(I1, (math.ceil(LB[0][0][0]), math.ceil(LB[0][0][1])), math.ceil(LB[0][1]), (255, 0, 255), -1)
