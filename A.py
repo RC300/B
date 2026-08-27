@@ -83,7 +83,7 @@ LA = sorted(b for b in (cv2.minEnclosingCircle(AC) for AC in CA) if b[1] > 10)
 LB = sorted(c for c in (cv2.minEnclosingCircle(BC) for BC in CB) if c[1] > 10)
 LV = sorted(d for d in (cv2.minEnclosingCircle(VC) for VC in CV) if d[1] > 10)
 RA = max(e[1] for e in LA)
-RT = (math.ceil(LT[1][0][0]) + math.ceil(LT[0][1]) + math.ceil(LT[1][1]) - math.ceil(LT[0][0][0])) / 2
+RT = ((math.ceil(LT[1][0][0]) + math.ceil(LT[1][1])) - (math.ceil(LT[0][0][0]) - math.ceil(LT[0][1]))) / 2
 cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RT), (0, 205, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RA), (255, 0, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RA / 4), (255, 255, 255), -1)
