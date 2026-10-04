@@ -1,4 +1,4 @@
-import cv2, math, numpy, torch, argparse, torchvision.transforms.v2
+import cv2, math, numpy, torch, argparse, torchvision
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input')
