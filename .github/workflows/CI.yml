@@ -13,12 +13,12 @@ jobs:
       - name: Python
         uses: actions/setup-python@v7.0.0
         with:
-          python-version: 3.14.7
+          python-version: 3.14.8
           architecture: x64
 
       - name: Setup
         run: |
-          pip3 install pyinstaller==6.22.0 numpy==2.5.1 opencv-python==5.0.0.93 pillow==12.3.0 torch==2.13.0 torchvision==0.28.0
+          pip3 install pyinstaller==6.22.3 numpy==2.5.3 opencv-python==5.0.0.93 pillow==12.3.0 torch==2.14.1 torchvision==0.29.1
           pyinstaller A.py
 
       - name: File
