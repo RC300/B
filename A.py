@@ -1,4 +1,4 @@
-zimport cv2, math, numpy, torch, argparse, torchvision.transforms.v2
+import cv2, math, numpy, torch, argparse, torchvision.transforms.v2
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input')
@@ -79,8 +79,8 @@ CA = cv2.findContours(P2, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CB = cv2.findContours(P3, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 CV = cv2.findContours(P4, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]
 LT = sorted(a for a in (cv2.minEnclosingCircle(TC) for TC in CT) if a[1] > 30)
-LB = sorted(c for c in (cv2.minEnclosingCircle(BC) for BC in CB) if c[1] > 10)
-LV = sorted(d for d in (cv2.minEnclosingCircle(VC) for VC in CV) if d[1] > 10)
+LB = sorted(b for b in (cv2.minEnclosingCircle(BC) for BC in CB) if c[1] > 10)
+LV = sorted(c for c in (cv2.minEnclosingCircle(VC) for VC in CV) if d[1] > 10)
 RT = (math.ceil(LT[1][0][0]) - math.ceil(LT[0][0][0])) / 2
 RA = math.ceil(RT) / 3
 cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RT), (0, 205, 0), -1)
