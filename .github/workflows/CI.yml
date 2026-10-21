@@ -18,11 +18,11 @@ jobs:
 
       - name: Setup
         run: |
-          pip3 install pyinstaller==6.22.3 numpy==2.5.4 opencv-python==5.0.0.93 pillow==12.3.0 torch==2.13.0 torchvision==0.28.0
+          pip3 install pyinstaller==6.22.3 numpy==2.5.4 opencv-python==5.0.0.93 pillow==13.0.0 torch==2.14.1 torchvision==0.29.1
           pyinstaller A.py
 
       - name: File
-        uses: actions/upload-artifact@v7.0.1
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: A
           path: dist/A/
