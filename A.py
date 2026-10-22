@@ -84,7 +84,7 @@ LB = sorted(c for c in (cv2.minEnclosingCircle(BC) for BC in CB) if c[1] > 10)
 LV = sorted(d for d in (cv2.minEnclosingCircle(VC) for VC in CV) if d[1] > 10)
 BR = math.ceil(math.ceil(LT[0][0][0]) - math.ceil(LT[0][1]))
 BL = math.ceil(math.ceil(LT[1][0][0]) + math.ceil(LT[1][1]))
-RT = (BL - BR) / 2
+RT = (BL - BR) / 4
 RA = math.ceil(RT) / 3
 cv2.circle(I1, (math.ceil(LT[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RT), (0, 205, 0), -1)
 cv2.circle(I1, (math.ceil(LA[0][0][0]), math.ceil(LT[0][0][1])), math.ceil(RA), (255, 0, 0), -1)
