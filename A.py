@@ -41,8 +41,7 @@ class Network(torch.nn.Module):
         NI = cv2.resize(IN, (W1, 512), interpolation=cv2.INTER_CUBIC)
         TS = torchvision.transforms.v2.ToImage()(NI).float()
         TR = self.model(TS) * 0.5 + 0.5
-        TI = torchvision.transforms.v2.ToDtype(torch.uint8, True)(TR)
-        NT = TI.permute(1, 2, 0).numpy()
+        NT = TR.uint8().permute(1, 2, 0).numpy()
         NC = NT[0:NI.shape[0], 0:NI.shape[1]]
         return cv2.resize(NC, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 
