@@ -30,10 +30,10 @@ class Network(torch.nn.Module):
         torch.nn.Conv2d(256, 512, 3, 2, 1), torch.nn.InstanceNorm2d(512), torch.nn.ReLU(),
         torch.nn.Conv2d(512, 1024, 3, 2, 1), torch.nn.InstanceNorm2d(1024), torch.nn.ReLU())
         self.model += torch.nn.Sequential(ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock())
-        self.model += torch.nn.Sequential(torch.nn.ConvTranspose2d(1024, 512, 3, 2, 1, 1), torch.nn.InstanceNorm2d(512), torch.nn.ReLU(),
-        torch.nn.ConvTranspose2d(512, 256, 3, 2, 1, 1), torch.nn.InstanceNorm2d(256), torch.nn.ReLU(),
-        torch.nn.ConvTranspose2d(256, 128, 3, 2, 1, 1), torch.nn.InstanceNorm2d(128), torch.nn.ReLU(),
-        torch.nn.ConvTranspose2d(128, 64, 3, 2, 1, 1), torch.nn.InstanceNorm2d(64), torch.nn.ReLU(),
+        self.model += torch.nn.Sequential(torch.nn.ConvTranspose2d(1024, 512, 3, 1, 1, 1), torch.nn.InstanceNorm2d(512), torch.nn.ReLU(),
+        torch.nn.ConvTranspose2d(512, 256, 3, 1, 1, 1), torch.nn.InstanceNorm2d(256), torch.nn.ReLU(),
+        torch.nn.ConvTranspose2d(256, 128, 3, 1, 1, 1), torch.nn.InstanceNorm2d(128), torch.nn.ReLU(),
+        torch.nn.ConvTranspose2d(128, 64, 3, 1, 1, 1), torch.nn.InstanceNorm2d(64), torch.nn.ReLU(),
         torch.nn.ReflectionPad2d(3), torch.nn.Conv2d(64, 3, 7), torch.nn.Tanh())
 
     def __call__(self, IN):
