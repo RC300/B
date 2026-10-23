@@ -7,6 +7,7 @@ parser.add_argument('-o', '--output')
 args = parser.parse_args()
 
 I0 = cv2.cvtColor(cv2.imread(args.input), cv2.COLOR_BGR2RGB)
+W1 = math.ceil(I0.shape[1] / I0.shape[0] * 512)
 IV = I0.size // 30
 C0 = cv2.split(I0)
 SR = numpy.sort(C0[0], None)
@@ -30,19 +31,21 @@ class Network(torch.nn.Module):
         torch.nn.Conv2d(256, 512, 3, 2, 1), torch.nn.InstanceNorm2d(512), torch.nn.ReLU(),
         torch.nn.Conv2d(512, 1024, 3, 2, 1), torch.nn.InstanceNorm2d(1024), torch.nn.ReLU())
         self.model += torch.nn.Sequential(ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock(), ResBlock())
-        self.model += torch.nn.Sequential(torch.nn.ConvTranspose2d(1024, 512, 3, 1, 1, 1), torch.nn.InstanceNorm2d(512), torch.nn.ReLU(),
-        torch.nn.ConvTranspose2d(512, 256, 3, 1, 1, 1), torch.nn.InstanceNorm2d(256), torch.nn.ReLU(),
-        torch.nn.ConvTranspose2d(256, 128, 3, 1, 1, 1), torch.nn.InstanceNorm2d(128), torch.nn.ReLU(),
-        torch.nn.ConvTranspose2d(128, 64, 3, 1, 1, 1), torch.nn.InstanceNorm2d(64), torch.nn.ReLU(),
+        self.model += torch.nn.Sequential(torch.nn.ConvTranspose2d(1024, 512, 3, 2, 1, 1), torch.nn.InstanceNorm2d(512), torch.nn.ReLU(),
+        torch.nn.ConvTranspose2d(512, 256, 3, 2, 1, 1), torch.nn.InstanceNorm2d(256), torch.nn.ReLU(),
+        torch.nn.ConvTranspose2d(256, 128, 3, 2, 1, 1), torch.nn.InstanceNorm2d(128), torch.nn.ReLU(),
+        torch.nn.ConvTranspose2d(128, 64, 3, 2, 1, 1), torch.nn.InstanceNorm2d(64), torch.nn.ReLU(),
         torch.nn.ReflectionPad2d(3), torch.nn.Conv2d(64, 3, 7), torch.nn.Tanh())
 
     def __call__(self, IN):
-        NI = torchvision.transforms.v2.ToImage()(IN)
-        TS = torchvision.transforms.v2.ToDtype(torch.float32, True)(NI)
+        NI = cv2.resize(IN, (W1, 512), interpolation=cv2.INTER_CUBIC)
+        TS = torchvision.transforms.v2.ToImage()(NI)
+        TS = TS.float()
         TR = self.model(TS) * 0.5 + 0.5
-        TI = torchvision.transforms.v2.ToDtype(torch.uint8, True)(TR)
+        TI = TR.uint8()
         NT = TI.permute(1, 2, 0).numpy()
-        return NT[0:IN.shape[0], 0:IN.shape[1]]
+        NC = NT[0:NI.shape[0], 0:NI.shape[1]]
+        return cv2.resize(NC, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 
 class ResBlock(torch.nn.Module):
 
