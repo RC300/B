@@ -1,4 +1,4 @@
-import cv2, math, numpy, torch, argparse
+import cv2, math, numpy, torch, argparse, torchvision.transforms.v2
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input')
@@ -39,9 +39,10 @@ class Network(torch.nn.Module):
 
     def __call__(self, IN):
         NI = cv2.resize(IN, (W1, 512), interpolation=cv2.INTER_CUBIC)
-        TS = torch.from_numpy(NI).permute(2, 0, 1).float()
+        TS = torch.from_numpy(NI).permute(2, 0, 1)
         TR = self.model(TS) * 0.5 + 0.5
-        NT = TR.permute(1, 2, 0).numpy().astype(numpy.uint8)
+        TI = torchvision.transforms.v2.ToDtype(torch.uint8, True)(TR)
+        NT = TI.permute(1, 2, 0).numpy()
         NC = NT[0:NI.shape[0], 0:NI.shape[1]]
         return cv2.resize(NC, (I0.shape[1], I0.shape[0]), interpolation=cv2.INTER_CUBIC)
 
